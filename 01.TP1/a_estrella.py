@@ -32,9 +32,9 @@ class AStar:
         self.target_adjacent_cells = []  # Celdas adyacentes válidas a la estantería
         self.target_is_shelf = False  # Indica si el objetivo es una estantería
     
-    def heuristic(self, p1: Tuple[int, int], p2: Tuple[int, int]) -> float:
+    def heuristic(self, p1: Tuple[int, int], p2: Tuple[int, int]) -> float: ##Podemos usar heuristica mixta? (Manhattan + Euclidea)
         """
-        Calcula la heurística (distancia Manhattan) entre dos puntos.
+        Calcula la heurística (distancia Manhattan) entre dos puntos. 
         
         Args:
             p1: Coordenadas (fila, columna) del primer punto.
@@ -143,7 +143,7 @@ class AStar:
             self.target_is_shelf = False
             self.target_shelf = None
             self.target_adjacent_cells = []
-            print("Buscando camino hacia un destino normal...")
+            print("Buscando camino hacia un destino normal...") ##Acá se podria hacer que pida devuelta una celda objetivo?
         
         return True
     
