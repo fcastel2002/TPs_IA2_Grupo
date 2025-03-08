@@ -1,5 +1,9 @@
 import pygame
 
+
+CANT_FILAS = 11
+CANT_COLUMNAS = 13
+
 # Definir colores
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
