@@ -151,6 +151,7 @@ class Agente:
             vecinos = self.obtener_vecinos(self.__actual)
             if temperatura < 1:
                 self.__actual = vecino_aleatorio
+                t = 1
             if not vecinos:
                 print("No hay mas movimientos posibles")
                 break  # No hay más movimientos posibles
@@ -158,7 +159,9 @@ class Agente:
             vecino_aleatorio = random.choice(vecinos)
             delta_E = self.heuristica(vecino_aleatorio) - self.heuristica(self.__actual)
 
+            print(temperatura)
             if delta_E < 0 or random.random() < 1 / math.exp(delta_E / temperatura):
+                t = 1
                 self.__actual = vecino_aleatorio
                 self.__actual.recorrido = True
                 self.__actual.color = GREEN
@@ -166,6 +169,8 @@ class Agente:
                 # Si llegamos a un objetivo, lo eliminamos de la lista
                 if self.__actual in self.__objetivos:
                     self.__objetivos.remove(self.__actual)
+                    for casillero in self.__tablero.casilleros:
+                        casillero.recorrido = False
             
             t += 1
             self.__tablero.dibujar(False)  # Actualizar visualización del tablero
