@@ -96,10 +96,13 @@ class Agente:
         self.__camino = []
 
     def heuristica(self, casillero):
-        return min(abs(casillero.x - objetivo.x) + abs(casillero.y - objetivo.y) for objetivo in self.__objetivos)
+        try:
+            return min(abs(casillero.x - objetivo.x) + abs(casillero.y - objetivo.y) for objetivo in self.__objetivos)
+        except Exception:
+            raise Exception
 
-    def schedule(self, t):
-        return 100 * 0.5 ** t  # Enfriamiento exponencial
+    def schedule(self, temperatura_inicial, t):
+        return float(temperatura_inicial * 0.5 ** t)  # Enfriamiento exponencial
 
     def obtener_vecinos(self, casillero):
         vecinos = []
@@ -132,7 +135,7 @@ class Agente:
             if abajo is not False:
                 vecinos.append(self.__tablero.casilleros[abajo])
         for vecino in vecinos:
-            if vecino.libre is not True and vecino.objetivo is False:
+            if vecino.libre is False and vecino.objetivo is False:
                 vecinos.remove(vecino)
         print("inicio:")
         print(casillero)
@@ -146,20 +149,23 @@ class Agente:
         t = 1
 
         for _ in range(100000):
-            temperatura = self.schedule(t)
+            temperatura = self.schedule(temperatura,t)
             
             vecinos = self.obtener_vecinos(self.__actual)
+            vecino_aleatorio = random.choice(vecinos)
             if temperatura < 1:
                 self.__actual = vecino_aleatorio
                 t = 1
+                continue
             if not vecinos:
                 print("No hay mas movimientos posibles")
                 break  # No hay más movimientos posibles
-            
-            vecino_aleatorio = random.choice(vecinos)
-            delta_E = self.heuristica(vecino_aleatorio) - self.heuristica(self.__actual)
+            try:
+                delta_E = self.heuristica(vecino_aleatorio) - self.heuristica(self.__actual)
+            except Exception as e:
+                break
 
-            print(temperatura)
+            print(f"{temperatura}")
             if delta_E < 0 or random.random() < 1 / math.exp(delta_E / temperatura):
                 t = 1
                 self.__actual = vecino_aleatorio
@@ -171,6 +177,8 @@ class Agente:
                     self.__objetivos.remove(self.__actual)
                     for casillero in self.__tablero.casilleros:
                         casillero.recorrido = False
+                
+                continue
             
             t += 1
             self.__tablero.dibujar(False)  # Actualizar visualización del tablero
