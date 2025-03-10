@@ -1,28 +1,30 @@
-from interfaz import Tablero, Casillero, pygame, sys
+from interfaz import Tablero, MenuSelector, Casillero, pygame, sys
 from constantes import*
+from agente import Agente
 import sys
 
 class Aplicacion:
     def __init__(self, tablero):
         self.__filas = tablero['filas']
         self.__columnas = tablero['columnas']
-        self.__tablero : Tablero = Tablero(tablero['filas'],tablero['columnas'])
         self.__running = False
         self.__algorithm_running = False
-        self.__inicio = False
-        self.__cantidad_objetivos = 0
+        self.__inicio = None
+        self.__objetivos = []
         # Inicialización 
-        self.llenar_tablero()
         pygame.init()
         self.__screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.tablero : Tablero = Tablero(self.__screen,tablero['filas'],tablero['columnas'])
+        self.llenar_tablero()
         pygame.display.set_caption("Tablero con Pygame")
+        self.menu : MenuSelector = MenuSelector('ordenes.csv',self.__screen)
         
     def run(self):
         # Bucle principal
         self.__running = True
         while self.__running:
             self.manejar_eventos()
-            self.__tablero.dibujar(self.__screen, not self.__algorithm_running)
+            self.tablero.dibujar(not self.__algorithm_running)
         pygame.quit()
         sys.exit()
         
@@ -34,20 +36,25 @@ class Aplicacion:
             # Eventos de teclado
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.is_running = False
+                    self.__running = False
                 
                 # Iniciar algoritmo con la tecla ESPACIO
-                elif event.key == pygame.K_SPACE and not self.algorithm_running:
-                    self.algorithm_running = True
-                    self.a_star.run(self.draw)
+                elif event.key == pygame.K_SPACE and not self.__algorithm_running:
+                    self.__algorithm_running = True
+                    self.__agente : Agente = Agente(self.tablero)
+                    self.__agente.encontrar_ruta() 
                     self.__algorithm_running = False
                 
                 # Limpiar camino con la tecla C
                 elif event.key == pygame.K_c:
-                    for casillero in self.__tablero.casilleros:
-                        casillero.color = None
-                        self.__inicio = False
-                        self.__cantidad_objetivos = 0
+                    self.tablero.limpiar_tablero()
+                elif event.key == pygame.K_b:
+                    print(self.tablero)
+                elif event.key == pygame.K_m:
+                    objetivos = self.menu.main()
+                    for objetivo in objetivos:
+                        indice = self.tablero.buscar_por_caracter(objetivo)
+                        self.tablero.set_objetivo(int(indice))
             
             # Eventos de ratón
             if not self.__algorithm_running:
@@ -56,16 +63,16 @@ class Aplicacion:
                     pos = pygame.mouse.get_pos()
                     row, col = pos[1] // CELL_SIZE, pos[0] // CELL_SIZE
                     indice = col + row * self.__columnas
+                    print(f"Los vecinos son:")
+                    for vecino in self.tablero.get_vecinos(self.tablero.casilleros[indice].get_indice()):
+                        print(vecino)
                     # Shift + clic izquierdo para colocar punto de inicio
                     if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        if not self.__inicio:
-                            self.__tablero.casilleros[indice].color = GREEN
-                            self.__inicio = True
+                        self.tablero.set_inicio(indice)
                         
                     # Ctrl + clic izquierdo para colocar punto de destino
                     elif pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        self.__tablero.casilleros[indice].color = COLORES_OBJETIVOS[self.__cantidad_objetivos % len(COLORES_OBJETIVOS)]
-                        self.__cantidad_objetivos += 1
+                        self.tablero.set_objetivo(indice)
         
             
     def llenar_tablero(self):
@@ -104,6 +111,6 @@ class Aplicacion:
                     set3 += 1
             else:
                 casillero = Casillero(x, y, "", libre=True)
-            self.__tablero.agregar_casillero(casillero)
+            self.tablero.agregar_casillero(casillero)
             
             num_casillero += 1
