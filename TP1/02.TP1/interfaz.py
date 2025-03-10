@@ -20,6 +20,9 @@ class Casillero:
     def set_inicio(self):
         self.color = GREEN
         self.inicio = True
+        
+    def get_estanteria(self):
+        return "casillero libre" if self.libre else "estanteria"
     
     def get_indice(self):
         return (self.y // CELL_SIZE) * CANT_COLUMNAS + (self.x // CELL_SIZE)
@@ -67,7 +70,7 @@ class Tablero:
     
     def set_objetivo(self, indice):
         self.objetivos.append(self.casilleros[indice])
-        self.casilleros[indice].set_objetivo(COLORES_OBJETIVOS[len(self.objetivos) % len(COLORES_OBJETIVOS)])
+        self.casilleros[indice].set_objetivo(COLORES_OBJETIVOS[(len(self.objetivos) - 1) % len(COLORES_OBJETIVOS)])
         
     def limpiar_tablero(self):
         self.inicio = None
@@ -76,12 +79,46 @@ class Tablero:
             self.casilleros[casillero.get_indice()].color = None
             self.casilleros[casillero.get_indice()].inicio = False
             self.casilleros[casillero.get_indice()].objetivo = False
+        
+    def actualizar_tablero(self, casilleros):
+        for casillero in casilleros:
+            self.casilleros[casillero.get_indice()] = casillero
+            
+    def get_vecinos(self, indice):
+        # Convertir el índice lineal a coordenadas (fila, columna)
+        columna = indice % self.columnas
+        fila = indice // self.columnas
+        
+        # Inicializar una lista para almacenar los vecinos
+        vecinos = []
+
+        # Verificar y agregar el vecino de arriba
+        if fila > 0:
+            if self.get_casillero_por_elemento(fila-1,columna).libre or self.get_casillero_por_elemento(fila-1,columna).objetivo:
+                vecinos.append(self.get_casillero_por_elemento(fila-1,columna))  # Arriba
+
+        # Verificar y agregar el vecino de abajo
+        if fila < self.filas - 1:
+            if self.get_casillero_por_elemento(fila+1,columna).libre or self.get_casillero_por_elemento(fila+1,columna).objetivo:
+                vecinos.append(self.get_casillero_por_elemento(fila+1,columna))  # Abajo
+
+        # Verificar y agregar el vecino de la izquierda
+        if columna > 0:
+            if self.get_casillero_por_elemento(fila,columna-1).libre or self.get_casillero_por_elemento(fila,columna-1).objetivo:
+                vecinos.append(self.get_casillero_por_elemento(fila,columna-1))  # Izquierda
+
+        # Verificar y agregar el vecino de la derecha
+        if columna < self.columnas - 1:
+            if self.get_casillero_por_elemento(fila,columna+1).libre or self.get_casillero_por_elemento(fila,columna+1).objetivo:
+                vecinos.append(self.get_casillero_por_elemento(fila,columna+1))  # Derecha
+        return vecinos
+        
 
     def agregar_casillero(self, casillero):
         self.casilleros.append(casillero)
         
     def get_casillero_por_elemento(self, fila, columna):
-        indice = fila + columna * self.filas
+        indice = fila*self.columnas + columna
         return self.casilleros[indice]
 
     def dibujar(self, instrucciones):

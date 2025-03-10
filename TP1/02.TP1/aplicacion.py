@@ -14,7 +14,7 @@ class Aplicacion:
         # Inicialización 
         pygame.init()
         self.__screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        self.__tablero : Tablero = Tablero(self.__screen,tablero['filas'],tablero['columnas'])
+        self.tablero : Tablero = Tablero(self.__screen,tablero['filas'],tablero['columnas'])
         self.llenar_tablero()
         pygame.display.set_caption("Tablero con Pygame")
         
@@ -23,7 +23,7 @@ class Aplicacion:
         self.__running = True
         while self.__running:
             self.manejar_eventos()
-            self.__tablero.dibujar(not self.__algorithm_running)
+            self.tablero.dibujar(not self.__algorithm_running)
         pygame.quit()
         sys.exit()
         
@@ -40,15 +40,15 @@ class Aplicacion:
                 # Iniciar algoritmo con la tecla ESPACIO
                 elif event.key == pygame.K_SPACE and not self.__algorithm_running:
                     self.__algorithm_running = True
-                    self.__agente : Agente = Agente(self.__tablero)
-                    self.__agente.resolver_busqueda() 
+                    self.__agente : Agente = Agente(self.tablero)
+                    self.__agente.encontrar_ruta() 
                     self.__algorithm_running = False
                 
                 # Limpiar camino con la tecla C
                 elif event.key == pygame.K_c:
-                    self.__tablero.limpiar_tablero()
+                    self.tablero.limpiar_tablero()
                 elif event.key == pygame.K_b:
-                    print(self.__tablero)
+                    print(self.tablero)
             
             # Eventos de ratón
             if not self.__algorithm_running:
@@ -57,13 +57,16 @@ class Aplicacion:
                     pos = pygame.mouse.get_pos()
                     row, col = pos[1] // CELL_SIZE, pos[0] // CELL_SIZE
                     indice = col + row * self.__columnas
+                    print(f"Los vecinos son:")
+                    for vecino in self.tablero.get_vecinos(self.tablero.casilleros[indice].get_indice()):
+                        print(vecino)
                     # Shift + clic izquierdo para colocar punto de inicio
                     if pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                        self.__tablero.set_inicio(indice)
+                        self.tablero.set_inicio(indice)
                         
                     # Ctrl + clic izquierdo para colocar punto de destino
                     elif pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        self.__tablero.set_objetivo(indice)
+                        self.tablero.set_objetivo(indice)
         
             
     def llenar_tablero(self):
@@ -102,6 +105,6 @@ class Aplicacion:
                     set3 += 1
             else:
                 casillero = Casillero(x, y, "", libre=True)
-            self.__tablero.agregar_casillero(casillero)
+            self.tablero.agregar_casillero(casillero)
             
             num_casillero += 1
