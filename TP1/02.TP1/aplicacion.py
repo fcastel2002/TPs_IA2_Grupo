@@ -1,4 +1,4 @@
-from interfaz import Tablero, Casillero, pygame, sys
+from interfaz import Tablero, MenuSelector, Casillero, pygame, sys
 from constantes import*
 from agente import Agente
 import sys
@@ -17,6 +17,7 @@ class Aplicacion:
         self.tablero : Tablero = Tablero(self.__screen,tablero['filas'],tablero['columnas'])
         self.llenar_tablero()
         pygame.display.set_caption("Tablero con Pygame")
+        self.menu : MenuSelector = MenuSelector('ordenes.csv',self.__screen)
         
     def run(self):
         # Bucle principal
@@ -49,6 +50,11 @@ class Aplicacion:
                     self.tablero.limpiar_tablero()
                 elif event.key == pygame.K_b:
                     print(self.tablero)
+                elif event.key == pygame.K_m:
+                    objetivos = self.menu.main()
+                    for objetivo in objetivos:
+                        indice = self.tablero.buscar_por_caracter(objetivo)
+                        self.tablero.set_objetivo(int(indice))
             
             # Eventos de ratón
             if not self.__algorithm_running:
