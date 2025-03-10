@@ -61,6 +61,13 @@ class Game:
                             self.montacargas2['dest'] = (row, col)
                             cell.color = (255, 105, 180)  # Rosa para diferenciar M2
 
+    def show_message(self, message):
+        font = pygame.font.SysFont('arial', 24)
+        text = font.render(message, True, (0, 0, 0))
+        self.window.blit(text, (10, 10))
+        pygame.display.update()
+        pygame.time.delay(2000)
+
     def start_simulation(self):
         if not self.montacargas1['pos'] or not self.montacargas1['dest']:
             print("Error: Montacargas 1 no tiene inicio o destino")
@@ -71,62 +78,72 @@ class Game:
 
         self.algorithm_running = True
         
-        # Configurar inicio y destino en la grilla
         self.grid.set_start(*self.montacargas1['pos'])
         self.grid.set_end(*self.montacargas1['dest'])
-        self.a_star1.occupied_positions = set()
+        self.a_star1.occupied_positions = {self.montacargas2['pos']}
 
         success1, path1 = self.a_star1.run(self.draw)
-        if not success1:
+        if success1:
+            print("Ruta M1 encontrada")
+            self.show_message("Ruta M1 encontrada")
+        else:
             print("No se encontró ruta para Montacargas 1")
             self.algorithm_running = False
             return
 
-        # Mostrar la ruta de M1 en azul
-        for pos in path1:
-            self.grid.get_cell(*pos).color = (0, 0, 255)
-            self.draw()
-            pygame.time.delay(300)
-
         self.grid.set_start(*self.montacargas2['pos'])
         self.grid.set_end(*self.montacargas2['dest'])
-        self.a_star2.occupied_positions = set(path1)  # M2 evita la ruta de M1
+        self.a_star2.occupied_positions = set(path1) | {self.montacargas1['dest']}
 
         success2, path2 = self.a_star2.run(self.draw)
-        if not success2:
-            print("No se encontró ruta para Montacargas 2")
-            self.algorithm_running = False
-            return
+        if success2:
+            print("Ruta M2 encontrada")
+            self.show_message("Ruta M2 encontrada")
+        else:
+            print("M2 no encontró ruta, intentando recalcular...")
+            self.a_star2.occupied_positions = set(path1)
+            success2, path2 = self.a_star2.run(self.draw)
+            if success2:
+                print("Ruta M2 encontrada después de recalcular")
+                self.show_message("Ruta M2 encontrada después de recalcular")
+            else:
+                print("No se encontró ruta para Montacargas 2")
+                self.algorithm_running = False
+                return
 
-        # Mostrar la ruta de M2 en rosa
-        for pos in path2:
-            self.grid.get_cell(*pos).color = (255, 105, 180)
-            self.draw()
-            pygame.time.delay(300)
+        occupied_positions = {self.montacargas2['pos']}
+        for step in range(max(len(path1), len(path2))):
+            if step < len(path1):
+                self.montacargas1['pos'] = path1[step]
+                occupied_positions.add(path1[step])
+                self.grid.get_cell(*path1[step]).color = (0, 0, 255)
+                self.draw()
+                pygame.time.delay(300)
 
+            if step < len(path2):
+                if path2[step] in occupied_positions:
+                    print(f"Colisión detectada en {path2[step]}, recalculando ruta de M2")
+                    self.a_star2.occupied_positions = occupied_positions
+                    for _ in range(3):
+                        success2, path2 = self.a_star2.run(self.draw)
+                        if success2:
+                            print("Ruta M2 encontrada tras colisión")
+                            self.show_message("Ruta M2 encontrada tras colisión")
+                            break
+                    if not success2:
+                        print("M2 no puede encontrar nueva ruta")
+                        return
+                self.montacargas2['pos'] = path2[step]
+                occupied_positions.add(path2[step])
+                self.grid.get_cell(*path2[step]).color = (255, 105, 180)
+                self.draw()
+                pygame.time.delay(300)
+
+        self.show_message("Montacargas 1 y 2 han llegado a su destino")
         self.algorithm_running = False
-    
+
     def draw(self):
         self.grid.draw(self.window)
-        
-        # Mostrar instrucciones en la pantalla
-        font = pygame.font.SysFont('arial', 16)
-        instructions = [
-            "SHIFT + Clic izquierdo: Inicio Montacargas 1",
-            "CTRL + Clic izquierdo: Destino Montacargas 1",
-            "SHIFT + Clic derecho: Inicio Montacargas 2",
-            "CTRL + Clic derecho: Destino Montacargas 2",
-            "ESPACIO: Iniciar búsqueda",
-            "C: Limpiar camino",
-            "ESC: Salir"
-        ]
-
-        y_offset = 10
-        for instruction in instructions:
-            text = font.render(instruction, True, (0, 0, 0))
-            self.window.blit(text, (10, y_offset))
-            y_offset += 20
-        
         pygame.display.update()
 
     def run(self):
