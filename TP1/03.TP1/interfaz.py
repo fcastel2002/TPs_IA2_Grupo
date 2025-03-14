@@ -95,10 +95,14 @@ class Tablero:
         self.inicio = None
         self.objetivos = []
         for casillero in self.casilleros:
-            self.casilleros[casillero.get_indice()].color = None
-            self.casilleros[casillero.get_indice()].inicio = False
-            self.casilleros[casillero.get_indice()].objetivo = False
-            self.casilleros[casillero.get_indice()].veces_visitado = 0
+            # Si es una estantería y NO es la casilla "C"
+            if not casillero.libre and casillero.caracter != "C":
+                casillero.caracter = ""   # quitar número anterior
+            casillero.color = None
+            casillero.inicio = False
+            casillero.objetivo = False
+            casillero.veces_visitado = 0
+
         
     def actualizar_tablero(self, casilleros):
         for casillero in casilleros:
@@ -145,6 +149,18 @@ class Tablero:
         indice = fila*self.columnas + columna
         return self.casilleros[indice]
 
+    def limpiar_objetivos_y_colores(self):
+        """Borra únicamente los objetivos y los colores, conservando el caracter."""
+        self.inicio = None
+        self.objetivos = []
+        for casillero in self.casilleros:
+            casillero.color = None
+            casillero.inicio = False
+            casillero.objetivo = False
+            casillero.veces_visitado = 0
+        # Nota: NO reasignamos casillero.caracter = "" 
+        # (así mantenemos la asignación del individuo)
+
     def dibujar(self, instrucciones, visitas = False):
         self.ventana.fill(WHITE)
         if instrucciones:
@@ -167,6 +183,21 @@ class Tablero:
         for casillero in self.casilleros:
             casillero.dibujar(self.ventana, visitas)
         pygame.display.flip()
+
+    # Dentro de la clase Tablero en interfaz.py
+    def asignar_configuracion(self, configuracion):
+        idx = 0
+        count_shelves = 0
+        for casillero in self.casilleros:
+            # Supongamos que la condición es if not casillero.libre and casillero.caracter != "C":
+            if not casillero.libre and casillero.caracter != "C":
+                count_shelves += 1
+                casillero.caracter = str(configuracion[idx])
+                idx += 1
+                if idx >= len(configuracion):
+                    break
+        #print("Se han asignado productos a", count_shelves, "estanterías.")
+
         
     def __str__(self):
         text = ""

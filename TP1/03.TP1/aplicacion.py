@@ -81,40 +81,26 @@ class Aplicacion:
         columnas = 13
 
         num_casillero = 0
-        # Crear casilleros y agregarlos al tablero
-        set1 = 1
-        set2 = 9
-        set3 = 17
+        
+        # Iterar sobre las 143 celdas (11 * 13)
         for _ in range(143):
             i = num_casillero // columnas
             j = num_casillero % columnas
             x = j * CELL_SIZE
             y = i * CELL_SIZE
             
+            # 1) Si es la celda "C" (punto de carga)
             if i == 5 and j == 0:
                 casillero = Casillero(x, y, "C", libre=True)
-
-            elif ((j > 1 and j < 4) or (j > 5 and j < 8) or (j > 9 and j < 12)) and (i%5 != 0):
-                if (j > 1 and j < 4) and (i<5):
-                    casillero = Casillero(x, y, f"{set1}", libre=False)
-                    set1 += 1
-                elif (j > 5 and j < 8) and (i<5):
-                    casillero = Casillero(x, y, f"{set2}", libre=False)
-                    set2 += 1
-                elif (j > 9 and j < 12) and (i<5):
-                    casillero = Casillero(x, y, f"{set3}", libre=False)
-                    set3 += 1
-                elif (j > 1 and j < 4) and (i>5):
-                    casillero = Casillero(x, y, f"{set1+16}", libre=False)
-                    set1 += 1
-                elif (j > 5 and j < 8) and (i>5):
-                    casillero = Casillero(x, y, f"{set2+16}", libre=False)
-                    set2 += 1
-                elif (j > 9 and j < 12) and (i>5):
-                    casillero = Casillero(x, y, f"{set3+16}", libre=False)
-                    set3 += 1
+            
+            # 2) Si corresponde a una estantería
+            elif ((j > 1 and j < 4) or (j > 5 and j < 8) or (j > 9 and j < 12)) and (i % 5 != 0):
+                # En lugar de asignar un número por defecto, ponemos "" y libre=False
+                casillero = Casillero(x, y, "", libre=False)
+            
+            # 3) Si es un pasillo o celda libre
             else:
                 casillero = Casillero(x, y, "", libre=True)
-            self.tablero.agregar_casillero(casillero)
             
+            self.tablero.agregar_casillero(casillero)
             num_casillero += 1

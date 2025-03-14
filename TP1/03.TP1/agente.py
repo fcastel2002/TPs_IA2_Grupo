@@ -149,7 +149,7 @@ class Agente:
         todos_objetivos.append(c_celda)
         
         # 4) Visualizar la ruta completa (incluido el último tramo)
-        self.visualizar_camino_completo(camino_completo, todos_objetivos)
+        #self.visualizar_camino_completo(camino_completo, todos_objetivos)
         return camino_completo
 
 
