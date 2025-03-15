@@ -4,17 +4,17 @@ from agente import Agente
 import sys
 
 class Aplicacion:
-    def __init__(self, tablero):
+    def __init__(self, tablero):        # tablero es diccionario con informacion de configuracion { 'filas': 11, 'columnas': 13 }
         self.__filas = tablero['filas']
         self.__columnas = tablero['columnas']
         self.__running = False
         self.__algorithm_running = False
         self.__inicio = None
-        self.__objetivos = []
+        self.__objetivos = []   
         # Inicialización 
         pygame.init()
         self.__screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        self.tablero : Tablero = Tablero(self.__screen,tablero['filas'],tablero['columnas'])
+        self.tablero : Tablero = Tablero(self.__screen,tablero['filas'],tablero['columnas'])    # se crea objeto de clase Tablero (con self.tablero : Tablero)
         self.llenar_tablero()
         pygame.display.set_caption("Tablero con Pygame")
         self.menu : MenuSelector = MenuSelector('ordenes.csv',self.__screen)
@@ -72,8 +72,7 @@ class Aplicacion:
                         
                     # Ctrl + clic izquierdo para colocar punto de destino
                     elif pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        self.tablero.set_objetivo(indice)
-        
+                        self.tablero.set_objetivo(indice)     
             
     def llenar_tablero(self):
         # Crear un tablero de 11 filas y 13 columnas

@@ -1,4 +1,4 @@
-# fitness_evaluator.py
+# fitness_evaluator.py (fragmento)
 import os
 import csv
 import time
@@ -11,13 +11,11 @@ from aplicacion import Aplicacion
 from agente import Agente
 
 class FitnessEvaluator:
-    def __init__(self, population_size, orders_csv_path, config_app):
+    def __init__(self, orders_csv_path, config_app):
         """
-        population_size: Número de individuos a evaluar.
         orders_csv_path: Ruta al archivo de órdenes.
         config_app: Diccionario de configuración para Aplicacion (ej: {'filas': ..., 'columnas': ...})
         """
-        self.population_size = population_size
         self.orders_csv_path = orders_csv_path
         self.config_app = config_app
         self.orders = self._leer_ordenes()
@@ -53,8 +51,8 @@ class FitnessEvaluator:
         """
         Evalúa el fitness de un individuo.
         Se crea una nueva instancia de Aplicacion (y Tablero) para evitar compartir estado.
-        Retorna el fitness total (suma de costos de picking de todas las órdenes).
-        Se miden y retornan también los tiempos de ejecución.
+        Retorna el fitness total (suma de costos de picking de todas las órdenes)
+        y el tiempo transcurrido de evaluación.
         """
         start_time = time.perf_counter()
         # Usar el driver dummy para que no se abra ventana:
@@ -99,25 +97,26 @@ class FitnessEvaluator:
         elapsed = end_time - start_time
         return fitness_total, elapsed
 
-    def evaluate_population(self):
+    def evaluate_population(self, population):
         """
-        Genera la población (usando la función generar_poblacion) y evalúa en paralelo cada individuo.
-        Retorna un diccionario con la configuración de cada individuo y su fitness, junto con el tiempo total de evaluación.
+        Evalúa en paralelo la lista de individuos 'population' usando self.orders y self.config_app.
+        Cada individuo se evalúa mediante evaluar_individuo.
+        Retorna una tupla: (population, fitness_results, elapsed_time),
+        donde fitness_results es un diccionario con la configuración (como string) y (fitness, tiempo) de cada individuo.
         """
-        from algoritmo_genetico import generar_poblacion
-        poblacion = generar_poblacion(self.population_size)
         fitness_results = {}
-        total_start = time.perf_counter()
+        start_time = time.perf_counter()
         with ProcessPoolExecutor() as executor:
-            futuros = {executor.submit(FitnessEvaluator.evaluar_individuo, ind.configuracion, self.orders, self.config_app): ind 
-                        for ind in poblacion}
+            futuros = {executor.submit(FitnessEvaluator.evaluar_individuo, ind.configuracion, self.orders, self.config_app): ind
+                       for ind in population}
             for future in as_completed(futuros):
                 try:
                     fitness, tiempo = future.result()
                     ind = futuros[future]
+                    ind.fitness = fitness
                     fitness_results[str(ind.configuracion)] = (fitness, tiempo)
                 except Exception as exc:
                     print(f"Individuo generó una excepción: {exc}")
-        total_end = time.perf_counter()
-        total_elapsed = total_end - total_start
-        return fitness_results, total_elapsed
+        end_time = time.perf_counter()
+        elapsed = end_time - start_time
+        return population, fitness_results, elapsed
