@@ -15,8 +15,19 @@ from fitness_evaluator import FitnessEvaluator
 from selector import Selector
 from crossover import pmx_crossover
 
-# --- Operador de mutación por intercambio (swap) ---
-def swap_mutation(config, mutation_rate=0.1):
+# ========== Parámetros del GA ==========
+POPULATION_SIZE = 50      # Número de individuos en la población
+NUM_GENERATIONS = 150     # Número de generaciones a ejecutar
+MUTATION_RATE = 0.2      # Probabilidad de mutación (intercambio) en cada hijo
+TOURNAMENT_SIZE = 2       # Tamaño del torneo para selección
+ELITISM = True            # Activar o desactivar elitismo
+
+# ========== Operador de mutación por intercambio (swap) ==========
+def swap_mutation(config, mutation_rate=MUTATION_RATE):
+    """
+    Mutación por intercambio (swap).
+    Con probabilidad 'mutation_rate', elige 2 posiciones al azar y las intercambia.
+    """
     new_config = config.copy()
     if random.random() < mutation_rate:
         i = random.randint(0, len(new_config) - 1)
@@ -24,9 +35,11 @@ def swap_mutation(config, mutation_rate=0.1):
         new_config[i], new_config[j] = new_config[j], new_config[i]
     return new_config
 
-
-# --- Función para calcular la frecuencia de cada producto a partir de orders.csv ---
+# ========== Funciones para representar frecuencia con escala de colores discretos ==========
 def compute_frequencies(orders):
+    """
+    Calcula la frecuencia de cada producto (entero) en la lista de órdenes.
+    """
     freq = {}
     for order in orders:
         for prod in order:
@@ -34,96 +47,111 @@ def compute_frequencies(orders):
                 p = int(prod)
                 freq[p] = freq.get(p, 0) + 1
             except:
-                continue
+                pass
     return freq
 
-# --- Función para mapear la frecuencia a un color (gradiente de azul a rojo) ---
-def get_heat_color(freq_value, max_freq):
-    if max_freq == 0:
-        return (0, 0, 255)
-    # r aumenta con la frecuencia; b disminuye
-    r = int(255 * freq_value / max_freq)
-    b = 255 - r
-    return (r, 0, b)
-
-# ========== Función para dibujar la leyenda de colores ==========
-def draw_color_legend(screen, x, y, width, height, freq_min, freq_max, font):
+def generate_discrete_palette(max_freq):
     """
-    Dibuja una leyenda vertical con un gradiente de azul (frecuencia baja) a rojo (frecuencia alta).
-    - screen: superficie de Pygame donde se dibuja
-    - x, y: posición (superior izquierda) de la leyenda
-    - width, height: tamaño del recuadro para la leyenda
-    - freq_min, freq_max: valores mínimo y máximo de frecuencia para etiquetar
-    - font: fuente de texto para escribir las etiquetas
+    Genera una lista de 'max_freq' colores discretos,
+    desde azul (para freq=1) hasta rojo (para freq=max_freq).
     """
-    # Dibujamos un gradiente vertical de 0 a height
-    for i in range(height):
-        # ratio indica el nivel de la posición dentro de la altura total
-        ratio = i / float(height)
-        # ratio = 0 -> azul puro, ratio = 1 -> rojo puro
+    palette = []
+    for f in range(1, max_freq + 1):
+        ratio = f / float(max_freq)  # va de 1/max_freq hasta 1
         r = int(255 * ratio)
         b = 255 - r
-        color = (r, 0, b)
-        pygame.draw.line(screen, color, (x, y + i), (x + width, y + i))
-    
-    # Etiquetar frecuencia mínima (abajo)
-    freq_min_text = font.render(f"{freq_min} (bajo)", True, (0, 0, 0))
-    screen.blit(freq_min_text, (x + width + 5, y + height - freq_min_text.get_height()))
-    
-    # Etiquetar frecuencia máxima (arriba)
-    freq_max_text = font.render(f"{freq_max} (alto)", True, (0, 0, 0))
-    screen.blit(freq_max_text, (x + width + 5, y))
+        palette.append((r, 0, b))
+    return palette
 
-# --- Función para visualizar el tablero con el mapa de calor ---
+def get_discrete_color(freq_value, max_freq, palette):
+    """
+    Dado un valor de frecuencia 'freq_value' en [1..max_freq],
+    retorna palette[freq_value - 1].
+    Si freq_value es 0 (no aparece en órdenes), retorna un color gris.
+    Si freq_value > max_freq, se usa el color del final (palette[-1]).
+    """
+    if freq_value == 0:
+        return (128, 128, 128)  # gris para freq=0
+    if freq_value <= max_freq:
+        return palette[freq_value - 1]
+    # saturar si freq_value > max_freq
+    return palette[-1]
+
+def draw_discrete_legend(screen, x, y, box_size, freq_min, freq_max, palette, font):
+    """
+    Dibuja una leyenda vertical con recuadros de colores discretos
+    desde freq_min hasta freq_max.
+    """
+    current_y = y
+    for freq in range(freq_min, freq_max + 1):
+        color = palette[freq - 1]  # freq=1 -> palette[0]
+        pygame.draw.rect(screen, color, (x, current_y, box_size, box_size))
+        label = font.render(str(freq), True, (0,0,0))
+        screen.blit(label, (x + box_size + 5, current_y))
+        current_y += box_size + 5
+
+# ========== Función para mostrar el tablero final con escala de colores discretos ==========
 def mostrar_mejor_solucion(best_ind, config_app, orders_csv_path):
+    """
+    Muestra la mejor solución (best_ind) con un mapa de calor discreto.
+    """
     # Re-inicializamos Pygame en modo visible
     pygame.display.quit()
-    os.environ.pop("SDL_VIDEODRIVER", None)  # Remover dummy
+    os.environ.pop("SDL_VIDEODRIVER", None)  # Remover 'dummy'
     pygame.display.init()
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pygame.display.set_caption("Mejor Solución con Mapa de Calor")
+    pygame.display.set_caption("Mejor Solución con Mapa de Calor (Discreto)")
     
     # Crear la aplicación y el tablero
-    from aplicacion import Aplicacion  # Se importa aquí para que se use el driver visible
+    from aplicacion import Aplicacion
     app = Aplicacion(config_app)
-    app.llenar_tablero()            # construye estructura interna del tablero (define que indices son estanterias y cual corresponde a casilla carga "C")
-    tablero = app.tablero           # se asigna a variable local tablero, el atributo tablero (que es la creacion de objeto tablero) del objeto app (revisar Aplicacion para entender)
-    # Asignar la configuración del mejor individuo
-    tablero.asignar_configuracion(best_ind.configuracion)  # se pasa configuracion de mejor individuo. 
+    app.llenar_tablero()
+    tablero = app.tablero
+    tablero.asignar_configuracion(best_ind.configuracion)
     
-    # Calcular frecuencias a partir del archivo de órdenes
+    # Leer órdenes y calcular frecuencias
     orders = []
     with open(orders_csv_path, "r", encoding="utf-8") as f:
         reader = csv.reader(f)
         for row in reader:
             orders.append(row)
     freq = compute_frequencies(orders)
-    max_freq = max(freq.values()) if freq else 1
-    min_freq = min(freq.values()) if freq else 0
+    if freq:
+        max_freq = max(freq.values())
+        min_freq = min(freq.values())
+    else:
+        max_freq = 1
+        min_freq = 0
     
-    # Actualizar el color de cada casillero de estantería según la frecuencia del producto
+    # Generar la paleta discreta
+    palette = generate_discrete_palette(max_freq)
+    
+    # Asignar color a cada casilla de estantería
     for cas in tablero.casilleros:
         if not cas.libre and cas.caracter != "C" and cas.caracter != "":
             try:
                 prod = int(cas.caracter)
-                cas.color = get_heat_color(freq.get(prod, 0), max_freq)
+                freq_value = freq.get(prod, 0)
+                cas.color = get_discrete_color(freq_value, max_freq, palette)
             except:
                 pass
     
-    # Dibujar el tablero con la nueva configuración y el mapa de calor
+    # Dibujar el tablero
     tablero.dibujar(screen)
-    # ========== Dibujar la leyenda ==========
-    font = pygame.font.SysFont("arial", 16)
-    legend_x = WINDOW_WIDTH - 70  # posición X (por ejemplo, a la derecha)
-    legend_y = 50                 # posición Y
-    legend_width = 20
-    legend_height = 100
     
-    draw_color_legend(screen, legend_x, legend_y, legend_width, legend_height, min_freq, max_freq, font)
+    # Dibujar la leyenda
+    font = pygame.font.SysFont("arial", 16)
+    legend_x = WINDOW_WIDTH - 80
+    legend_y = 50
+    box_size = 20
+    draw_discrete_legend(screen, legend_x, legend_y, box_size,
+                         1 if min_freq < 1 else min_freq,  # para no romper si min_freq=0
+                         max_freq, palette, font)
 
     pygame.display.flip()
-    
-    print("Mostrando la mejor solución con mapa de calor. Cierre la ventana para finalizar.")
+    print("Mostrando la mejor solución con escala de colores discreta. Cierre la ventana para finalizar.")
+
+    # Esperar a que se cierre la ventana
     running = True
     while running:
         for event in pygame.event.get():
@@ -131,10 +159,11 @@ def mostrar_mejor_solucion(best_ind, config_app, orders_csv_path):
                 running = False
     pygame.quit()
 
-# --- Ciclo principal del GA ---
+# ========== Ciclo principal del GA ==========
 def genetic_algorithm():
-    population_size = 40
-    num_generations = 80
+    # Parámetros
+    population_size = POPULATION_SIZE
+    num_generations = NUM_GENERATIONS
     config_app = {'filas': CANT_FILAS, 'columnas': CANT_COLUMNAS}
     
     script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -142,9 +171,8 @@ def genetic_algorithm():
     
     # Inicializar población
     population = generar_poblacion(population_size)
-    selector = Selector(tournament_size=2)
+    selector = Selector(tournament_size=TOURNAMENT_SIZE)
     
-    # Para medir tiempo total de GA
     total_start = time.perf_counter()
     best_overall = None
     
@@ -152,37 +180,44 @@ def genetic_algorithm():
     evaluator = FitnessEvaluator(orders_csv, config_app)
     population, fitness_results, elapsed = evaluator.evaluate_population(population)
     best_overall = min(population, key=lambda ind: ind.fitness)
-    # Asignar fitness a cada individuo ya se hizo en evaluate_population
-
+    
     for gen in range(1, num_generations + 1):
         gen_start = time.perf_counter()
         print(f"\n=== Generación {gen} ===")
         
-        # Selección, crossover y mutación para formar la nueva población:
-        new_population = []
         # Elitismo: conservar el mejor individuo
         best = min(population, key=lambda ind: ind.fitness)
-        if best.fitness < best_overall.fitness:
+        if best_overall is None or best.fitness < best_overall.fitness:
             best_overall = best
-        new_population.append(best)
         
+        new_population = []
+        if ELITISM:
+            new_population.append(best)  # copiamos el mejor actual si elitismo está activo
+        
+        # Generar descendientes hasta llenar la nueva población
         while len(new_population) < population_size:
             parent1, parent2 = selector.select_parents(population)
+            # Crossover
             child1_config, child2_config = pmx_crossover(parent1.configuracion, parent2.configuracion)
-            child1_config = swap_mutation(child1_config, mutation_rate=0.1)
-            child2_config = swap_mutation(child2_config, mutation_rate=0.1)
+            # Mutación
+            child1_config = swap_mutation(child1_config, mutation_rate=MUTATION_RATE)
+            child2_config = swap_mutation(child2_config, mutation_rate=MUTATION_RATE)
             new_population.append(Individuo(child1_config))
             if len(new_population) < population_size:
                 new_population.append(Individuo(child2_config))
         
-        # Evaluar la nueva población en paralelo
+        # Evaluar la nueva población
         new_population, fit_results, elapsed_gen = evaluator.evaluate_population(new_population)
         population = new_population
         
-        best = min(population, key=lambda ind: ind.fitness)
-        print(f"Mejor fitness en Gen {gen}: {best.fitness}")
+        best_gen = min(population, key=lambda ind: ind.fitness)
+        print(f"Mejor fitness en Gen {gen}: {best_gen.fitness}")
         gen_end = time.perf_counter()
         print(f"Tiempo generación {gen}: {gen_end - gen_start:.3f} seg")
+        
+        # Actualizar best_overall
+        if best_gen.fitness < best_overall.fitness:
+            best_overall = best_gen
     
     total_end = time.perf_counter()
     total_elapsed = total_end - total_start
@@ -191,28 +226,12 @@ def genetic_algorithm():
     print(f"Configuración: {best_overall.configuracion}")
     print(f"Fitness: {best_overall.fitness}")
     print(f"Tiempo total de ejecución: {total_elapsed:.3f} seg")
+    
     return best_overall, orders_csv, config_app
 
-def evaluate_population_list(population, orders_csv, config_app):
-    # Leer órdenes desde el CSV
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    orders_csv_path = os.path.join(script_dir, "ordenes.csv")
-    orders = []
-    with open(orders_csv_path, "r", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            orders.append(row)
-    # Evaluar la población (FitnessEvaluator devuelve 3 valores)
-    fitness_results, total_elapsed, pop = FitnessEvaluator(population_size=len(population),
-                                                           orders_csv_path=orders_csv_path,
-                                                           config_app=config_app).evaluate_population()
-    return pop, fitness_results
-
-
 def main():
-    best_overall, orders_csv, config_app = genetic_algorithm()
-    # Visualizar la mejor solución con mapa de calor:
-    mostrar_mejor_solucion(best_overall, config_app, orders_csv)
+    best_ind, orders_csv, config_app = genetic_algorithm()
+    mostrar_mejor_solucion(best_ind, config_app, orders_csv)
 
 if __name__ == "__main__":
     main()
