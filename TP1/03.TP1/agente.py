@@ -32,7 +32,7 @@ class Agente:
             return
         self.__tablero.actualizar_tablero(self.__camino)
     
-    def temple_simulado_multi_objetivo(self, max_iteraciones=1000, temp_inicial=100, factor_enfriamiento=0.95):
+    def temple_simulado_multi_objetivo(self, max_iteraciones=40, temp_inicial=100, factor_enfriamiento=0.95):
         # 1) Manejar casos simples
         if not self.__objetivos:
             # No hay objetivos => cost 0 si no hay que moverse
