@@ -9,6 +9,7 @@ import pygame
 from constantes import WINDOW_WIDTH, WINDOW_HEIGHT, CANT_FILAS, CANT_COLUMNAS, CELL_SIZE
 from aplicacion import Aplicacion
 from agente import Agente
+from utils import compute_frequencies
 
 class FitnessEvaluator:
     def __init__(self, orders_csv_path, config_app):
@@ -19,6 +20,7 @@ class FitnessEvaluator:
         self.orders_csv_path = orders_csv_path
         self.config_app = config_app
         self.orders = self._leer_ordenes()
+        self.freq = compute_frequencies(self.orders)
         
 
     def _leer_ordenes(self):
@@ -48,7 +50,7 @@ class FitnessEvaluator:
             cas.veces_visitado = 0
 
     @staticmethod
-    def evaluar_individuo(ind_config, orders, config_app):
+    def evaluar_individuo(ind_config, orders, config_app, freq):
         """
         Evalúa el fitness de un individuo.
         Se crea una nueva instancia de Aplicacion (y Tablero) para evitar compartir estado.
@@ -91,7 +93,8 @@ class FitnessEvaluator:
             tablero.dibujar = original_dibujar  # Restaurar el método
             
             costo_orden = agente.calcular_costo_total(tablero.get_inicio(), tablero.get_objetivos())
-            fitness_total += costo_orden
+            alpha = 0.9
+            fitness_total += (1 + alpha *freq.get(prod, 1)) * costo_orden
         
         pygame.quit()
         end_time = time.perf_counter()
@@ -108,7 +111,7 @@ class FitnessEvaluator:
         fitness_results = {}
         start_time = time.perf_counter()
         with ProcessPoolExecutor() as executor:
-            futuros = {executor.submit(FitnessEvaluator.evaluar_individuo, ind.configuracion, self.orders, self.config_app): ind
+            futuros = {executor.submit(FitnessEvaluator.evaluar_individuo, ind.configuracion, self.orders, self.config_app, self.freq): ind
                        for ind in population}
             for future in as_completed(futuros):
                 try:

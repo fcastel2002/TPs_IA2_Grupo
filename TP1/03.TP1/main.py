@@ -7,6 +7,7 @@ import random
 import pygame
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from utils import compute_frequencies
 
 # Importar nuestras clases y funciones ya definidas
 from constantes import WINDOW_WIDTH, WINDOW_HEIGHT, CANT_FILAS, CANT_COLUMNAS, CELL_SIZE
@@ -36,19 +37,7 @@ def swap_mutation(config, mutation_rate=MUTATION_RATE):
     return new_config
 
 # ========== Funciones para representar frecuencia con escala de colores discretos ==========
-def compute_frequencies(orders):
-    """
-    Calcula la frecuencia de cada producto (entero) en la lista de órdenes.
-    """
-    freq = {}
-    for order in orders:
-        for prod in order:
-            try:
-                p = int(prod)
-                freq[p] = freq.get(p, 0) + 1
-            except:
-                pass
-    return freq
+
 
 def generate_discrete_palette(max_freq):
     """
