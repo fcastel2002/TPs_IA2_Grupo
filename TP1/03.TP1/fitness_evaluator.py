@@ -19,6 +19,7 @@ class FitnessEvaluator:
         self.orders_csv_path = orders_csv_path
         self.config_app = config_app
         self.orders = self._leer_ordenes()
+        
 
     def _leer_ordenes(self):
         orders = []
