@@ -15,6 +15,7 @@ class Casillero:
         self.inicio = False
         self.recorrido = False
         self.veces_visitado = 0
+        self.indice = self.get_indice()
     
     def set_objetivo(self, color):
         self.color = color
@@ -33,16 +34,13 @@ class Casillero:
     def dibujar(self, screen, visitas = False):
         
         rect = pygame.Rect(self.x,self.y,CELL_SIZE,CELL_SIZE)
+        
+        if self.veces_visitado != 0:
+            pygame.draw.rect(screen, PALETA_FRECUENCIAS[self.veces_visitado-1], (self.x, self.y, CELL_SIZE, CELL_SIZE))
+        
         # Dibujar el fondo del casillero
         if self.color:
-            if self.veces_visitado == 1: # Círculo
-                pygame.draw.circle(screen, self.color, rect.center, CELL_SIZE//2 - 2)
-            elif self.veces_visitado == 2: # Diamante
-                pygame.draw.polygon(screen, self.color, [rect.midtop, rect.midright, rect.midbottom, rect.midleft])
-            elif self.veces_visitado == 3:
-                pygame.draw.circle(screen, self.color, rect.center, CELL_SIZE//4)
-            else:
-                pygame.draw.rect(screen, self.color, (self.x, self.y, CELL_SIZE, CELL_SIZE))
+            pygame.draw.rect(screen, self.color, (self.x, self.y, CELL_SIZE, CELL_SIZE))
         # Dibujar el borde del casillero
         if self.libre:
             pygame.draw.rect(screen, pygame.Color('gray70'), (self.x, self.y, CELL_SIZE, CELL_SIZE), 1)
@@ -56,7 +54,7 @@ class Casillero:
         screen.blit(text, text_rect)
     
     def __str__(self):
-        return f"Soy el casillero: {self.get_indice()}"
+        return f"Mi caracter: {self.caracter}"
         
     
 
@@ -68,6 +66,7 @@ class Tablero:
         self.casilleros = []
         self.inicio : Casillero = None
         self.objetivos = []
+        self.estanterias = None
         
     def get_objetivos(self):
         return self.objetivos
@@ -129,6 +128,24 @@ class Tablero:
         for casillero in self.casilleros:
             if casillero.caracter == caracter:
                 return casillero.get_indice()
+    
+    def obtener_estanterias(self):
+        return sorted(
+            [casillero for casillero in self.casilleros if casillero.caracter != ""],
+            key=lambda c: int(c.indice)  # Ordena por el atributo "caracter"
+        )
+            
+    def cambiar_estanterias(self, estanterias_nuevas):
+        """Modifica los valores de caracter en la lista de estanterías con los nuevos valores de lista_numeros."""
+        self.estanterias = self.obtener_estanterias() 
+        if len(estanterias_nuevas) != len(self.estanterias):
+            raise ValueError("La cantidad de números debe coincidir con la cantidad de estanterías.")
+        caracteres = []
+        for estanteria in estanterias_nuevas:
+            caracteres.append(estanteria.caracter)
+        for i in range(len(self.estanterias)):
+            self.estanterias[i].caracter = caracteres[i]
+            
 
     def agregar_casillero(self, casillero):
         self.casilleros.append(casillero)
@@ -147,7 +164,8 @@ class Tablero:
                 "ESPACIO: Iniciar búsqueda",
                 "C: Limpiar camino",
                 "ESC: Salir",
-                "M: Desplegar Menú archivo csv"
+                "M: Desplegar Menú archivo csv",
+                "G: Algoritmo Genetico"
             ]
             
             y_offset = 10
