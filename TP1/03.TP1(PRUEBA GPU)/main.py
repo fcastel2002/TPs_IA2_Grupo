@@ -179,7 +179,16 @@ def genetic_algorithm():
     # Evaluar la población inicial
     evaluator = FitnessEvaluator(orders_csv, config_app)
     population, fitness_results, elapsed = evaluator.evaluate_population(population)
-    best_overall = min(population, key=lambda ind: ind.fitness)
+    
+    valid_individuals = [ind for ind in population if ind.fitness is not None]
+    if valid_individuals:
+        best_overall = min(valid_individuals, key=lambda ind: ind.fitness)
+    else:
+        # Si no hay individuos válidos, crear uno por defecto o lanzar un error
+        print("Error: No hay individuos con fitness válido en la población inicial")
+        # Puedes crear un individuo por defecto con un fitness muy alto
+        best_overall = Individuo([])  # Individuo vacío
+        best_overall.fitness = float('inf')  # Asignar un fitness infinito
     
     for gen in range(1, num_generations + 1):
         gen_start = time.perf_counter()

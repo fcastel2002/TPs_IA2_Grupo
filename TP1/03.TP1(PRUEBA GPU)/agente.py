@@ -5,6 +5,9 @@ from interfaz import Tablero, Casillero
 import time
 import math
 from copy import deepcopy
+import numpy as np
+from numba import cuda
+from gpu_pathfinder import a_star_gpu, temple_simulado_gpu
 
 class Agente:
     def __init__(self, tablero):
@@ -275,3 +278,81 @@ class Agente:
                 time.sleep(0.05)
         
         return camino_total
+    def a_star_gpu(self, inicio, objetivo, mostrar=False):
+        """
+        Implementa el algoritmo A* para GPU para encontrar el camino de menor costo
+        entre el nodo de inicio y el nodo objetivo.
+        """
+        # Crear grid para GPU (True=libre, False=obstáculo)
+        grid = np.zeros((self.__tablero.filas, self.__tablero.columnas), dtype=np.bool_)
+        
+        # Llenar el grid con información del tablero
+        for casillero in self.__tablero.casilleros:
+            x = casillero.x // CELL_SIZE
+            y = casillero.y // CELL_SIZE
+            grid[y, x] = casillero.libre or casillero.objetivo
+        
+        # Convertir casilleros a coordenadas
+        start = (inicio.x // CELL_SIZE, inicio.y // CELL_SIZE)
+        goal = (objetivo.x // CELL_SIZE, objetivo.y // CELL_SIZE)
+        
+        # Llamar a la función GPU
+        path_coords = a_star_gpu(grid, start, goal)
+        
+        if path_coords is None:
+            return None
+        
+        # Convertir coordenadas a casilleros
+        camino = []
+        for x, y in path_coords:
+            indice = y * self.__tablero.columnas + x
+            camino.append(self.__tablero.casilleros[indice])
+        
+        # Mostrar el camino si se solicita
+        if mostrar:
+            self.visualizar_camino(camino, objetivo.color)
+        
+        return camino
+    
+    def temple_simulado_multi_objetivo_gpu(self, max_iteraciones=40, temp_inicial=100, factor_enfriamiento=0.95):
+        """
+        Versión GPU del algoritmo de temple simulado para múltiples objetivos
+        """
+        # Casos simples
+        if not self.__objetivos:
+            return []
+        
+        if len(self.__objetivos) == 1:
+            return self.construir_camino_completo(self.__nodo_inicio, self.__objetivos)
+        
+        # Preparar datos para GPU
+        orders = [objetivo.get_indice() for objetivo in self.__objetivos]
+        
+        # Llamar a la función GPU
+        mejor_orden_indices, mejor_costo = temple_simulado_gpu(
+            orders, temp_inicial, factor_enfriamiento, max_iteraciones
+        )
+        
+        # Convertir índices a objetivos
+        mejor_orden = [self.__objetivos[i] for i in mejor_orden_indices]
+        
+        # Construir camino completo
+        camino_completo = self.construir_camino_completo(self.__nodo_inicio, mejor_orden)
+        return camino_completo
+        
+    def encontrar_ruta(self):
+        """
+        Decide qué implementación usar basándose en disponibilidad de GPU
+        """
+        try:
+            # Intentar usar GPU
+            self.__camino = self.temple_simulado_multi_objetivo_gpu()
+        except Exception as e:
+            print(f"Error al usar GPU: {e}. Usando CPU...")
+            # Fallback a CPU
+            self.__camino = self.temple_simulado_multi_objetivo()
+            
+        if self.__camino is None:
+            print("No se encontró camino para la orden actual.")
+            return
+        self.__tablero.actualizar_tablero(self.__camino)
