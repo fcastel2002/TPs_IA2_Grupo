@@ -6,6 +6,8 @@ import time
 import math
 from copy import deepcopy
 import csv
+import matplotlib.pyplot as plt
+import threading
 
 class Agente:
     def __init__(self, tablero):
@@ -16,65 +18,90 @@ class Agente:
         
     def encontrar_ruta(self):
         self.__camino = self.temple_simulado_multi_objetivo()
+        #self.__camino = self.construir_camino_completo(self.nodo_inicio, self.objetivos, True)
         print(f"La cantidad de casilleros visitados es: {len(self.__camino)-1}")
         self.tablero.actualizar_tablero(self.__camino)
     
-    def temple_simulado_multi_objetivo(self, max_iteraciones=25, temp_inicial=100, factor_enfriamiento=0.5, graficar = True):
+    def temple_simulado_multi_objetivo(self, max_iteraciones=1000, temp_inicial=100, factor_enfriamiento=0.95, graficar=True):
         """
         Implementa Temple Simulado para encontrar el orden óptimo de visita de múltiples objetivos
         utilizando A* para calcular los costos de los caminos.
         """
-        # Si no hay objetivos, devolver lista vacía
         if not self.objetivos:
             return []
-        
-        # Si solo hay un objetivo, aplicar A* directamente
+
         if len(self.objetivos) == 1:
             return self.construir_camino_completo(self.nodo_inicio, self.objetivos)
-        
-        # Inicializar con un orden aleatorio de objetivos
+
         mejor_orden = self.objetivos.copy()
         random.shuffle(mejor_orden)
-        
-        # Calcular costo inicial (usando A*)
+
         mejor_costo = self.calcular_costo_total(self.nodo_inicio, mejor_orden)
-        
-        # Temperatura actual
+
         temp = temp_inicial
-        
+        temperaturas = []
+        costos = []
+
         for i in range(max_iteraciones):
-            # Generar un orden vecino permutando dos elementos aleatorios
             orden_vecino = mejor_orden.copy()
             idx1, idx2 = random.sample(range(len(orden_vecino)), 2)
             orden_vecino[idx1], orden_vecino[idx2] = orden_vecino[idx2], orden_vecino[idx1]
-            
-            # Calcular costo del vecino
+
             costo_vecino = self.calcular_costo_total(self.nodo_inicio, orden_vecino)
-            
-            # Calcular delta de energía
             delta_e = costo_vecino - mejor_costo
-            
-            # Decisión de aceptar o rechazar el nuevo orden
-            if delta_e < 0:  # Si el vecino es mejor, aceptarlo
+
+            if delta_e < 0:
                 mejor_orden = orden_vecino
                 mejor_costo = costo_vecino
             else:
-                # Si el vecino es peor, aceptarlo con cierta probabilidad
                 probabilidad = math.exp(-delta_e / temp)
                 if random.random() < probabilidad:
                     mejor_orden = orden_vecino
                     mejor_costo = costo_vecino
-            
-            # Enfriar la temperatura
+
+            # Guardar valores de temperatura y costo
+            temperaturas.append(temp)
+            costos.append(mejor_costo)
+
             temp *= factor_enfriamiento
-            
-            # Si la temperatura es muy baja, terminar
+
             if temp < 0.01:
                 break
-        
-        # Construir el camino completo siguiendo el mejor orden encontrado
+
+        # Graficar temperatura y costo en un hilo separado
+        if graficar:
+            threading.Thread(target=self.graficar_temperatura_costos, args=(temperaturas, costos)).start()
+
         camino_completo = self.construir_camino_completo(self.nodo_inicio, mejor_orden, graficar)
         return camino_completo
+
+    def graficar_temperatura_costos(self, temperaturas, costos):
+        """
+        Grafica la temperatura y el costo a lo largo de las iteraciones del algoritmo de Temple Simulado,
+        cada uno en una ventana separada.
+        """
+        # Crear una ventana para la temperatura
+        fig1 = plt.figure(figsize=(10, 6))
+        ax1 = fig1.add_subplot(111)
+        ax1.plot(temperaturas, color='blue')
+        ax1.set_title('Evolución de la Temperatura')
+        ax1.set_xlabel('Iteración')
+        ax1.set_ylabel('Temperatura')
+        fig1.tight_layout()
+        plt.show(block=False)  # No bloquear la ejecución para la siguiente ventana
+
+        # Crear una ventana para el costo
+        fig2 = plt.figure(figsize=(10, 6))
+        ax2 = fig2.add_subplot(111)
+        ax2.plot(costos, color='red')
+        ax2.set_title('Evolución del Costo (Camino)')
+        ax2.set_xlabel('Iteración')
+        ax2.set_ylabel('Costo')
+        fig2.tight_layout()
+        plt.show(block=False)  # No bloquear la ejecución
+
+        # Para asegurar que las gráficas no bloqueen el flujo de ejecución
+        plt.show()
 
     def calcular_costo_total(self, nodo_inicio, orden_objetivos):
         """
@@ -134,8 +161,6 @@ class Agente:
         """
         Visualiza el camino completo con colores correspondientes a cada segmento
         """
-        for casillero in camino:
-            print(casillero)
         # Limpiamos primero cualquier visualización anterior en el tablero
         # excepto los nodos de inicio y objetivos
         for casillero in self.tablero.casilleros:
