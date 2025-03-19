@@ -13,6 +13,7 @@ from constantes import WINDOW_WIDTH, WINDOW_HEIGHT, CANT_FILAS, CANT_COLUMNAS, C
 from algoritmo_genetico import generar_poblacion, Individuo
 from fitness_evaluator import FitnessEvaluator
 from selector import Selector
+from utils import get_initial_config
 from crossover import pmx_crossover
 
 # ========== Parámetros del GA ==========
