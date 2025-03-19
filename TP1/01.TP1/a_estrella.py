@@ -100,6 +100,12 @@ class AStar:
                 adj_cell = self.grid.get_cell(row, adj_col)
                 if adj_cell and not adj_cell.is_barrier and not adj_cell.is_shelf:
                     adjacent_cells.append(adj_cell)
+        # for adj_row in [row - 1, row + 1]:
+        #     if 0 <= adj_row < self.grid.rows:
+        #         adj_cell = self.grid.get_cell(adj_row, col)
+        #         if adj_cell and not adj_cell.is_barrier and not adj_cell.is_shelf:
+        #             adjacent_cells.append(adj_cell)
+
         
         return adjacent_cells
     
@@ -218,7 +224,6 @@ class AStar:
         # Si el destino es una estantería, destacarla visualmente
         if self.target_is_shelf and self.target_shelf:
             # Añadir algún efecto visual para destacar la estantería objetivo
-            # (esto dependerá de tu implementación visual)
             pass
         
         return path
@@ -235,7 +240,64 @@ class AStar:
         self.target_shelf = None
         self.target_adjacent_cells = []
     
-    def run(self, draw_function: Callable, delay: int = 20) -> Tuple[bool, List[Tuple[int, int]]]:
+    def calculate_dynamic_weight(self, current_position, target_position=None):
+        """
+        Calcula un factor de ponderación dinámico basado en la situación actual.
+        
+        Args:
+            current_position: Posición actual (fila, columna)
+            target_position: Posición objetivo (fila, columna), si es None se usará el destino actual
+            
+        Returns:
+            float: Factor de ponderación dinámico
+        """
+        # Si no se proporciona posición objetivo, usar el destino adecuado
+        if target_position is None:
+            if self.target_is_shelf and self.target_adjacent_cells:
+                # Si el destino es una estantería, usar la celda adyacente más cercana
+                min_dist = float('inf')
+                for adj_cell in self.target_adjacent_cells:
+                    dist = self.heuristic(current_position, adj_cell.get_position())
+                    if dist < min_dist:
+                        min_dist = dist
+                        target_position = adj_cell.get_position()
+            else:
+                # Usar la celda de destino normal
+                target_position = self.grid.end_cell.get_position()
+        
+        # Obtener posición de inicio
+        start_position = self.grid.start_cell.get_position()
+        
+        # Calcular distancias
+        distancia_total = self.heuristic(start_position, target_position)
+        distancia_actual = self.heuristic(current_position, target_position)
+        progreso = 1.0 - (distancia_actual / distancia_total) if distancia_total > 0 else 0
+        
+        # Factores contextuales
+        row, col = current_position
+        
+        # Factor 1: Posición vertical relativa al objetivo
+        # Aumenta el peso si estamos en el mismo lado que el objetivo (superior/inferior)
+        target_row = target_position[0]
+        middle_row = self.grid.rows // 2
+        mismo_lado = (row < middle_row and target_row < middle_row) or (row >= middle_row and target_row >= middle_row)
+        factor_vertical = 1.2 if mismo_lado else 1.0
+        
+        # Factor 2: Proximidad a pasillos principales
+        # Reduce el peso cuando estamos en pasillos importantes (fila 5 en tu caso)
+        en_pasillo_principal = (row == 5)  # Ajusta según la estructura de tu mapa
+        factor_pasillo = 0.9 if en_pasillo_principal else 1.0
+        
+        # Factor 3: Progresión de la búsqueda
+        # Aumenta gradualmente la ponderación a medida que nos acercamos al objetivo
+        factor_progreso = 1.0 + (0.3 * progreso)
+        
+        # Combinar factores (puedes ajustar la fórmula según tus necesidades)
+        peso_final = factor_vertical * factor_pasillo * factor_progreso
+        
+        # Limitar el rango para evitar valores extremos
+        return max(0.8, min(1.5, peso_final))
+    def run(self, draw_function: Callable, delay: int = 1) -> Tuple[bool, List[Tuple[int, int]]]:
         """
         Ejecuta el algoritmo A* para encontrar el camino más corto.
         
@@ -322,8 +384,9 @@ class AStar:
                 if tentative_g_cost < neighbor.g_cost:
                     # Actualizar camino y costos
                     neighbor.parent = current
-                    neighbor.g_cost = tentative_g_cost
-                    neighbor.h_cost = self.calculate_heuristic(neighbor, True)
+                    neighbor.g_cost = tentative_g_cost# Calcular ponderación dinámica para este vecino
+                    dynamic_weight = self.calculate_dynamic_weight(neighbor.get_position())
+                    neighbor.h_cost = self.calculate_heuristic(neighbor, True) * dynamic_weight
                     neighbor.f_cost = neighbor.g_cost + neighbor.h_cost
                     
                     # Si el vecino no está en el conjunto abierto, añadirlo
