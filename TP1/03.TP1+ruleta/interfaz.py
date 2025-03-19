@@ -15,7 +15,6 @@ class Casillero:
         self.inicio = False
         self.recorrido = False
         self.veces_visitado = 0
-        self.indice = self.get_indice()
     
     def set_objetivo(self, color):
         self.color = color
@@ -34,13 +33,16 @@ class Casillero:
     def dibujar(self, screen, visitas = False):
         
         rect = pygame.Rect(self.x,self.y,CELL_SIZE,CELL_SIZE)
-        
-        if self.veces_visitado != 0:
-            pygame.draw.rect(screen, PALETA_FRECUENCIAS[self.veces_visitado-1], (self.x, self.y, CELL_SIZE, CELL_SIZE))
-        
         # Dibujar el fondo del casillero
         if self.color:
-            pygame.draw.rect(screen, self.color, (self.x, self.y, CELL_SIZE, CELL_SIZE))
+            if self.veces_visitado == 1: # Círculo
+                pygame.draw.circle(screen, self.color, rect.center, CELL_SIZE//2 - 2)
+            elif self.veces_visitado == 2: # Diamante
+                pygame.draw.polygon(screen, self.color, [rect.midtop, rect.midright, rect.midbottom, rect.midleft])
+            elif self.veces_visitado == 3:
+                pygame.draw.circle(screen, self.color, rect.center, CELL_SIZE//4)
+            else:
+                pygame.draw.rect(screen, self.color, (self.x, self.y, CELL_SIZE, CELL_SIZE))
         # Dibujar el borde del casillero
         if self.libre:
             pygame.draw.rect(screen, pygame.Color('gray70'), (self.x, self.y, CELL_SIZE, CELL_SIZE), 1)
@@ -54,7 +56,7 @@ class Casillero:
         screen.blit(text, text_rect)
     
     def __str__(self):
-        return f"Mi caracter: {self.caracter}"
+        return f"Soy el casillero: {self.get_indice()}"
         
     
 
@@ -66,10 +68,17 @@ class Tablero:
         self.casilleros = []
         self.inicio : Casillero = None
         self.objetivos = []
-        self.estanterias = None
         
     def get_objetivos(self):
         return self.objetivos
+    
+    def get_celda_c(self):
+        """Devuelve la casilla que tiene caracter=='C', o None si no existe."""
+        for cas in self.casilleros:
+            if cas.caracter == "C":
+                return cas
+        return None
+
     
     def get_inicio(self):
         return self.inicio
@@ -86,10 +95,14 @@ class Tablero:
         self.inicio = None
         self.objetivos = []
         for casillero in self.casilleros:
-            self.casilleros[casillero.get_indice()].color = None
-            self.casilleros[casillero.get_indice()].inicio = False
-            self.casilleros[casillero.get_indice()].objetivo = False
-            self.casilleros[casillero.get_indice()].veces_visitado = 0
+            # Si es una estantería y NO es la casilla "C"
+            if not casillero.libre and casillero.caracter != "C":
+                casillero.caracter = ""   # quitar número anterior
+            casillero.color = None
+            casillero.inicio = False
+            casillero.objetivo = False
+            casillero.veces_visitado = 0
+
         
     def actualizar_tablero(self, casilleros):
         for casillero in casilleros:
@@ -128,24 +141,6 @@ class Tablero:
         for casillero in self.casilleros:
             if casillero.caracter == caracter:
                 return casillero.get_indice()
-    
-    def obtener_estanterias(self):
-        return sorted(
-            [casillero for casillero in self.casilleros if casillero.caracter != ""],
-            key=lambda c: int(c.indice)  # Ordena por el atributo "caracter"
-        )
-            
-    def cambiar_estanterias(self, estanterias_nuevas):
-        """Modifica los valores de caracter en la lista de estanterías con los nuevos valores de lista_numeros."""
-        self.estanterias = self.obtener_estanterias() 
-        if len(estanterias_nuevas) != len(self.estanterias):
-            raise ValueError("La cantidad de números debe coincidir con la cantidad de estanterías.")
-        caracteres = []
-        for estanteria in estanterias_nuevas:
-            caracteres.append(estanteria.caracter)
-        for i in range(len(self.estanterias)):
-            self.estanterias[i].caracter = caracteres[i]
-            
 
     def agregar_casillero(self, casillero):
         self.casilleros.append(casillero)
@@ -153,6 +148,18 @@ class Tablero:
     def get_casillero_por_elemento(self, fila, columna):
         indice = fila*self.columnas + columna
         return self.casilleros[indice]
+
+    def limpiar_objetivos_y_colores(self):
+        """Borra únicamente los objetivos y los colores, conservando el caracter."""
+        self.inicio = None
+        self.objetivos = []
+        for casillero in self.casilleros:
+            casillero.color = None
+            casillero.inicio = False
+            casillero.objetivo = False
+            casillero.veces_visitado = 0
+        # Nota: NO reasignamos casillero.caracter = "" 
+        # (así mantenemos la asignación del individuo)
 
     def dibujar(self, instrucciones, visitas = False):
         self.ventana.fill(WHITE)
@@ -164,8 +171,7 @@ class Tablero:
                 "ESPACIO: Iniciar búsqueda",
                 "C: Limpiar camino",
                 "ESC: Salir",
-                "M: Desplegar Menú archivo csv",
-                "G: Algoritmo Genetico"
+                "M: Desplegar Menú archivo csv"
             ]
             
             y_offset = 10
@@ -177,6 +183,21 @@ class Tablero:
         for casillero in self.casilleros:
             casillero.dibujar(self.ventana, visitas)
         pygame.display.flip()
+
+    # Dentro de la clase Tablero en interfaz.py
+    def asignar_configuracion(self, configuracion):
+        idx = 0
+        count_shelves = 0
+        for casillero in self.casilleros:
+            # Supongamos que la condición es if not casillero.libre and casillero.caracter != "C":
+            if not casillero.libre and casillero.caracter != "C":
+                count_shelves += 1
+                casillero.caracter = str(configuracion[idx])
+                idx += 1
+                if idx >= len(configuracion):
+                    break
+        #print("Se han asignado productos a", count_shelves, "estanterías.")
+
         
     def __str__(self):
         text = ""
