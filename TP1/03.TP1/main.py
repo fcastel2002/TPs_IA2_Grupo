@@ -14,7 +14,7 @@ from algoritmo_genetico import generar_poblacion, Individuo
 from fitness_evaluator import FitnessEvaluator
 from selector import Selector
 from utils import get_initial_config
-from crossover import pmx_crossover
+from crossover import pmx_crossover, crossover_operator
 
 # ========== Parámetros del GA ==========
 POPULATION_SIZE = 50      # Número de individuos en la población
@@ -162,7 +162,6 @@ def mostrar_mejor_solucion(best_ind, config_app, orders_csv_path):
 
 # ========== Ciclo principal del GA ==========
 def genetic_algorithm():
-    # Parámetros
     population_size = POPULATION_SIZE
     num_generations = NUM_GENERATIONS
     config_app = {'filas': CANT_FILAS, 'columnas': CANT_COLUMNAS}
@@ -176,31 +175,29 @@ def genetic_algorithm():
     
     total_start = time.perf_counter()
     best_overall = None
+    evaluator = FitnessEvaluator(orders_csv, config_app)
     
     # Evaluar la población inicial
-    evaluator = FitnessEvaluator(orders_csv, config_app)
     population, fitness_results, elapsed = evaluator.evaluate_population(population)
     best_overall = min(population, key=lambda ind: ind.fitness)
     
     for gen in range(1, num_generations + 1):
         gen_start = time.perf_counter()
         print(f"\n=== Generación {gen} ===")
-        
-        # Elitismo: conservar el mejor individuo
         best = min(population, key=lambda ind: ind.fitness)
         if best_overall is None or best.fitness < best_overall.fitness:
             best_overall = best
-        
         new_population = []
         if ELITISM:
-            new_population.append(best)  # copiamos el mejor actual si elitismo está activo
+            new_population.append(best)
         
-        # Generar descendientes hasta llenar la nueva población
+        # Generar descendientes hasta llenar la población
         while len(new_population) < population_size:
             parent1, parent2 = selector.select_parents(population)
-            # Crossover
-            child1_config, child2_config = pmx_crossover(parent1.configuracion, parent2.configuracion)
-            # Mutación
+            # Usar el operador de cruce dinámico:
+            child1_config, child2_config = crossover_operator(
+                parent1.configuracion, parent2.configuracion, gen, num_generations
+            )
             child1_config = swap_mutation(child1_config, mutation_rate=MUTATION_RATE)
             child2_config = swap_mutation(child2_config, mutation_rate=MUTATION_RATE)
             new_population.append(Individuo(child1_config))
@@ -215,8 +212,6 @@ def genetic_algorithm():
         print(f"Mejor fitness en Gen {gen}: {best_gen.fitness}")
         gen_end = time.perf_counter()
         print(f"Tiempo generación {gen}: {gen_end - gen_start:.3f} seg")
-        
-        # Actualizar best_overall
         if best_gen.fitness < best_overall.fitness:
             best_overall = best_gen
     
@@ -231,8 +226,34 @@ def genetic_algorithm():
     return best_overall, orders_csv, config_app
 
 def main():
+     # --- Evaluar la configuración inicial ---
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    orders_csv = os.path.join(script_dir, "ordenes.csv")
+    config_app = {'filas': CANT_FILAS, 'columnas': CANT_COLUMNAS}
+    # Obtenemos la configuración inicial (definida en utils.py)
+    initial_config = get_initial_config()
+    # Creamos un individuo con esa configuración
+    from algoritmo_genetico import Individuo
+    init_ind = Individuo(initial_config)
+    
+    # Creamos un evaluador para evaluar la configuración inicial
+    evaluator = FitnessEvaluator(orders_csv, config_app)
+    pop_eval, fit_results, elapsed = evaluator.evaluate_population([init_ind])
+    fitness_inicial = init_ind.fitness
+    print(f"\nFitness de la configuración inicial: {fitness_inicial}")
+    
+    # Mostrar mapa de calor de la configuración inicial (opcional)
+    mostrar_mejor_solucion(init_ind, config_app, orders_csv)
+
     best_ind, orders_csv, config_app = genetic_algorithm()
+    fitness_best = best_ind.fitness
     mostrar_mejor_solucion(best_ind, config_app, orders_csv)
+
+    if fitness_inicial != 0:
+        improvement = 100 * (fitness_inicial - fitness_best) / fitness_inicial
+        print(f"La eficiencia de picking ha mejorado un {improvement:.2f}% respecto a la configuración inicial.")
+    else:
+        print("Fitness inicial es 0, no se puede calcular la mejora.")
 
 if __name__ == "__main__":
     main()
