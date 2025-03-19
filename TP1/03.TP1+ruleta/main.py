@@ -14,14 +14,16 @@ from algoritmo_genetico import generar_poblacion, Individuo
 from fitness_evaluator import FitnessEvaluator
 from selector import Selector
 from crossover import pmx_crossover, cycle_crossover 
+from fitness_tracker import FitnessTracker
 
 # ========== Parámetros del GA ==========
-POPULATION_SIZE = 36      # Número de individuos en la población
-NUM_GENERATIONS = 20      # Número de generaciones a ejecutar
-MUTATION_RATE = 0.5       # Probabilidad de mutación (intercambio) en cada hijo
-TOURNAMENT_SIZE = 3       # Tamaño del torneo para selección
-SELECTION_TYPE = "tournament"  # Método de selección: "tournament" o "roulette"
+POPULATION_SIZE = 15      # Número de individuos en la población
+NUM_GENERATIONS = 20     # Número de generaciones a ejecutar
+MUTATION_RATE = 0.9      # Probabilidad de mutación (intercambio) en cada hijo
+TOURNAMENT_SIZE = 2       # Tamaño del torneo para selección
+SELECTION_TYPE = "roulette"  # Método de selección: "tournament" o "roulette"
 PMX_LIMIT_GENERATION = 10
+HARD_MUTATION_GENERATION = 10
 ELITISM = True            # Activar o desactivar elitismo
 
 class GeneticOptimizer:
@@ -62,6 +64,8 @@ class GeneticOptimizer:
         self.evaluator = FitnessEvaluator(self.orders_csv_path, self.config_app)
         
         # Variables para seguimiento del progreso
+        self.fitness_tracker = FitnessTracker()
+
         self.best_overall = None
         self.population = []
         
@@ -82,21 +86,59 @@ class GeneticOptimizer:
         evaluated_population, _, _ = self.evaluator.evaluate_population(population)
         return evaluated_population
     
-    def apply_mutation(self, config):
+    def apply_mutation(self, config,gen):
         """
-        Aplica mutación por intercambio (swap) a una configuración.
+        Aplica mutación a una configuración usando una de varias estrategias.
         
         Args:
             config: Lista que representa la configuración del individuo
-            
+                
         Returns:
             Nueva configuración después de la mutación
         """
         new_config = config.copy()
+        
+        # Decidir aleatoriamente qué tipo de mutación aplicar
+        mutation_type = random.choices(
+            ["swap_multiple", "inversion", "displacement"],
+            weights=[0.2, 0.4, 0.4]  # Pesos de probabilidad para cada tipo
+        )[0]
+        
+        # Solo proceder si pasamos el umbral de mutación
+        if gen >= HARD_MUTATION_GENERATION:
+            self.mutation_rate = 0.3
+            mutation_type = "swap_multiple"
+            
         if random.random() < self.mutation_rate:
-            i = random.randint(0, len(new_config) - 1)
-            j = random.randint(0, len(new_config) - 1)
-            new_config[i], new_config[j] = new_config[j], new_config[i]
+            if mutation_type == "swap_multiple":
+                # Mutación por intercambio múltiple
+                # Número de swaps basado en la longitud del cromosoma (5-10% de posiciones)
+                num_swaps = max(1, int(len(new_config) * random.uniform(0.05, 0.1)))
+                for _ in range(num_swaps):
+                    i = random.randint(0, len(new_config) - 1)
+                    j = random.randint(0, len(new_config) - 1)
+                    new_config[i], new_config[j] = new_config[j], new_config[i]
+                    
+            elif mutation_type == "inversion":
+                # Mutación por inversión: invertir un segmento aleatorio
+                start = random.randint(0, len(new_config) - 2)
+                end = random.randint(start + 1, len(new_config) - 1)
+                new_config[start:end+1] = reversed(new_config[start:end+1])
+                
+            elif mutation_type == "displacement":
+                # Mutación por desplazamiento: mover un segmento a otra posición
+                # Seleccionar un segmento aleatorio
+                seg_start = random.randint(0, len(new_config) - 2)
+                seg_length = random.randint(1, min(len(new_config) // 4, len(new_config) - seg_start))
+                segment = new_config[seg_start:seg_start + seg_length]
+                
+                # Eliminar el segmento de la configuración
+                del new_config[seg_start:seg_start + seg_length]
+                
+                # Insertar el segmento en una nueva posición
+                insert_pos = random.randint(0, len(new_config))
+                new_config[insert_pos:insert_pos] = segment
+        
         return new_config
     
     def create_next_generation(self, generacion_actual):
@@ -123,7 +165,7 @@ class GeneticOptimizer:
             # Ordenar la población por fitness (de menor a mayor, ya que menor es mejor)
             sorted_population = sorted(self.population, key=lambda ind: ind.fitness)
             # Determinar cuántos elites conservar (hasta 10, o menos si la población es pequeña)
-            num_elites = min(10, len(sorted_population) // 4)  # No más del 25% de la población
+            num_elites = min(4, len(sorted_population) // 6)  # No más del 25% de la población
             # Añadir los mejores individuos a la nueva población
             new_population.extend(sorted_population[:num_elites])
             print(f"Aplicando multi-elitismo: conservando los {num_elites} mejores individuos")
@@ -142,8 +184,8 @@ class GeneticOptimizer:
                     parent1.configuracion, parent2.configuracion)    
             
             # Aplicar mutación
-            child1_config = self.apply_mutation(child1_config)
-            child2_config = self.apply_mutation(child2_config)
+            child1_config = self.apply_mutation(child1_config,generacion_actual)
+            child2_config = self.apply_mutation(child2_config,generacion_actual)
             
             # Crear nuevos individuos
             new_population.append(Individuo(child1_config))
@@ -168,6 +210,8 @@ class GeneticOptimizer:
         # Evaluar población inicial
         self.population = self.evaluate_population(self.population)
         
+        self.fitness_tracker.update(0, self.population)
+
         # Informar al usuario sobre el método de selección
         if self.selection_type == "tournament":
             print(f"Usando selección por torneo (tamaño={self.tournament_size})")
@@ -185,6 +229,8 @@ class GeneticOptimizer:
             # Evaluar nueva generación
             self.population = self.evaluate_population(new_population)
             
+            self.fitness_tracker.update(gen, self.population)
+
             # Reportar progreso
             best_gen = min(self.population, key=lambda ind: ind.fitness)
             print(f"Mejor fitness en Gen {gen}: {best_gen.fitness}")
@@ -207,7 +253,7 @@ class GeneticOptimizer:
         print(f"Fitness: {self.best_overall.fitness}")
         print(f"Tiempo total de ejecución: {total_elapsed:.3f} seg")
         
-        return self.best_overall, self.orders_csv_path, self.config_app
+        return self.best_overall, self.orders_csv_path, self.config_app, self.fitness_tracker
 
 
 # ========== Funciones para visualización de resultados ==========
@@ -346,7 +392,14 @@ def main():
     )
     
     # Ejecutar el algoritmo
-    best_ind, orders_csv_path, config_app = optimizer.run()
+    best_ind, orders_csv_path, config_app, fitness_tracker = optimizer.run()
+    
+    # Crear directorio para resultados si no existe
+    results_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "resultados")
+    os.makedirs(results_dir, exist_ok=True)
+    
+    # Generar y guardar el gráfico de evolución de fitness
+    fitness_tracker.plot_fitness_evolution(save_path=results_dir, show=True)
     
     # Visualizar la mejor solución
     mostrar_mejor_solucion(best_ind, orders_csv_path, config_app)
