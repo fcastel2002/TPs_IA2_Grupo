@@ -131,7 +131,7 @@ class Agente:
             else:
                 camino_completo.extend(camino_parcial)
             
-            nodo_actual = objetivo
+            nodo_actual = camino_parcial[len(camino_parcial)-1]
         
         # 2) Tramo final a la casilla "C"
         c_celda = self.__tablero.get_celda_c()  # Método en Tablero (o Agente) que busca el casillero con caracter == "C"
@@ -217,6 +217,9 @@ class Agente:
             
             for vecino in self.__tablero.get_vecinos(actual.get_indice()):
                 # Ignorar los vecinos que ya fueron evaluados
+                if vecino == objetivo:
+                    return self.reconstruir_camino(vino_de, actual, mostrar)
+
                 if vecino in cerrados:
                     continue
                 
