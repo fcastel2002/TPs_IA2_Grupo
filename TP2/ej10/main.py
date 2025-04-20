@@ -1,7 +1,7 @@
 # main.py
 
 import matplotlib.pyplot as plt
-
+import numpy as np
 from membership_functions import TriangularMF, TrapezoidalMF
 from fuzzy_set import FuzzySet
 from linguistic_variable import LinguisticVariable
@@ -74,15 +74,16 @@ def simulate(ext_series):
     T_int_list, T_ext_list, acts = [], [], []
 
     R, Rv_max = 1.0, 0.1
-    RC   = 5 * 3600.0  # τ = 5 h
+    RC   = 24 * 720  # τ = 5 h
     C    = RC / R
     dt   = 3600.0      # 1 h
 
     for _ in hours:
         act = ctrl.step()
         T_ext = env.ext_series[env.hour]
-        T_int = env.temp_int + dt/C * ((T_ext - env.temp_int) / (R + Rv_max*(1-act/100.0)))
-
+        #T_int = env.temp_int + dt/C * ((T_ext - env.temp_int) / (R + Rv_max*(1-act/100.0)))
+        T_int = env.temp_int + dt * ((T_ext - env.temp_int) / (RC*(1 + Rv_max*(1-act/100.0))))
+        
         T_int_list.append(T_int)
         T_ext_list.append(T_ext)
         acts.append(act)
@@ -117,6 +118,29 @@ for label, (T_int, T_ext, act) in data.items():
     ax1.legend(h1 + h2, l1 + l2, loc='upper left')
 
     plt.tight_layout()
+
+def plot_fuzzy_variable(var):
+    """
+    Grafica los conjuntos difusos de una LinguisticVariable en una nueva figura.
+    """
+    u_min, u_max = var.universe
+    xs = np.linspace(u_min, u_max, 500)
+    plt.figure()
+    for name, fs in var.sets.items():
+        ys = [fs.membership(x) for x in xs]
+        plt.plot(xs, ys, label=name)
+    plt.title(f"Conjuntos borrosos para '{var.name}'")
+    plt.xlabel(f"Universo de '{var.name}'")
+    plt.ylabel("Grado de pertenencia μ(x)")
+    plt.ylim(-0.05, 1.05)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+
+# Graficar conjuntos borrosos de cada variable lingüística
+plot_fuzzy_variable(hora)
+plot_fuzzy_variable(z)
+plot_fuzzy_variable(ventana)
 
 # Mostrar todas las figuras
 plt.show()
