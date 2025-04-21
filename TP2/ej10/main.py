@@ -31,17 +31,19 @@ tpredicha.add_set(FuzzySet('BAJA', TrapezoidalMF(-5.0, 0.0, 8.0, 25.0)))
 tpredicha.add_set(FuzzySet('ALTA', TrapezoidalMF(20.0, 30.0, 35.0, 40.0)))
 
 # Variables Z, ZCAL, ZENF
-z_universe = (-800.0, 800.0) # Mantener universo amplio por ahora
+z_max = 350.0
+z_min = -350.0
+z_universe = (z_min, z_max) # Mantener universo amplio por ahora
 
 # --- Ajuste de Conjuntos Z ---
 # Hacer 'CERO' más estrecho y ajustar los otros
 z_sets_def = {
     # CERO: Más estrecho, ej. -20 a 20
-    'CERO':     FuzzySet('CERO',     TriangularMF(-7.0,  0.0,   7.0)),
+    'CERO':     FuzzySet('CERO',     TriangularMF(-10.0,  0.0,   10.0)),
     # POSITIVO: Rampa desde el final de CERO (20).
-    'POSITIVO': FuzzySet('POSITIVO', TrapezoidalMF(4.0, 50.0, 800.0, 800.0)),
+    'POSITIVO': FuzzySet('POSITIVO', TrapezoidalMF(4.0, 50.0, z_max, z_max)),
     # NEGATIVO: Imagen especular. Rampa de -100 a -20.
-    'NEGATIVO': FuzzySet('NEGATIVO', TrapezoidalMF(-800.0, -800.0, -50.0, -4.0))
+    'NEGATIVO': FuzzySet('NEGATIVO', TrapezoidalMF(z_min, z_min, -50.0, -4.0))
 }
 # -----------------------------
 
@@ -60,11 +62,11 @@ for name, fs in z_sets_def.items():
 
 ventana = LinguisticVariable('Ventana', (0.0, 100.0))
 
-ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0, 0.0, 15.0, 40.0)))
+ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0, 0.0, 20.0, 35.0)))
 
 ventana.add_set(FuzzySet('CENTRO', TriangularMF(25.0, 50.0, 75.0)))
 
-ventana.add_set(FuzzySet('ABRIR', TrapezoidalMF(60.0, 85.0, 100.0, 100.0)))
+ventana.add_set(FuzzySet('ABRIR', TrapezoidalMF(65.0, 80.0, 100.0, 100.0)))
 
 # 2) Base de reglas (Sin cambios en la lógica)
 rb = RuleBase()
