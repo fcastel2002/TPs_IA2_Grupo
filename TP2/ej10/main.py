@@ -37,11 +37,11 @@ z_universe = (-800.0, 800.0) # Mantener universo amplio por ahora
 # Hacer 'CERO' más estrecho y ajustar los otros
 z_sets_def = {
     # CERO: Más estrecho, ej. -20 a 20
-    'CERO':     FuzzySet('CERO',     TriangularMF(-20.0,  0.0,   20.0)),
-    # POSITIVO: Rampa desde el final de CERO (20). Llegar a 1 más rápido? Ej. en 100.
-    'POSITIVO': FuzzySet('POSITIVO', TrapezoidalMF(20.0, 100.0, 800.0, 800.0)),
+    'CERO':     FuzzySet('CERO',     TriangularMF(-10.0,  0.0,   10.0)),
+    # POSITIVO: Rampa desde el final de CERO (20).
+    'POSITIVO': FuzzySet('POSITIVO', TrapezoidalMF(10.0, 50.0, 800.0, 800.0)),
     # NEGATIVO: Imagen especular. Rampa de -100 a -20.
-    'NEGATIVO': FuzzySet('NEGATIVO', TrapezoidalMF(-800.0, -800.0, -100.0, -20.0))
+    'NEGATIVO': FuzzySet('NEGATIVO', TrapezoidalMF(-800.0, -800.0, -50.0, -10.0))
 }
 # -----------------------------
 
