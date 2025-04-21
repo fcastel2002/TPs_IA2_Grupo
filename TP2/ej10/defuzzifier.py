@@ -6,7 +6,7 @@ class Defuzzifier:
     """
     Convierte conjuntos difusos agregados en un valor nítido.
     Métodos soportados: 'COG', 'SOM', 'MOM', 'LOM', 'WAM'.
-    """
+    """ 
     def __init__(self,
                  output_var,
                  method: str = 'COG',
@@ -40,9 +40,11 @@ class Defuzzifier:
             mus.append(mu_x)
         # 3) Desborrosificación
         if self.method == 'COG':
+            epsilon = 1e-9
             num = sum(x*mu for x,mu in zip(xs,mus))
             den = sum(mus)
-            return num/den if den>0 else (u_min+u_max)/2
+            
+            return num/den if abs(den)>epsilon else (u_min+u_max)/2
         # localizadores de máximos
         max_mu = max(mus)
         if max_mu == 0:

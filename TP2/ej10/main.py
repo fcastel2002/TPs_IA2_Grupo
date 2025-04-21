@@ -20,15 +20,15 @@ V0_ENF = 5.0
 # 1) Variables lingüísticas
 
 # Hora (sin cambios)
-hora = LinguisticVariable('Hora', (0.0, 24.0))
+hora = LinguisticVariable('Hora', (0.0, 24.00))
 hora.add_set(FuzzySet('DIA',    TrapezoidalMF(7.5,  8.0, 20.0, 20.5)))
-hora.add_set(FuzzySet('NOCHE_PM', TrapezoidalMF(20.0, 20.5, 23.99, 23.99)))
+hora.add_set(FuzzySet('NOCHE_PM', TrapezoidalMF(20.0, 20.5, 24, 24)))
 hora.add_set(FuzzySet('NOCHE_AM', TrapezoidalMF(0.0,  0.0,  7.5,  8.0)))
 
 # Temperatura Predicha (TPREDICHA) (sin cambios en definición)
 tpredicha = LinguisticVariable('TPREDICHA', (-5.0, 40.0))
-tpredicha.add_set(FuzzySet('BAJA', TrapezoidalMF(-5.0, 0.0, 10.0, 15.0)))
-tpredicha.add_set(FuzzySet('ALTA', TrapezoidalMF(15.0, 20.0, 35.0, 40.0)))
+tpredicha.add_set(FuzzySet('BAJA', TrapezoidalMF(-5.0, 0.0, 8.0, 25.0)))
+tpredicha.add_set(FuzzySet('ALTA', TrapezoidalMF(20.0, 30.0, 35.0, 40.0)))
 
 # Variables Z, ZCAL, ZENF
 z_universe = (-800.0, 800.0) # Mantener universo amplio por ahora
@@ -37,11 +37,11 @@ z_universe = (-800.0, 800.0) # Mantener universo amplio por ahora
 # Hacer 'CERO' más estrecho y ajustar los otros
 z_sets_def = {
     # CERO: Más estrecho, ej. -20 a 20
-    'CERO':     FuzzySet('CERO',     TriangularMF(-10.0,  0.0,   10.0)),
+    'CERO':     FuzzySet('CERO',     TriangularMF(-7.0,  0.0,   7.0)),
     # POSITIVO: Rampa desde el final de CERO (20).
-    'POSITIVO': FuzzySet('POSITIVO', TrapezoidalMF(10.0, 50.0, 800.0, 800.0)),
+    'POSITIVO': FuzzySet('POSITIVO', TrapezoidalMF(4.0, 50.0, 800.0, 800.0)),
     # NEGATIVO: Imagen especular. Rampa de -100 a -20.
-    'NEGATIVO': FuzzySet('NEGATIVO', TrapezoidalMF(-800.0, -800.0, -50.0, -10.0))
+    'NEGATIVO': FuzzySet('NEGATIVO', TrapezoidalMF(-800.0, -800.0, -50.0, -4.0))
 }
 # -----------------------------
 
@@ -56,11 +56,15 @@ for name, fs in z_sets_def.items():
 
 
 # Ventana (Salida) (sin cambios)
-ventana = LinguisticVariable('Ventana', (0.0, 100.0))
-ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  10.0, 30.0)))
-ventana.add_set(FuzzySet('CENTRO', TriangularMF(25.0, 50.0,  75.0)))
-ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(70.0,  90.0, 100.0, 100.0)))
+# Ventana (Salida) (sin cambios)
 
+ventana = LinguisticVariable('Ventana', (0.0, 100.0))
+
+ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0, 0.0, 15.0, 40.0)))
+
+ventana.add_set(FuzzySet('CENTRO', TriangularMF(25.0, 50.0, 75.0)))
+
+ventana.add_set(FuzzySet('ABRIR', TrapezoidalMF(60.0, 85.0, 100.0, 100.0)))
 
 # 2) Base de reglas (Sin cambios en la lógica)
 rb = RuleBase()
