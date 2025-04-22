@@ -12,6 +12,7 @@ class Environment:
         self.comfort_day = comfort_day
         self.comfort_night_cal = comfort_night_cal
         self.comfort_night_enf = comfort_night_enf
+        self.temperatura_predicha = None  # Será asignada según el cálculo
 
     def read_sensors(self) -> Dict[str, float]:
         """
@@ -22,22 +23,47 @@ class Environment:
         """
         raise NotImplementedError("Subclase debe implementar read_sensors() con datos reales")
 
+    def calculate_temperatura_predicha(self):
+        """
+        Calcula la temperatura predicha como el promedio de las diferencias
+        entre la temperatura exterior y la temperatura de confort (25°C).
+        Solo para las horas de 8:00 a 20:00.
+        """
+        diff_sum = 0
+        count = 0
+        for h in range(9, 21):  # Solo de 8:00 a 20:00
+            diff_sum += self.ext_series[h] - self.comfort_day
+            count += 1
+        promedio_diferencia = diff_sum / count
+        
+        if promedio_diferencia > 2.5:  # Si la diferencia es alta
+            self.temperatura_predicha = "ALTA"
+        elif promedio_diferencia < -2.5:  # Si la diferencia es baja
+            self.temperatura_predicha = "BAJA"
+        else:
+            self.temperatura_predicha = "CERO"
+
+    def set_temperatura_predicha(self):
+        """
+        Establece la temperatura predicha para el día siguiente.
+        """
+        self.calculate_temperatura_predicha()
+
     def compute_z(self, v_int: float, v_ext: float, hour: float) -> float:
         """
-        Calcula la variable Z para inferencia:
-        - Modo DÍA (8–20h): z = (v_int - comfort_day)*(v_ext - v_int)
-        - Modo NOCHE: usa comfort_night_cal o comfort_night_enf según heating/cooling
+        Recalcula Z en función de la temperatura predicha.
         """
-        if 8 <= hour < 20:
+        if 8 < hour <= 20:
             v0 = self.comfort_day
-        else:
-            # Noche: elegir punto de referencia
-            if v_int < self.comfort_night_cal:
-                v0 = self.comfort_night_cal
-            elif v_int > self.comfort_night_enf:
-                v0 = self.comfort_night_enf
+        else:  
+            if self.temperatura_predicha == "ALTA":
+                v0 = self.comfort_night_enf  # Para enfriar
+            elif self.temperatura_predicha == "BAJA":
+                v0 = self.comfort_night_cal  # Para calentar
             else:
-                return 0.0
+                v0 = self.comfort_day  # Temperatura de confort
+        
+        print(f"{self.temperatura_predicha}, v0 = {v0}")
         return (v_int - v0) * (v_ext - v_int)
 
     def get_crisp_inputs(self) -> Dict[str, float]:
@@ -71,6 +97,7 @@ class FuzzyController:
           2) Inferir salidas difusas
           3) Desborrosificar y devolver acción (apertura ventana)
         """
+        self.env.set_temperatura_predicha()
         crisp_inputs = self.env.get_crisp_inputs()
         fuzzy_outputs = self.fis.infer(crisp_inputs)
         action = self.defuzzifier.defuzzify(fuzzy_outputs)

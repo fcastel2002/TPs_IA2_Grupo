@@ -38,13 +38,18 @@ class TrapezoidalMF(MembershipFunction):
         self.d = d
 
     def μ(self, x: float) -> float:
-        if x <= self.a or x >= self.d:
+        if x < self.a or x > self.d:
             return 0.0
-        if self.a < x <= self.b:
+        if self.a <= x < self.b:
+            if self.a == self.b:
+                return 1.0 if x == self.a else 0.0
             return (x - self.a) / (self.b - self.a)
-        if self.b < x <= self.c:
+        if self.b <= x <= self.c:
             return 1.0
-        # self.c < x < self.d
+        # self.c < x <= self.d
+        if self.c == self.d:
+            return 1.0 if x == self.c else 0.0
+
         return (self.d - x) / (self.d - self.c)
 
 class SingletonMF(MembershipFunction):
