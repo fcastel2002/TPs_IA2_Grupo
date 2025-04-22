@@ -13,19 +13,19 @@ from environment_controller import Environment, FuzzyController
 
 # 1) Variables lingüísticas
 hora = LinguisticVariable('Hora', (0.0, 24.0))
-hora.add_set(FuzzySet('DIA',    TrapezoidalMF(6.0,  8.0, 20.0, 22.0)))
-hora.add_set(FuzzySet('NOCHE',  TrapezoidalMF(0.0,  0.0,  6.0,  8.0)))
-hora.add_set(FuzzySet('NOCHE2', TrapezoidalMF(20.0, 22.0, 24.0, 24.0)))
+hora.add_set(FuzzySet('DIA',    TrapezoidalMF(8.5, 8.5, 20.5, 20.5)))
+hora.add_set(FuzzySet('NOCHE',  TrapezoidalMF(0.0,  0.0,  8.5,  8.5)))
+hora.add_set(FuzzySet('NOCHE2', TrapezoidalMF(20.5, 20.5, 24.0, 24.0)))
 
-z = LinguisticVariable('Z', (-100.0, 100.0))
-z.add_set(FuzzySet('POSITIVO', TriangularMF(0.0,   50.0,  100.0)))
+z = LinguisticVariable('Z', (-500.0, 500.0))
+z.add_set(FuzzySet('POSITIVO', TrapezoidalMF(0.0,   50.0,  500.0, 500.0)))
 z.add_set(FuzzySet('CERO',      TriangularMF(-10.0, 0.0,   10.0)))
-z.add_set(FuzzySet('NEGATIVO',  TriangularMF(-100.0, -50.0, 0.0)))
+z.add_set(FuzzySet('NEGATIVO',  TrapezoidalMF(-500.0, -500.0, -50.0, 0.0)))
 
 ventana = LinguisticVariable('Ventana', (0.0, 100.0))
-ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  10.0, 30.0)))
-ventana.add_set(FuzzySet('CENTRO', TriangularMF(25.0, 50.0,  75.0)))
-ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(70.0,  90.0, 100.0, 100.0)))
+ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  10.0, 40)))
+ventana.add_set(FuzzySet('CENTRO', TriangularMF(35, 50.0,  65)))
+ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(60,  90.0, 100.0, 100.0)))
 
 # 2) Base de reglas
 rb = RuleBase()
@@ -40,7 +40,7 @@ for nh in ('NOCHE','NOCHE2'):
 
 # 3) Sistema difuso y desborrosificador
 fis    = FuzzyInferenceSystem(inputs=[hora, z], output=ventana, rule_base=rb)
-defuzz = Defuzzifier(output_var=ventana, method='COG')
+defuzz = Defuzzifier(output_var=ventana, method='LOM')
 
 # 4) Entorno dinámico
 class SeriesEnvironment(Environment):
@@ -58,30 +58,59 @@ class SeriesEnvironment(Environment):
         }
 
 # 5) Tres series de temperatura exterior
-base_low = {
-    **{h:11 for h in range(9)},
-    9:11,10:13,11:13,12:14,13:15,14:16,15:17,16:17,17:17,18:16,19:15,20:14,21:13,22:13,23:13
-}
-hours    = list(range(24))
-ext_low  = [base_low[h] for h in hours]
-ext_mid  = [t + 11 for t in ext_low]
-ext_high = [t + 20 for t in ext_low]
+import math
 
+# --- Horas 0..23 ---
+hours = list(range(24))
+
+def generate_sine_series(mean: float,
+                         amplitude: float,
+                         days: int,  # Nuevo parámetro: cantidad de días
+                         phase_shift: float = 6.0  # fase en horas: 6h antes del pico
+                        ) -> list:
+    """
+    Genera una serie de temperatura de 24 horas repetida para la cantidad de días especificada.
+    T(h) = mean + amplitude * sin(2π * (h - phase_shift) / 24)
+    Con phase_shift=6: mínimo a 0h, máximo a 12h.
+    """
+    # Generamos una serie de 24 horas
+    daily_series = [
+        mean + amplitude * math.sin(2 * math.pi * (h - phase_shift) / 24.0)
+        for h in hours
+    ]
+    
+    # Repetimos la serie tantas veces como días especificados
+    return daily_series * days
+
+# --- Parámetros ajustables ---
+# Serie “Bajo”  (p. ej. noches muy frescas)
+mean_low,  amp_low  = 11.0, 2.0
+# Serie “Medio” (incluye confort)
+mean_mid,  amp_mid  = 22.0, 5.0
+# Serie “Alto”  (días muy calurosos)
+mean_high, amp_high = 30.0, 8.0
+
+# --- Generar las tres series (para 7 días como ejemplo) ---
+days = 4  # Parámetro que define la cantidad de días
+ext_low  = generate_sine_series(mean_low,  amp_low,  days)
+ext_mid  = generate_sine_series(mean_mid,  amp_mid,  days)
+ext_high = generate_sine_series(mean_high, amp_high, days)
+
+
+hours = list(range(len(hours*days)))
 # 6) Simulación EULER + FuzzyController
 def simulate(ext_series):
-    env  = SeriesEnvironment(22.0, 18.0, 26.0, ext_series)
+    env  = SeriesEnvironment(25, 50, 5, ext_series)
     ctrl = FuzzyController(fis, defuzz, env)
     T_int_list, T_ext_list, acts = [], [], []
 
-    R, Rv_max = 1.0, 0.1
+    Rv_max = 0.1
     RC   = 24 * 720  # τ = 5 h
-    C    = RC / R
     dt   = 3600.0      # 1 h
 
-    for _ in hours:
+    for hour in hours:
         act = ctrl.step()
-        T_ext = env.ext_series[env.hour]
-        #T_int = env.temp_int + dt/C * ((T_ext - env.temp_int) / (R + Rv_max*(1-act/100.0)))
+        T_ext = env.ext_series[hour]
         T_int = env.temp_int + dt * ((T_ext - env.temp_int) / (RC*(1 + Rv_max*(1-act/100.0))))
         
         T_int_list.append(T_int)
@@ -89,7 +118,7 @@ def simulate(ext_series):
         acts.append(act)
 
         env.temp_int = T_int
-        env.hour    += 1
+        env.hour    = (hour+1) % 24
 
     return T_int_list, T_ext_list, acts
 
@@ -98,6 +127,7 @@ data = {
     'Medio': simulate(ext_mid),
     'Alto':  simulate(ext_high)
 }
+
 
 # 7) Graficar cada serie en su propia ventana
 for label, (T_int, T_ext, act) in data.items():
@@ -108,16 +138,33 @@ for label, (T_int, T_ext, act) in data.items():
     ax1.plot(hours, T_ext,   label='Exterior', linestyle='--', color='tab:orange')
     ax2.plot(hours, [a/100 for a in act], label='Apertura', color='tab:green')
 
+    # Ajuste del límite del eje y para la apertura de ventana (siempre de 0 a 1)
+    ax2.set_ylim(0, 1)
+
+    # Graficar la línea horizontal para la temperatura de confort (25°C)
+    ax1.axhline(y=25, color='r', linestyle='--', label="Temperatura de confort (25°C)")
+
+    # Colorear zonas del gráfico: día (8 a 20) y noche (20 a 8)
+    for i in range(0, len(hours), 24):  # Iterar por días
+        # Día: de 8:00 a 20:00
+        ax1.axvspan(i + 8, i + 20, color='yellow', alpha=0.2)  # Día en amarillo
+        # Noche: de 20:00 a 8:00
+        ax1.axvspan(i + 20, i + 24, color='blue', alpha=0.1)  # Noche en azul claro
+        ax1.axvspan(i + 0, i + 8, color='blue', alpha=0.1)
+
     ax1.set_xlabel('Hora (h)')
     ax1.set_ylabel('Temperatura (°C)')
     ax2.set_ylabel('Apertura ventana (fracción)')
-    ax1.set_title(f'Simulación 24 h – Serie {label}')
+    ax1.set_title(f'Simulación 24 h – Serie {label}')
 
+    # Unir leyendas
     h1, l1 = ax1.get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
     ax1.legend(h1 + h2, l1 + l2, loc='upper left')
 
     plt.tight_layout()
+
+
 
 def plot_fuzzy_variable(var):
     """
