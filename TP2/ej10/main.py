@@ -1,5 +1,5 @@
 # main.py
-
+from typing import Dict, List, Tuple, Callable
 import matplotlib.pyplot as plt
 import numpy as np
 from membership_functions import TriangularMF, TrapezoidalMF
@@ -19,7 +19,7 @@ hora.add_set(FuzzySet('NOCHE2', TrapezoidalMF(20.0, 22.0, 24.0, 24.0)))
 
 z = LinguisticVariable('Z', (-100.0, 100.0))
 z.add_set(FuzzySet('POSITIVO', TriangularMF(0.0,   50.0,  100.0)))
-z.add_set(FuzzySet('CERO',      TriangularMF(-10.0, 0.0,   10.0)))
+z.add_set(FuzzySet('CERO',      TriangularMF(-5.0, 0.0,   5.0)))
 z.add_set(FuzzySet('NEGATIVO',  TriangularMF(-100.0, -50.0, 0.0)))
 
 ventana = LinguisticVariable('Ventana', (0.0, 100.0))
@@ -40,15 +40,32 @@ for nh in ('NOCHE','NOCHE2'):
 
 # 3) Sistema difuso y desborrosificador
 fis    = FuzzyInferenceSystem(inputs=[hora, z], output=ventana, rule_base=rb)
+# 3) Sistema difuso y desborrosificador con métodos diferenciados para CERRAR y ABRIR
 defuzz = Defuzzifier(output_var=ventana, method='COG')
+
+# Crear un desborrosificador personalizado que utilice SOM para CERRAR y LOM para ABRIR
+class CustomDefuzzifier(Defuzzifier):
+    def defuzzify(self, fuzzy_outputs: Dict[str, List[Tuple[FuzzySet, float]]]) -> float:
+        # Usar SOM para CERRAR y LOM para ABRIR
+        if 'CERRAR' in fuzzy_outputs:
+            self.method = 'LOM'  # Aplicar SOM para CERRAR
+        elif 'ABRIR' in fuzzy_outputs:
+            self.method = 'SOM'  # Aplicar LOM para ABRIR
+        else:
+            self.method = 'COG'  # Usar COG para los demás conjuntos
+        
+        return super().defuzzify(fuzzy_outputs)
+
+# Usar el nuevo desborrosificador personalizado
+defuzz = CustomDefuzzifier(output_var=ventana)
 
 # 4) Entorno dinámico
 class SeriesEnvironment(Environment):
     def __init__(self, comfort_day, comfort_night_cal, comfort_night_enf, ext_series):
         super().__init__(comfort_day, comfort_night_cal, comfort_night_enf)
-        self.ext_series = ext_series
-        self.hour       = 0
-        self.temp_int   = comfort_day
+        self.ext_series = ext_series    # Serie de temperaturas exteriores
+        self.hour       = 0             # Hora inicial (comienza a las 0 horas) 
+        self.temp_int   = comfort_day   # Temperatura interior de referencia (en este caso, es `comfort_day` La temperatura interior de confort durante el día)
 
     def read_sensors(self):
         return {
@@ -64,7 +81,7 @@ base_low = {
 }
 hours    = list(range(24))
 ext_low  = [base_low[h] for h in hours]
-ext_mid  = [t + 11 for t in ext_low]
+ext_mid  = [t + 11 for t in ext_low]    # temp
 ext_high = [t + 20 for t in ext_low]
 
 # 6) Simulación EULER + FuzzyController

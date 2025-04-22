@@ -10,13 +10,14 @@ class FuzzyInferenceSystem:
     Toma variables de entrada, una variable de salida y una base de reglas.
     """
     def __init__(self,
-                 inputs: List[LinguisticVariable],
-                 output: LinguisticVariable,
-                 rule_base: RuleBase,
-                 t_norm: Callable[[float, float], float] = min,
-                 s_norm: Callable[[float, float], float] = max,
+                 inputs: List[LinguisticVariable],              # Hora, Z con sus conjuntos
+                 output: LinguisticVariable,                    # Ventana con sus conjuntos {CERRAR, CENTRO, ABRIR}
+                 rule_base: RuleBase,                           # conjunto de reglas difusas (instancias de FuzzyRule)
+                                                                # Callable es función que toma dos números de tipo float como entrada y devuelve un número de tipo float como salida.
+                 t_norm: Callable[[float, float], float] = min, # Conjunción borrosa (AND)
+                 s_norm: Callable[[float, float], float] = max, # Distunnción borrosa (OR)
                  implic: Callable[[float, float], float] = min):
-        self.inputs = {var.name: var for var in inputs}
+        self.inputs = {var.name: var for var in inputs}         # Se transforman los inputs en un diccionario para luego poder acceder a ese valor cuando llegue un valor nítido
         self.output = output
         self.rule_base = rule_base
         self.t_norm = t_norm
