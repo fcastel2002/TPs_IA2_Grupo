@@ -24,25 +24,26 @@ class Environment:
         raise NotImplementedError("Subclase debe implementar read_sensors() con datos reales")
 
     def calculate_temperatura_predicha(self):
-        """
-        Calcula la temperatura predicha como el promedio de las diferencias
-        entre la temperatura exterior y la temperatura de confort (25°C).
-        Solo para las horas de 8:00 a 20:00.
-        """
-        diff_sum = 0
-        count = 0
-        for h in range(9, 21):  # Solo de 8:00 a 20:00
-            diff_sum += self.ext_series[h] - self.comfort_day
-            count += 1
-        promedio_diferencia = diff_sum / count
-        
-        if promedio_diferencia > 2.5:  # Si la diferencia es alta
-            self.temperatura_predicha = "ALTA"
-        elif promedio_diferencia < -2.5:  # Si la diferencia es baja
-            self.temperatura_predicha = "BAJA"
-        else:
-            self.temperatura_predicha = "CERO"
-
+            """
+            Calcula la temperatura predicha como el promedio de las diferencias
+            entre la temperatura exterior y la temperatura de confort (25°C).
+            Solo para las horas de 8:00 a 20:00.
+            """
+            diff_sum = 0
+            count = 0
+            for hora in range(len(self.ext_series)):  # Solo de 8:00 a 20:00
+                if hora % 24 <= 8 or hora % 24 > 20:
+                    continue
+                diff_sum += self.ext_series[hora] - self.comfort_day
+                count += 1
+            promedio_diferencia = diff_sum / count
+            
+            if promedio_diferencia > 2.5:  # Si la diferencia es alta
+                self.temperatura_predicha = "ALTA"
+            elif promedio_diferencia < -2.5:  # Si la diferencia es baja
+                self.temperatura_predicha = "BAJA"
+            else:
+                self.temperatura_predicha ="CERO"
     def set_temperatura_predicha(self):
         """
         Establece la temperatura predicha para el día siguiente.
