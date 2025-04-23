@@ -31,8 +31,10 @@ class Environment:
         """
         diff_sum = 0
         count = 0
-        for h in range(9, 21):  # Solo de 8:00 a 20:00
-            diff_sum += self.ext_series[h] - self.comfort_day
+        for hora in range(len(self.ext_series)):  # Solo de 8:00 a 20:00
+            if hora % 24 <= 8 or hora % 24 > 20:
+                continue
+            diff_sum += self.ext_series[hora] - self.comfort_day
             count += 1
         promedio_diferencia = diff_sum / count
         
@@ -62,8 +64,7 @@ class Environment:
                 v0 = self.comfort_night_cal  # Para calentar
             else:
                 v0 = self.comfort_day  # Temperatura de confort
-        
-        print(f"{self.temperatura_predicha}, v0 = {v0}")
+        print(f"v0 = {v0}, (temperatura predicha: {self.temperatura_predicha}), v_int = {v_int}, v_ext = {v_ext}")
         return (v_int - v0) * (v_ext - v_int)
 
     def get_crisp_inputs(self) -> Dict[str, float]:
@@ -99,6 +100,31 @@ class FuzzyController:
         """
         self.env.set_temperatura_predicha()
         crisp_inputs = self.env.get_crisp_inputs()
+        print(f"Entradas nítidas: {crisp_inputs}")
         fuzzy_outputs = self.fis.infer(crisp_inputs)
         action = self.defuzzifier.defuzzify(fuzzy_outputs)
         return action
+    
+
+class ControladorOnOff:
+    def __init__(self, environment: Environment, umbral: float = 0.5):
+        self.environment = environment
+        self.umbral = umbral
+    
+    def step(self, temp_int) -> str:
+        """
+        Realiza un ciclo de control:
+          1) Obtener entradas nítidas
+          2) Calcular Z
+          3) Decidir acción (abrir/cerrar ventana)
+        """
+        self.environment.set_temperatura_predicha()
+        s = self.environment.read_sensors()
+        z = self.environment.compute_z(temp_int, s['temp_ext'], s['hora'])
+        
+        if z > 0:
+            return 0
+        else:
+            return 100
+        
+        

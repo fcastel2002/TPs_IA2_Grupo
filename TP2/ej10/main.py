@@ -9,7 +9,7 @@ from rule import FuzzyRule
 from rule_base import RuleBase
 from inference import FuzzyInferenceSystem
 from defuzzifier import Defuzzifier
-from environment_controller import Environment, FuzzyController
+from environment_controller import Environment, FuzzyController, ControladorOnOff
 
 # 1) Variables lingüísticas
 hora = LinguisticVariable('Hora', (0.0, 24.0))
@@ -40,7 +40,7 @@ for nh in ('NOCHE','NOCHE2'):
 
 # 3) Sistema difuso y desborrosificador
 fis    = FuzzyInferenceSystem(inputs=[hora, z], output=ventana, rule_base=rb)
-defuzz = Defuzzifier(output_var=ventana, method='LOM')
+defuzz = Defuzzifier(output_var=ventana, method='COG')
 
 # 4) Entorno dinámico
 class SeriesEnvironment(Environment):
@@ -52,7 +52,7 @@ class SeriesEnvironment(Environment):
 
     def read_sensors(self):
         return {
-            'hora':     float(self.hour),
+            'hora':     float(self.hour) % 24.0,
             'temp_int': self.temp_int,
             'temp_ext': self.ext_series[self.hour]
         }
@@ -91,7 +91,7 @@ mean_mid,  amp_mid  = 22.0, 5.0
 mean_high, amp_high = 30.0, 8.0
 
 # --- Generar las tres series (para 7 días como ejemplo) ---
-days = 4  # Parámetro que define la cantidad de días
+days = 1  # Parámetro que define la cantidad de días
 ext_low  = generate_sine_series(mean_low,  amp_low,  days)
 ext_mid  = generate_sine_series(mean_mid,  amp_mid,  days)
 ext_high = generate_sine_series(mean_high, amp_high, days)
@@ -102,25 +102,38 @@ hours = list(range(len(hours*days)))
 def simulate(ext_series):
     env  = SeriesEnvironment(25, 50, 5, ext_series)
     ctrl = FuzzyController(fis, defuzz, env)
+    ctrl_on_off = ControladorOnOff(env)
     T_int_list, T_ext_list, acts = [], [], []
 
-    Rv_max = 0.1
-    RC   = 24 * 720  # τ = 5 h
+    T_int_oo_list = []
+    acts_oo = []
+    
+    Rv_max = 0.2
+    RC   = 24 * 720/1.5  # τ = 5 h
     dt   = 3600.0      # 1 h
+    
+    temp_int_oo = env.temp_int  # Inicializar temperatura interior para control On-Off
 
     for hour in hours:
-        act = ctrl.step()
         T_ext = env.ext_series[hour]
-        T_int = env.temp_int + dt * ((T_ext - env.temp_int) / (RC*(1 + Rv_max*(1-act/100.0))))
-        
-        T_int_list.append(T_int)
         T_ext_list.append(T_ext)
+            
+        # Control difuso
+        act = ctrl.step()
+        T_int = env.temp_int + dt * ((T_ext - env.temp_int) / (RC*(1 + Rv_max*(1-act/100.0))))
+        T_int_list.append(T_int)
         acts.append(act)
 
-        env.temp_int = T_int
-        env.hour    = (hour+1) % 24
-
-    return T_int_list, T_ext_list, acts
+        env.temp_int = T_int # Actualizar temperatura interior para control difuso
+        # Control On-Off (sin control difuso)
+        act_oo = ctrl_on_off.step(temp_int_oo)
+        T_int_oo = temp_int_oo + dt * ((T_ext - temp_int_oo) / (RC*(1 + Rv_max*(1-act_oo/100.0))))
+        T_int_oo_list.append(T_int_oo)
+        acts_oo.append(act_oo)
+        temp_int_oo = T_int_oo  # Actualizar temperatura interior para control On-Off
+        
+        env.hour    += 1
+    return T_int_list, T_ext_list, acts, T_int_oo_list, acts_oo
 
 data = {
     'Bajo':  simulate(ext_low),
@@ -130,7 +143,7 @@ data = {
 
 
 # 7) Graficar cada serie en su propia ventana
-for label, (T_int, T_ext, act) in data.items():
+for label, (T_int, T_ext, act, T_int_oo, act_oo) in data.items():
     fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
 
@@ -138,8 +151,14 @@ for label, (T_int, T_ext, act) in data.items():
     ax1.plot(hours, T_ext,   label='Exterior', linestyle='--', color='tab:orange')
     ax2.plot(hours, [a/100 for a in act], label='Apertura', color='tab:green')
 
-    # Ajuste del límite del eje y para la apertura de ventana (siempre de 0 a 1)
-    ax2.set_ylim(0, 1)
+
+    # Interior ON-OFF
+    ax1.plot(hours, T_int_oo, label=f'Interior ON-OFF', color='tab:red', linestyle='-.', linewidth=1.5)
+    # Acción ON-OFF (en magenta)
+    ax2.plot(hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', drawstyle='steps-post', alpha=0.6, linewidth=1.0)
+
+    # Ajuste del límite del eje y para la apertura (0 a 1)
+    ax2.set_ylim(-0.05, 1.05)
 
     # Graficar la línea horizontal para la temperatura de confort (25°C)
     ax1.axhline(y=25, color='r', linestyle='--', label="Temperatura de confort (25°C)")
