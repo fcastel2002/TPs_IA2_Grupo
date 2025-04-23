@@ -7,7 +7,7 @@ from series_enviroment import SeriesEnvironment # Importa la clase definida en m
 
 # Parámetros físicos (podrían pasarse como argumentos si prefieres)
 # Si se definen aquí, asegúrate que coincidan con los de main.py
-Rv_max = 0.1
+Rv_max = 0.8
 RC   = 24 * 720
 dt   = 3600.0
 
