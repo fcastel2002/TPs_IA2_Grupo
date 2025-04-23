@@ -64,7 +64,7 @@ class Environment:
             else:
                 v0 = self.comfort_day  # Temperatura de confort
         
-        print(f"{self.temperatura_predicha}, v0 = {v0}")
+        # print(f"{self.temperatura_predicha}, v0 = {v0}")
         return (v_int - v0) * (v_ext - v_int)
 
     def get_crisp_inputs(self) -> Dict[str, float]:

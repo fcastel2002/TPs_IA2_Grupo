@@ -42,17 +42,24 @@ def simulate_on_off(ext_series: list,
     for hour in hours:
         if hour >= len(env.ext_series): break
         env.hour = hour # Actualizar hora en el entorno
+        
+        # Obtener temp exterior
+        T_ext = env.ext_series[hour]
 
         # --- Lógica de control ON-OFF ---
         current_temp_int = env.temp_int
-        if current_temp_int > target_temp:
-            act = 100.0 # Abrir ventana
+        
+        # Lógica ON-OFF: abrir ventana (act=100) si beneficia el acercamiento a la temperatura objetivo
+        if (current_temp_int > target_temp and T_ext < current_temp_int) or \
+            (current_temp_int < target_temp and T_ext > current_temp_int):
+             # Abrir ventana ayuda a acercarse a target_temp
+             act = 100
         else:
-            act = 0.0   # Cerrar ventana
+             # Cerrar ventana es mejor
+             act = 0
+
         # --------------------------------
 
-        # Obtener temp exterior
-        T_ext = env.ext_series[hour]
 
         # Calcular nueva temp interior (misma fórmula física)
         denominator = RC * (1 + Rv_max * (1 - act / 100.0))
