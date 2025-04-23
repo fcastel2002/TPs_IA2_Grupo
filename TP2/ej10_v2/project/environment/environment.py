@@ -1,3 +1,6 @@
+from abc import ABC, abstractmethod
+from typing import Dict
+
 from typing import Dict
 
 class Environment:
@@ -24,26 +27,13 @@ class Environment:
         raise NotImplementedError("Subclase debe implementar read_sensors() con datos reales")
 
     def calculate_temperatura_predicha(self):
-            """
-            Calcula la temperatura predicha como el promedio de las diferencias
-            entre la temperatura exterior y la temperatura de confort (25°C).
-            Solo para las horas de 8:00 a 20:00.
-            """
-            diff_sum = 0
-            count = 0
-            for hora in range(len(self.ext_series)):  # Solo de 8:00 a 20:00
-                if hora % 24 <= 8 or hora % 24 > 20:
-                    continue
-                diff_sum += self.ext_series[hora] - self.comfort_day
-                count += 1
-            promedio_diferencia = diff_sum / count
+        """
+        Calcula la temperatura predicha como el promedio de las diferencias
+        entre la temperatura exterior y la temperatura de confort (25°C).
+        Solo para las horas de 8:00 a 20:00.
+        """
+        raise NotImplementedError("Subclase debe implementar calculate_temperatura_predicha()")
             
-            if promedio_diferencia > 2.5:  # Si la diferencia es alta
-                self.temperatura_predicha = "ALTA"
-            elif promedio_diferencia < -2.5:  # Si la diferencia es baja
-                self.temperatura_predicha = "BAJA"
-            else:
-                self.temperatura_predicha ="CERO"
     def set_temperatura_predicha(self):
         """
         Establece la temperatura predicha para el día siguiente.
@@ -64,7 +54,6 @@ class Environment:
             else:
                 v0 = self.comfort_day  # Temperatura de confort
         
-        # print(f"{self.temperatura_predicha}, v0 = {v0}")
         return (v_int - v0) * (v_ext - v_int)
 
     def get_crisp_inputs(self) -> Dict[str, float]:
@@ -75,31 +64,3 @@ class Environment:
         s = self.read_sensors()
         z = self.compute_z(s['temp_int'], s['temp_ext'], s['hora'])
         return {'Hora': s['hora'], 'Z': z}
-
-class FuzzyController:
-    """
-    Orquesta el sistema de control difuso:
-    - Lee inputs nítidos del Environment
-    - Ejecuta inferencia
-    - Desborrosifica
-    """
-    def __init__(self,
-                 fis,
-                 defuzzifier,
-                 environment: Environment):
-        self.fis = fis
-        self.defuzzifier = defuzzifier
-        self.env = environment
-
-    def step(self) -> float:
-        """
-        Realiza un ciclo de control:
-          1) Obtener entradas nítidas
-          2) Inferir salidas difusas
-          3) Desborrosificar y devolver acción (apertura ventana)
-        """
-        self.env.set_temperatura_predicha()
-        crisp_inputs = self.env.get_crisp_inputs()
-        fuzzy_outputs = self.fis.infer(crisp_inputs)
-        action = self.defuzzifier.defuzzify(fuzzy_outputs)
-        return action
