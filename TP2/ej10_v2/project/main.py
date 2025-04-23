@@ -28,14 +28,14 @@ hora.add_set(FuzzySet('NOCHE',  TrapezoidalMF(0.0,  0.0,  8.5,  8.5)))
 hora.add_set(FuzzySet('NOCHE2', TrapezoidalMF(20.5, 20.5, 24.0, 24.0)))
 
 z = LinguisticVariable('Z', (-500.0, 500.0))
-z.add_set(FuzzySet('POSITIVO', TrapezoidalMF(0.0,   50.0,  500.0, 500.0)))
-z.add_set(FuzzySet('CERO',      TriangularMF(-10.0, 0.0,   10.0)))
-z.add_set(FuzzySet('NEGATIVO',  TrapezoidalMF(-500.0, -500.0, -50.0, 0.0)))
+z.add_set(FuzzySet('POSITIVO', TrapezoidalMF(1.5,   450.0,  500.0, 500.0)))
+z.add_set(FuzzySet('CERO',      TriangularMF(-2.35, 0.0,  2.35)))
+z.add_set(FuzzySet('NEGATIVO',  TrapezoidalMF(-500.0, -500.0, -450.0, -1.5)))
 
 ventana = LinguisticVariable('Ventana', (0.0, 100.0))
-ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  10.0, 40.0)))
+ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  5.0, 25.0)))
 ventana.add_set(FuzzySet('CENTRO', TriangularMF(35.0, 50.0,  65.0)))
-ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(60.0,  90.0, 100.0, 100.0)))
+ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(75.0,  95.0, 100.0, 100.0)))
 
 # --------------------------------------------------------------------------
 # 2) Base de reglas (Sin cambios)
