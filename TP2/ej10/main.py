@@ -9,9 +9,18 @@ from rule import FuzzyRule
 from rule_base import RuleBase
 from inference import FuzzyInferenceSystem
 from defuzzifier import Defuzzifier
-from environment_controller import Environment, FuzzyController
+from environment_controller import  FuzzyController
+from series_enviroment import SeriesEnvironment
+import random
+import math
 
-# 1) Variables lingüísticas
+### NUEVO ###
+# Importar la función de simulación ON-OFF del nuevo archivo
+from on_off_controller import simulate_on_off
+
+# --------------------------------------------------------------------------
+# 1) Variables lingüísticas (Sin cambios)
+# --------------------------------------------------------------------------
 hora = LinguisticVariable('Hora', (0.0, 24.0))
 hora.add_set(FuzzySet('DIA',    TrapezoidalMF(8.5, 8.5, 20.5, 20.5)))
 hora.add_set(FuzzySet('NOCHE',  TrapezoidalMF(0.0,  0.0,  8.5,  8.5)))
@@ -23,171 +32,231 @@ z.add_set(FuzzySet('CERO',      TriangularMF(-10.0, 0.0,   10.0)))
 z.add_set(FuzzySet('NEGATIVO',  TrapezoidalMF(-500.0, -500.0, -50.0, 0.0)))
 
 ventana = LinguisticVariable('Ventana', (0.0, 100.0))
-ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  10.0, 40)))
-ventana.add_set(FuzzySet('CENTRO', TriangularMF(35, 50.0,  65)))
-ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(60,  90.0, 100.0, 100.0)))
+ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  10.0, 40.0)))
+ventana.add_set(FuzzySet('CENTRO', TriangularMF(35.0, 50.0,  65.0)))
+ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(60.0,  90.0, 100.0, 100.0)))
 
-# 2) Base de reglas
-rb = RuleBase()
+# --------------------------------------------------------------------------
+# 2) Base de reglas (Sin cambios)
+# --------------------------------------------------------------------------
+rb = RuleBase() #
 # Día
-rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'POSITIVO')], (ventana, 'CERRAR')))
-rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'CERO')],     (ventana, 'CENTRO')))
-rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'NEGATIVO')], (ventana, 'ABRIR')))
+rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'POSITIVO')], (ventana, 'CERRAR'))) #
+rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'CERO')],     (ventana, 'CENTRO'))) #
+rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'NEGATIVO')], (ventana, 'ABRIR'))) #
 # Noche
 for nh in ('NOCHE','NOCHE2'):
-    rb.add_rule(FuzzyRule([(hora, nh),    (z, 'NEGATIVO')], (ventana, 'ABRIR')))
-    rb.add_rule(FuzzyRule([(hora, nh),    (z, 'POSITIVO')],(ventana, 'CERRAR')))
+    rb.add_rule(FuzzyRule([(hora, nh),    (z, 'NEGATIVO')], (ventana, 'ABRIR'))) #
+    rb.add_rule(FuzzyRule([(hora, nh),    (z, 'POSITIVO')],(ventana, 'CERRAR'))) #
+    rb.add_rule(FuzzyRule([(hora, nh),    (z, 'CERO')], (ventana, 'CERRAR'))) #
 
-# 3) Sistema difuso y desborrosificador
-fis    = FuzzyInferenceSystem(inputs=[hora, z], output=ventana, rule_base=rb)
-defuzz = Defuzzifier(output_var=ventana, method='LOM')
+# --------------------------------------------------------------------------
+# 3) Sistema difuso y desborrosificador (Sin cambios)
+# --------------------------------------------------------------------------
+fis    = FuzzyInferenceSystem(inputs=[hora, z], output=ventana, rule_base=rb) #
+defuzz = Defuzzifier(output_var=ventana, method='COG') #
 
-# 4) Entorno dinámico
-class SeriesEnvironment(Environment):
-    def __init__(self, comfort_day, comfort_night_cal, comfort_night_enf, ext_series):
-        super().__init__(comfort_day, comfort_night_cal, comfort_night_enf)
-        self.ext_series = ext_series
-        self.hour       = 0
-        self.temp_int   = comfort_day
 
-    def read_sensors(self):
-        return {
-            'hora':     float(self.hour),
-            'temp_int': self.temp_int,
-            'temp_ext': self.ext_series[self.hour]
-        }
+# --------------------------------------------------------------------------
+# 5) Series de temperatura exterior (Generación sin cambios)
+# --------------------------------------------------------------------------
+hours_in_day = list(range(24))
 
-# 5) Tres series de temperatura exterior
-import math
+def generate_sine_series_randomized_interval(mean: float,
+                                             base_amplitude: float,
+                                             days: int,
+                                             hourly_amplitude_variation: float = 0.4,
+                                             variation_interval_hours: int = 3,
+                                             phase_shift: float = 6.0
+                                             ) -> list:
+    total_series = []
+    total_simulation_hours = days * 24
+    last_random_variation = 0.0
+    if variation_interval_hours < 1: variation_interval_hours = 1
 
-# --- Horas 0..23 ---
-hours = list(range(24))
+    for hour_index in range(total_simulation_hours):
+        if hour_index % variation_interval_hours == 0:
+            last_random_variation = random.uniform(-hourly_amplitude_variation, hourly_amplitude_variation)
+        h = hour_index % 24
+        sin_component = base_amplitude * math.sin(2 * math.pi * (h - phase_shift) / 24.0)
+        temp_hour = mean + sin_component + last_random_variation
+        total_series.append(temp_hour)
+    return total_series
 
-def generate_sine_series(mean: float,
-                         amplitude: float,
-                         days: int,  # Nuevo parámetro: cantidad de días
-                         phase_shift: float = 6.0  # fase en horas: 6h antes del pico
-                        ) -> list:
-    """
-    Genera una serie de temperatura de 24 horas repetida para la cantidad de días especificada.
-    T(h) = mean + amplitude * sin(2π * (h - phase_shift) / 24)
-    Con phase_shift=6: mínimo a 0h, máximo a 12h.
-    """
-    # Generamos una serie de 24 horas
-    daily_series = [
-        mean + amplitude * math.sin(2 * math.pi * (h - phase_shift) / 24.0)
-        for h in hours
-    ]
-    
-    # Repetimos la serie tantas veces como días especificados
-    return daily_series * days
+# --- Parámetros de simulación ---
+days = 3
+variation_update_interval = 3
+amplitude_variation_magnitude = 0.4
+comfort_temp_day = 25.0
+comfort_temp_night_cal = 50.0 #
+comfort_temp_night_enf = 5.0  #
+initial_temp_int = comfort_temp_day # Temperatura inicial común
 
-# --- Parámetros ajustables ---
-# Serie “Bajo”  (p. ej. noches muy frescas)
-mean_low,  amp_low  = 11.0, 2.0
-# Serie “Medio” (incluye confort)
-mean_mid,  amp_mid  = 22.0, 5.0
-# Serie “Alto”  (días muy calurosos)
+# --- Parámetros físicos (Usados en ambas simulaciones) ---
+Rv_max = 0.8
+RC   = 24 * 720
+dt   = 3600.0
+
+# --- Escenarios de Temperatura Exterior ---
+mean_low,  amp_low  = 15.0, 2.0
+mean_mid,  amp_mid  = 24.0, 5.0
 mean_high, amp_high = 30.0, 8.0
 
-# --- Generar las tres series (para 7 días como ejemplo) ---
-days = 4  # Parámetro que define la cantidad de días
-ext_low  = generate_sine_series(mean_low,  amp_low,  days)
-ext_mid  = generate_sine_series(mean_mid,  amp_mid,  days)
-ext_high = generate_sine_series(mean_high, amp_high, days)
+# --- Generar Series ---
+ext_low  = generate_sine_series_randomized_interval(mean_low, amp_low, days, amplitude_variation_magnitude, variation_update_interval, 6)
+ext_mid  = generate_sine_series_randomized_interval(mean_mid, amp_mid, days, amplitude_variation_magnitude, variation_update_interval, 6)
+ext_high = generate_sine_series_randomized_interval(mean_high, amp_high, days, amplitude_variation_magnitude, variation_update_interval, 6)
 
+# Definir 'hours' basado en la longitud de las series generadas
+hours = list(range(len(ext_low)))
 
-hours = list(range(len(hours*days)))
-# 6) Simulación EULER + FuzzyController
-def simulate(ext_series):
-    env  = SeriesEnvironment(25, 50, 5, ext_series)
-    ctrl = FuzzyController(fis, defuzz, env)
+# --------------------------------------------------------------------------
+# 6) Simulación Fuzzy (Función sin cambios significativos)
+# --------------------------------------------------------------------------
+def simulate_fuzzy(ext_series):
+    env  = SeriesEnvironment(comfort_temp_day, comfort_temp_night_cal, comfort_temp_night_enf, ext_series)
+    env.temp_int = initial_temp_int # Asegurar temp inicial
+    ctrl = FuzzyController(fis, defuzz, env) #
     T_int_list, T_ext_list, acts = [], [], []
 
-    Rv_max = 0.1
-    RC   = 24 * 720  # τ = 5 h
-    dt   = 3600.0      # 1 h
+    # Pre-calcular predicción inicial si es necesario para el primer paso
+    env.calculate_temperatura_predicha() #
 
     for hour in hours:
+        if hour >= len(env.ext_series): break
+        env.hour = hour
+
+        # Obtener acción del controlador difuso
         act = ctrl.step()
+
+        # Obtener temp exterior
         T_ext = env.ext_series[hour]
-        T_int = env.temp_int + dt * ((T_ext - env.temp_int) / (RC*(1 + Rv_max*(1-act/100.0))))
-        
-        T_int_list.append(T_int)
+
+        # Calcular nueva temp interior
+        denominator = RC*(1 + Rv_max*(1-act/100.0))
+        if abs(denominator) < 1e-9: T_int_new = env.temp_int
+        else: T_int_new = env.temp_int + dt * (T_ext - env.temp_int) / denominator
+
+        # Registrar estado ANTES de actualizar
+        T_int_list.append(env.temp_int)
         T_ext_list.append(T_ext)
         acts.append(act)
 
-        env.temp_int = T_int
-        env.hour    = (hour+1) % 24
+        # Actualizar estado
+        env.update_state(T_int_new)
 
-    return T_int_list, T_ext_list, acts
+    avg_temp_int = np.mean(T_int_list) if T_int_list else initial_temp_int
+    avg_temp_ext = np.mean(T_ext_list) if T_ext_list else initial_temp_int
+    return T_int_list, T_ext_list, acts, avg_temp_int, avg_temp_ext
 
-data = {
-    'Bajo':  simulate(ext_low),
-    'Medio': simulate(ext_mid),
-    'Alto':  simulate(ext_high)
-}
+# --------------------------------------------------------------------------
+# 7) Ejecutar AMBAS simulaciones
+# --------------------------------------------------------------------------
+results = {}
+scenarios = {'Bajo': ext_low, 'Medio': ext_mid, 'Alto': ext_high}
+
+for label, ext_series in scenarios.items():
+    print(f"--- Simulando escenario: {label} ---")
+    # Simulación Fuzzy
+    print("Ejecutando Fuzzy...")
+    T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f = simulate_fuzzy(ext_series)
+
+    # Simulación ON-OFF ### NUEVO ###
+    print("Ejecutando ON-OFF...")
+    T_int_oo, T_ext_oo, act_oo, avg_T_int_oo, avg_T_ext_oo = simulate_on_off(
+        ext_series=ext_series,
+        hours=hours,
+        target_temp=comfort_temp_day,
+        initial_temp_int=initial_temp_int,
+        comfort_night_cal=comfort_temp_night_cal, # Pasar params requeridos por SeriesEnvironment
+        comfort_night_enf=comfort_temp_night_enf
+    )
+
+    # Guardar resultados de AMBOS controladores
+    results[label] = {
+        'fuzzy': (T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f),
+        'on_off': (T_int_oo, T_ext_oo, act_oo, avg_T_int_oo, avg_T_ext_oo)
+    }
+    print(f"Resultados {label}: Fuzzy Avg T_int={avg_T_int_f:.1f}°C, ON-OFF Avg T_int={avg_T_int_oo:.1f}°C")
 
 
-# 7) Graficar cada serie en su propia ventana
-for label, (T_int, T_ext, act) in data.items():
-    fig, ax1 = plt.subplots()
+# --------------------------------------------------------------------------
+# 8) Graficar Comparativas ### MODIFICADO ###
+# --------------------------------------------------------------------------
+for label, data in results.items():
+    # Desempaquetar resultados de ambos controladores
+    T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f = data['fuzzy']
+    T_int_oo, T_ext_oo, act_oo, avg_T_int_oo, avg_T_ext_oo = data['on_off']
+    # T_ext es la misma para ambos, podemos usar T_ext_f o T_ext_oo
+
+    fig, ax1 = plt.subplots(figsize=(12, 6)) # Hacer figura un poco más ancha
     ax2 = ax1.twinx()
 
-    ax1.plot(hours, T_int,   label='Interior', color='tab:blue')
-    ax1.plot(hours, T_ext,   label='Exterior', linestyle='--', color='tab:orange')
-    ax2.plot(hours, [a/100 for a in act], label='Apertura', color='tab:green')
+    # --- Graficar temperaturas ---
+    # Exterior (una sola vez)
+    ax1.plot(hours, T_ext_f, label='Exterior', linestyle='--', color='tab:orange', alpha=0.7)
+    # Interior Fuzzy
+    ax1.plot(hours, T_int_f, label=f'Interior Fuzzy (Prom: {avg_T_int_f:.1f}°C)', color='tab:blue', linewidth=2)
+    # Interior ON-OFF
+    ax1.plot(hours, T_int_oo, label=f'Interior ON-OFF (Prom: {avg_T_int_oo:.1f}°C)', color='tab:red', linestyle='-.', linewidth=1.5)
 
-    # Ajuste del límite del eje y para la apertura de ventana (siempre de 0 a 1)
-    ax2.set_ylim(0, 1)
+    # Línea de confort
+    ax1.axhline(y=comfort_temp_day, color='black', linestyle=':', linewidth=1, label=f"Confort ({comfort_temp_day}°C)")
 
-    # Graficar la línea horizontal para la temperatura de confort (25°C)
-    ax1.axhline(y=25, color='r', linestyle='--', label="Temperatura de confort (25°C)")
+    # --- Graficar acciones ---
+    # Acción Fuzzy (en verde)
+    ax2.plot(hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', drawstyle='steps-post', alpha=0.8, linewidth=1.5)
+    # Acción ON-OFF (en magenta)
+    ax2.plot(hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', drawstyle='steps-post', alpha=0.6, linewidth=1.0)
 
-    # Colorear zonas del gráfico: día (8 a 20) y noche (20 a 8)
-    for i in range(0, len(hours), 24):  # Iterar por días
-        # Día: de 8:00 a 20:00
-        ax1.axvspan(i + 8, i + 20, color='yellow', alpha=0.2)  # Día en amarillo
-        # Noche: de 20:00 a 8:00
-        ax1.axvspan(i + 20, i + 24, color='blue', alpha=0.1)  # Noche en azul claro
-        ax1.axvspan(i + 0, i + 8, color='blue', alpha=0.1)
+    # Ajuste del límite del eje y para la apertura (0 a 1)
+    ax2.set_ylim(-0.05, 1.05)
 
+    # Colorear zonas día/noche
+    for i in range(0, len(hours), 24):
+        ax1.axvspan(i + 8.5, i + 20.5, color='yellow', alpha=0.15, lw=0)
+        ax1.axvspan(i + 20.5, i + 24, color='blue', alpha=0.1, lw=0)
+        ax1.axvspan(i + 0, i + 8.5, color='blue', alpha=0.1, lw=0)
+
+    # Etiquetas y título
     ax1.set_xlabel('Hora (h)')
     ax1.set_ylabel('Temperatura (°C)')
     ax2.set_ylabel('Apertura ventana (fracción)')
-    ax1.set_title(f'Simulación 24 h – Serie {label}')
+    ax1.tick_params(axis='y')
+    ax2.tick_params(axis='y')
+    ax1.set_title(f'Comparativa Fuzzy vs ON-OFF: {days} días – Serie {label}')
+    ax1.grid(True, axis='y', linestyle=':', alpha=0.6)
 
     # Unir leyendas
     h1, l1 = ax1.get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
-    ax1.legend(h1 + h2, l1 + l2, loc='upper left')
+    ax1.legend(h1 + h2, l1 + l2, loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3) # Ajustar ncol y posición
 
-    plt.tight_layout()
+    plt.xlim(0, len(hours) - 1)
+    plt.tight_layout(rect=[0, 0.1, 1, 0.95]) # Ajustar para leyenda y título
 
-
-
+# --------------------------------------------------------------------------
+# 9) Graficar Variables Lingüísticas (Sin cambios)
+# --------------------------------------------------------------------------
 def plot_fuzzy_variable(var):
-    """
-    Grafica los conjuntos difusos de una LinguisticVariable en una nueva figura.
-    """
     u_min, u_max = var.universe
     xs = np.linspace(u_min, u_max, 500)
-    plt.figure()
-    for name, fs in var.sets.items():
-        ys = [fs.membership(x) for x in xs]
+    plt.figure(figsize=(8, 4)) # Tamaño ajustado
+    for name, fs in var.sets.items(): #
+        ys = [fs.membership(x) for x in xs] #
         plt.plot(xs, ys, label=name)
-    plt.title(f"Conjuntos borrosos para '{var.name}'")
-    plt.xlabel(f"Universo de '{var.name}'")
+    plt.title(f"Variable Lingüística: '{var.name}'") #
+    plt.xlabel("Universo de Discurso")
     plt.ylabel("Grado de pertenencia μ(x)")
     plt.ylim(-0.05, 1.05)
     plt.legend()
-    plt.grid(True)
+    plt.grid(True, linestyle=':', alpha=0.7)
     plt.tight_layout()
 
-# Graficar conjuntos borrosos de cada variable lingüística
-plot_fuzzy_variable(hora)
-plot_fuzzy_variable(z)
-plot_fuzzy_variable(ventana)
+# Graficar conjuntos difusos
+plot_fuzzy_variable(hora) #
+plot_fuzzy_variable(z) #
+plot_fuzzy_variable(ventana) #
 
 # Mostrar todas las figuras
 plt.show()
