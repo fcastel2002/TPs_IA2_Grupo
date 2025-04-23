@@ -34,42 +34,51 @@ class OnOffController(Controller):
             return 0
 
 def simulate_on_off(ext_series: list,
-                    hours: list,
+                    time_steps: list,
+                    dt_seconds: float,
+                    time_hours: list,
                     target_temp: float,
                     initial_temp_int: float,
                     comfort_night_cal: float,
-                    comfort_night_enf: float) -> tuple:
+                    comfort_night_enf: float,
+                    RC: float,
+                    Rv_max: float) -> tuple:
     """
-    Función de compatibilidad con el código original.
-    Simula el comportamiento del sistema con un controlador ON-OFF.
+    Simula el comportamiento del sistema con un controlador ON-OFF adaptado para pasos de tiempo.
     
-    Esta función se mantiene para compatibilidad con el código existente.
-    Para nuevos desarrollos, usar la clase OnOffController con Simulator.
+    Args:
+        ext_series: Serie de temperaturas exteriores
+        time_steps: Lista de índices de pasos de simulación
+        dt_seconds: Duración de cada paso en segundos
+        time_hours: Lista de tiempos en horas para cada paso
+        target_temp: Temperatura objetivo
+        initial_temp_int: Temperatura inicial interior
+        comfort_night_cal: Temperatura de confort nocturna (calor)
+        comfort_night_enf: Temperatura de confort nocturna (enfriamiento)
+        RC: Constante térmica del sistema
+        Rv_max: Resistencia máxima de ventilación
+        
+    Returns:
+        Tuple con listas de temperaturas interiores, exteriores, acciones, y promedios.
     """
     from environment.series_environment import SeriesEnvironment
     import numpy as np
-    
-    # Parámetros físicos
-    Rv_max = 0.8
-    RC = 24 * 720
-    dt = 3600.0
-    
+
     # Instanciar el entorno
     env = SeriesEnvironment(target_temp, comfort_night_cal, comfort_night_enf, ext_series)
     env.temp_int = initial_temp_int  # Establecer la temperatura inicial
 
     T_int_list, T_ext_list, acts = [], [], []
 
-    for hour in hours:
-        if hour >= len(env.ext_series): break
-        env.hour = hour  # Actualizar hora en el entorno
+    for step_index in time_steps:
+        if step_index >= len(env.ext_series): break
+        env.hour = time_hours[step_index] % 24  # Actualizar hora en el entorno
         
         # Obtener temp exterior
-        T_ext = env.ext_series[hour]
+        T_ext = env.ext_series[step_index]
 
         # Lógica de control ON-OFF
         current_temp_int = env.temp_int
-        
         if (current_temp_int > target_temp and T_ext < current_temp_int) or \
            (current_temp_int < target_temp and T_ext > current_temp_int):
             # Abrir ventana ayuda a acercarse a target_temp
@@ -84,7 +93,7 @@ def simulate_on_off(ext_series: list,
             T_int_new = env.temp_int
         else:
             dT_dt = (T_ext - env.temp_int) / denominator
-            T_int_new = env.temp_int + dt * dT_dt
+            T_int_new = env.temp_int + dt_seconds * dT_dt
 
         # Registrar estado ANTES de actualizar
         T_int_list.append(env.temp_int)

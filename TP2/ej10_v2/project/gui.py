@@ -309,49 +309,62 @@ class SimulationApp:
         # Ejecutar simulación en un hilo separado
         def run_in_thread():
             try:
-                # Guardar valores originales
-                original_rv_max = globals().get('Rv_max', 0.8)
-                original_rc = globals().get('RC', 24 * 720)
-                original_dt = globals().get('dt', 3600.0)
-                
-                # Modificar valores globales para la simulación
-                globals()['Rv_max'] = self.config['physical']['Rv_max']
-                globals()['RC'] = self.config['physical']['RC']
-                globals()['dt'] = self.config['physical']['dt']
+                # Calcular parámetros dependientes de dt
+                dt = self.config['physical']['dt']
+                total_time_seconds = self.config['simulation']['days'] * 24 * 3600
+                num_steps = int(total_time_seconds / dt)
+                # El eje X debe ser el tiempo en horas, perfectamente definido por el paso de tiempo y la duración
+                time_hours = np.linspace(0, self.config['simulation']['days'] * 24, num_steps, endpoint=False)
+                time_steps = list(range(num_steps))
                 
                 # Generar serie de temperatura
                 ext_series = generate_sine_series_randomized_interval(
                     mean=self.config['scenarios'][scenario]['mean'],
                     base_amplitude=self.config['scenarios'][scenario]['amplitude'],
-                    days=self.config['simulation']['days'],
+                    num_steps=num_steps,
+                    dt_seconds=dt,
+                    time_in_hours=time_hours,
                     hourly_amplitude_variation=self.config['simulation']['amplitude_variation'],
                     variation_interval_hours=self.config['simulation']['variation_interval'],
                     phase_shift=6.0
                 )
                 
-                # Definir horas
-                hours = list(range(len(ext_series)))
+                # Verificar longitudes
+                assert len(ext_series) == num_steps, f"Longitud de ext_series ({len(ext_series)}) no coincide con num_steps ({num_steps})"
+                assert len(time_hours) == num_steps, f"Longitud de time_hours ({len(time_hours)}) no coincide con num_steps ({num_steps})"
                 
                 # Ejecutar simulaciones usando las funciones existentes
-                T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f = simulate_fuzzy(ext_series)
+                T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f = simulate_fuzzy(
+                    ext_series,
+                    time_hours,
+                    time_steps,
+                    self.config['physical']['RC'],
+                    self.config['physical']['Rv_max'],
+                    dt,
+                    self.config['comfort']['day'],
+                    self.config['comfort']['night_cal'],
+                    self.config['comfort']['night_enf'],
+                    self.config['simulation']['initial_temp']
+                )
+                assert len(T_int_f) == num_steps, f"Longitud de T_int_f ({len(T_int_f)}) no coincide con num_steps ({num_steps})"
                 
                 T_int_oo, T_ext_oo, act_oo, avg_T_int_oo, avg_T_ext_oo = simulate_on_off(
                     ext_series=ext_series,
-                    hours=hours,
+                    time_steps=time_steps,
+                    time_hours=time_hours,
+                    dt_seconds=dt,
                     target_temp=self.config['comfort']['day'],
                     initial_temp_int=self.config['simulation']['initial_temp'],
                     comfort_night_cal=self.config['comfort']['night_cal'],
-                    comfort_night_enf=self.config['comfort']['night_enf']
+                    comfort_night_enf=self.config['comfort']['night_enf'],
+                    RC=self.config['physical']['RC'],
+                    Rv_max=self.config['physical']['Rv_max']
                 )
-                
-                # Restaurar valores originales
-                globals()['Rv_max'] = original_rv_max
-                globals()['RC'] = original_rc
-                globals()['dt'] = original_dt
+                assert len(T_int_oo) == num_steps, f"Longitud de T_int_oo ({len(T_int_oo)}) no coincide con num_steps ({num_steps})"
                 
                 # Guardar resultados
                 self.results[scenario] = {
-                    'hours': hours,
+                    'hours': time_hours,
                     'fuzzy': {
                         'T_int': T_int_f,
                         'T_ext': T_ext_f,
@@ -453,7 +466,7 @@ class SimulationApp:
         ax1.legend(h1 + h2, l1 + l2, loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3)
         
         # Ajustar límites
-        ax1.set_xlim(0, len(hours) - 1)
+        ax1.set_xlim(hours[0], hours[-1])
         
         # Mostrar gráfico en la interfaz
         canvas = FigureCanvasTkAgg(fig, master=self.plot_frame)

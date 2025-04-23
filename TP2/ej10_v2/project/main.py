@@ -62,17 +62,27 @@ defuzz = Defuzzifier(output_var=ventana, method='COG')
 # --------------------------------------------------------------------------
 # --- Parámetros de simulación ---
 days = 3
-variation_update_interval = 3
+variation_update_interval = 3 # En horas
 amplitude_variation_magnitude = 0.4
 comfort_temp_day = 25.0
 comfort_temp_night_cal = 50.0
 comfort_temp_night_enf = 5.0
-initial_temp_int = comfort_temp_day  # Temperatura inicial común
+initial_temp_int = comfort_temp_day
 
 # --- Parámetros físicos ---
 Rv_max = 0.8
 RC   = 24 * 720
-dt   = 3600.0
+# dt = 3600.0 # Paso de tiempo en segundos (ej: 1 hora)
+dt = 1800.0  # <- ¡NUEVO VALOR DE EJEMPLO! (0.5 horas)
+
+# --- Calcular parámetros dependientes de dt ---
+total_time_seconds = days * 24 * 3600
+num_steps = int(total_time_seconds / dt)
+# Crear un array de tiempo en horas para visualización y lógica basada en hora
+time_hours = np.linspace(0, days * 24 - dt / 3600, num_steps)
+# Crear un array de índices para los bucles
+time_steps = list(range(num_steps))
+
 
 # --- Escenarios de Temperatura Exterior ---
 scenarios = {
@@ -80,115 +90,138 @@ scenarios = {
     'Medio': {'mean': 24.0, 'amplitude': 5.0},
     'Alto': {'mean': 30.0, 'amplitude': 8.0}
 }
-
 # --------------------------------------------------------------------------
 # 5) Generación de series temporales
 # --------------------------------------------------------------------------
 # Generar series de temperatura para cada escenario
 ext_series = {}
 for label, params in scenarios.items():
+    # NOTA: Asumimos que generate_sine_series_randomized_interval
+    # ahora puede usar num_steps y dt (o time_hours) para generar la serie correctamente.
+    # Se pasa time_hours para que pueda generar la onda sinusoidal en base a la hora.
     ext_series[label] = generate_sine_series_randomized_interval(
         mean=params['mean'],
         base_amplitude=params['amplitude'],
-        days=days,
-        hourly_amplitude_variation=amplitude_variation_magnitude,
-        variation_interval_hours=variation_update_interval,
+        num_steps=num_steps, # <- Pasar número de pasos
+        dt_seconds=dt,       # <- Pasar dt
+        time_in_hours=time_hours, # <- Pasar el array de tiempo en horas
+        hourly_amplitude_variation=amplitude_variation_magnitude, # Esto puede necesitar ajuste si dt != 3600
+        variation_interval_hours=variation_update_interval, # Esto puede necesitar ajuste si dt != 3600
         phase_shift=6.0
     )
+    # Asegurarse que la longitud coincida
+    if len(ext_series[label]) != num_steps:
+        print(f"Advertencia: La longitud de la serie generada ({len(ext_series[label])}) no coincide con num_steps ({num_steps}) para {label}. Ajustando...")
+        # Podría ser necesario ajustar la serie (truncar o rellenar) o revisar la función generadora
+        ext_series[label] = ext_series[label][:num_steps] # Ejemplo de truncado
 
-# Definir 'hours' basado en la longitud de las series generadas
-hours = list(range(len(ext_series['Bajo'])))
 
 # --------------------------------------------------------------------------
 # 6) Simulación y visualización
 # --------------------------------------------------------------------------
-def simulate_fuzzy(ext_series):
-    """Función de compatibilidad con el código original."""
-    env  = SeriesEnvironment(comfort_temp_day, comfort_temp_night_cal, comfort_temp_night_enf, ext_series)
-    env.temp_int = initial_temp_int  # Asegurar temp inicial
+def simulate_fuzzy(
+    ext_series_scenario,
+    current_time_hours,
+    time_steps,
+    RC,
+    Rv_max,
+    dt,
+    comfort_temp_day,
+    comfort_temp_night_cal,
+    comfort_temp_night_enf,
+    initial_temp_int
+):
+    """Función de simulación Fuzzy adaptada para dt y parámetros explícitos."""
+    env  = SeriesEnvironment(comfort_temp_day, comfort_temp_night_cal, comfort_temp_night_enf, ext_series_scenario)
+    env.temp_int = initial_temp_int
     ctrl = FuzzyController(fis, defuzz, env)
     T_int_list, T_ext_list, acts = [], [], []
 
-    # Pre-calcular predicción inicial si es necesario para el primer paso
-    env.calculate_temperatura_predicha()
-
-    for hour in hours:
-        if hour >= len(env.ext_series): break
-        env.hour = hour
-
-        # Obtener acción del controlador difuso
+    for step_index in time_steps:
+        if step_index >= len(env.ext_series): break # Seguridad
+        current_hour_of_day = current_time_hours[step_index] % 24
+        env.hour = current_hour_of_day
         act = ctrl.step()
-
-        # Obtener temp exterior
-        T_ext = env.ext_series[hour]
-
-        # Calcular nueva temp interior
+        T_ext = env.ext_series[step_index]
         denominator = RC*(1 + Rv_max*(1-act/100.0))
-        if abs(denominator) < 1e-9: T_int_new = env.temp_int
-        else: T_int_new = env.temp_int + dt * (T_ext - env.temp_int) / denominator
-
-        # Registrar estado ANTES de actualizar
+        if abs(denominator) < 1e-9:
+            T_int_new = env.temp_int
+        else:
+            T_int_new = env.temp_int + dt * (T_ext - env.temp_int) / denominator
         T_int_list.append(env.temp_int)
         T_ext_list.append(T_ext)
         acts.append(act)
-
-        # Actualizar estado
         env.update_state(T_int_new)
 
     avg_temp_int = np.mean(T_int_list) if T_int_list else initial_temp_int
-    avg_temp_ext = np.mean(T_ext_list) if T_ext_list else initial_temp_int
+    avg_temp_ext = np.mean(T_ext_list) if T_ext_list else np.mean(ext_series_scenario) if ext_series_scenario else initial_temp_int
     return T_int_list, T_ext_list, acts, avg_temp_int, avg_temp_ext
 
 # Ejecutar simulaciones para cada escenario
 results = {}
 
 for label, series in ext_series.items():
-    print(f"--- Simulando escenario: {label} ---")
-    
+    print(f"--- Simulando escenario: {label} (dt={dt}s, steps={num_steps}) ---")
+
     # Simulación Fuzzy
     print("Ejecutando Fuzzy...")
-    T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f = simulate_fuzzy(series)
+    # Pasar el array de tiempo en horas a la simulación
+    T_int_f, T_ext_f, act_f, avg_T_int_f, avg_T_ext_f = simulate_fuzzy(
+        series,
+        time_hours,
+        time_steps,
+        RC,
+        Rv_max,
+        dt,
+        comfort_temp_day,
+        comfort_temp_night_cal,
+        comfort_temp_night_enf,
+        initial_temp_int
+    )
 
     # Simulación ON-OFF
     print("Ejecutando ON-OFF...")
+    # NOTA: simulate_on_off también necesitaría ser adaptada para usar
+    # num_steps, dt, y time_hours en lugar de la lista 'hours' original.
+    # Aquí se asume que la función ha sido modificada correspondientemente.
     T_int_oo, T_ext_oo, act_oo, avg_T_int_oo, avg_T_ext_oo = simulate_on_off(
         ext_series=series,
-        hours=hours,
+        # hours=hours, <-- Reemplazado
+        time_steps=time_steps, # Pasar índices o número de pasos
+        time_hours=time_hours, # Pasar tiempo en horas para lógica día/noche
+        dt_seconds=dt,       # Pasar dt
         target_temp=comfort_temp_day,
         initial_temp_int=initial_temp_int,
         comfort_night_cal=comfort_temp_night_cal,
-        comfort_night_enf=comfort_temp_night_enf
+        comfort_night_enf=comfort_temp_night_enf,
+        RC=RC, # Pasar RC si es necesario para el cálculo interno
+        Rv_max=Rv_max # Pasar Rv_max si es necesario para el cálculo interno
     )
 
-    # Guardar resultados
+    # Guardar resultados (sin cambios en la estructura)
     results[label] = {
         'fuzzy': {
-            'T_int': T_int_f,
-            'T_ext': T_ext_f,
-            'actions': act_f,
-            'avg_T_int': avg_T_int_f,
-            'avg_T_ext': avg_T_ext_f
+            'T_int': T_int_f, 'T_ext': T_ext_f, 'actions': act_f,
+            'avg_T_int': avg_T_int_f, 'avg_T_ext': avg_T_ext_f
         },
         'on_off': {
-            'T_int': T_int_oo,
-            'T_ext': T_ext_oo,
-            'actions': act_oo,
-            'avg_T_int': avg_T_int_oo,
-            'avg_T_ext': avg_T_ext_oo
+            'T_int': T_int_oo, 'T_ext': T_ext_oo, 'actions': act_oo,
+            'avg_T_int': avg_T_int_oo, 'avg_T_ext': avg_T_ext_oo
         }
     }
-    
+
     print(f"Resultados {label}: Fuzzy Avg T_int={avg_T_int_f:.1f}°C, ON-OFF Avg T_int={avg_T_int_oo:.1f}°C")
 
 # Visualizar resultados
 for label, data in results.items():
+    # Pasar el array de tiempo en horas a la función de ploteo
     plot_comparison(
         label=label,
-        hours=hours,
+        time_hours=time_hours, # Usar el array de tiempo en horas para el eje X
         fuzzy_data=data['fuzzy'],
         onoff_data=data['on_off'],
         comfort_temp=comfort_temp_day,
-        days=days
+        # days=days <-- No necesita 'days' si usa time_hours
     )
 
 # Visualizar variables lingüísticas
