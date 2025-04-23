@@ -182,7 +182,7 @@ def plot_comparison(label: str,
             try:
                  # Intenta ajustar el layout para evitar solapamientos
                  # Dejar un poco más de espacio arriba (disminuir top en rect) para la leyenda
-                 fig.tight_layout(rect=[0, 0, 1, 0.94]) # <--- MODIFICADO (ajustar top)
+                 fig.tight_layout(rect=[0, 0, 1, 0.9]) # <--- MODIFICADO (ajustar top)
             except Exception as e: # Capturar excepción específica si es posible
                  print(f"Advertencia: No se pudo aplicar tight_layout. Error: {e}")
                  pass

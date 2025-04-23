@@ -33,13 +33,13 @@ hora.add_set(FuzzySet('NOCHE_AM', TrapezoidalMF(0.0, 0.0, 8.5, 8.5))) # Desde me
 z_limit = 500
 z = LinguisticVariable('Z', (-z_limit, z_limit))
 z.add_set(FuzzySet('POSITIVO', TrapezoidalMF(1.5,  200.0,  z_limit, z_limit)))
-z.add_set(FuzzySet('CERO',      TriangularMF(-2.2, 0.0,  2.2)))
+z.add_set(FuzzySet('CERO',      TriangularMF(-3.6, 0.0,  3.6)))
 z.add_set(FuzzySet('NEGATIVO',  TrapezoidalMF(-z_limit, -z_limit, -200.0, -1.5)))
 
 ventana = LinguisticVariable('Ventana', (0.0, 100.0))
-ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  5.0, 45.0)))
-ventana.add_set(FuzzySet('CENTRO', TriangularMF(40.0, 50.0,  60.0)))
-ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(55.0,  95.0, 100.0, 100.0)))
+ventana.add_set(FuzzySet('CERRAR', TrapezoidalMF(0.0,   0.0,  5.0, 49.0)))
+ventana.add_set(FuzzySet('CENTRO', TriangularMF(48.0, 50.0,  53.0)))
+ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(52.0,  95.0, 100.0, 100.0)))
 
 # --------------------------------------------------------------------------
 # 2) Base de reglas (Adaptada a nuevos nombres de sets de Hora)
@@ -180,19 +180,22 @@ for label, series in ext_series.items():
 
 # --- Visualizar resultados ---
 # El plotter espera los datos desempaquetados, así que accedemos a las claves internas
-for label, data in results.items():
-    plot_comparison(
-        label=label,
-        time_hours=time_hours, # Usar el array de tiempo acumulado en horas
-        fuzzy_data=data['fuzzy'], # Pasar el diccionario completo
-        onoff_data=data['on_off'], # Pasar el diccionario completo
-        comfort_temp=comfort_temp_day
-    )
 
-# Visualizar variables lingüísticas
-plot_fuzzy_variable(hora)
-plot_fuzzy_variable(z)
-plot_fuzzy_variable(ventana)
+visualizar = True
+if(visualizar):
+    for label, data in results.items():
+        plot_comparison(
+            label=label,
+            time_hours=time_hours, # Usar el array de tiempo acumulado en horas
+            fuzzy_data=data['fuzzy'], # Pasar el diccionario completo
+            onoff_data=data['on_off'], # Pasar el diccionario completo
+            comfort_temp=comfort_temp_day
+        )
 
-# Mostrar todas las figuras
-plt.show()
+    # Visualizar variables lingüísticas
+    plot_fuzzy_variable(hora)
+    plot_fuzzy_variable(z)
+    plot_fuzzy_variable(ventana)
+
+    # Mostrar todas las figuras
+    plt.show()
