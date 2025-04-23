@@ -25,6 +25,18 @@ class Defuzzifier:
         for set_name, lst in fuzzy_outputs.items():
             strengths = [strength for (_,strength) in lst]
             agg_strength[set_name] = max(strengths) if strengths else 0.0
+        # --- INICIO: chequeo de único conjunto activado ---
+        non_zero_items = [(key, value) for key, value in agg_strength.items() if value != 0]
+        if len(non_zero_items) == 1:
+            conjunto_salida = non_zero_items[0][0]
+            print(f"La clave con valor distinto de 0 es: {conjunto_salida}\n")
+            if conjunto_salida == 'CERRAR':
+                return 0.0  # Cerrar ventana
+            elif conjunto_salida == 'ABRIR':
+                return 100.0
+            elif conjunto_salida == 'CENTRO':
+                return 50.0
+        # --- FIN: chequeo de único conjunto activado ---
         # 2) Construir función agregada μ(x)
         u_min, u_max = self.output_var.universe
         step = (u_max - u_min) / (self.resolution - 1)
