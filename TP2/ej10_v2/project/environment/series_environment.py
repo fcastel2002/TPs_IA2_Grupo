@@ -67,7 +67,7 @@ class SeriesEnvironment(Environment):
         Llamar una vez al día (p.ej., a medianoche).
         """
         self.prediccion_diaria = self.calculate_temperatura_predicha()
-        # print(f"Debug: Predicción actualizada a {self.prediccion_diaria} en paso {self.current_step}") # Para depuración
+        print(f"Debug: Predicción actualizada a {self.prediccion_diaria} en paso {self.current_step}") # Para depuración
 
     def update_state(self, new_temp_int: float, current_hour_in_day: float, step_index: int):
         """Actualiza la temperatura interior, la hora y el índice del paso."""

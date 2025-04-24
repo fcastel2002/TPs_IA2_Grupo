@@ -25,7 +25,7 @@ def generate_sine_series_smooth(mean: float,
     steps_per_day = int(24 * 3600 / dt_seconds)
     num_days = (num_steps + steps_per_day - 1) // steps_per_day
     # Generar una media aleatoria para cada día dentro del margen de ±3 grados
-    daily_means = [random.uniform(mean - 3, mean + 3) for _ in range(num_days)]
+    daily_means = [random.uniform(mean - 0, mean + 0) for _ in range(num_days)]
     total_series = []
     for step_index in range(num_steps):
         day_idx = step_index // steps_per_day
