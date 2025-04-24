@@ -55,8 +55,8 @@ def plot_comparison(label: str,
         ax1.axhline(y=comfort_temp, color='black', linestyle=':', linewidth=1, label=f"Confort ({comfort_temp}°C)")
 
         # --- Graficar acciones (ax2) ---
-        ax2.plot(time_hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', drawstyle='steps-post', alpha=0.8, linewidth=1.5)
-        ax2.plot(time_hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', drawstyle='steps-post', alpha=0.6, linewidth=1.0)
+        ax2.plot(time_hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', alpha=0.8, linewidth=1.5)
+        ax2.plot(time_hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', alpha=0.6, linewidth=1.0)
         ax2.set_ylim(-0.05, 1.05)
 
         # --- Colorear zonas día/noche (ax1) ---
@@ -137,8 +137,8 @@ def plot_comparison(label: str,
         ax1.set_ylabel('Temperatura (°C)')
         ax1.set_title(f'Comparativa (con Z): {int(max(time_hours))}h – Esc. {label}')
 
-        ax2.plot(time_hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', drawstyle='steps-post', alpha=0.8, linewidth=1.5)
-        ax2.plot(time_hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', drawstyle='steps-post', alpha=0.6, linewidth=1.0)
+        ax2.plot(time_hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', alpha=0.8, linewidth=1.5)
+        ax2.plot(time_hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', alpha=0.6, linewidth=1.0)
         ax2.set_ylim(-0.05, 1.05)
         ax2.set_ylabel('Apertura ventana (fracción)')
 
