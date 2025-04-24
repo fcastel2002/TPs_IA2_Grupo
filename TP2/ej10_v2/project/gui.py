@@ -48,22 +48,23 @@ class SimulationApp:
                 'night_enf': 5.0
             },
             'physical': {
-                'Rv_max': 0.8,
+                'Rv_max': 0.1,
                 'RC': 24 * 720,
                 'dt': 3600.0
             },
             'simulation': {
                 'days': 3,
-                'initial_temp': 25.0,
+                'initial_temp': 23.0,
                 'variation_interval': 3,
                 'amplitude_variation': 0.4
             },
             'scenarios': {
                 'Bajo': {'mean': 15.0, 'amplitude': 2.0},
-                'Medio': {'mean': 24.0, 'amplitude': 5.0},
+                'Medio': {'mean': 22.0, 'amplitude': 4.0},
                 'Alto': {'mean': 30.0, 'amplitude': 8.0}
             }
         }
+        self.config_init = self.config
 
         # Crear variables Tkinter para los parámetros
         self.create_variables()
@@ -274,12 +275,7 @@ class SimulationApp:
 
     def reset_to_defaults(self):
         # Restablecer self.config a los valores originales y actualizar GUI
-        self.config = {
-            'comfort': {'day': 25.0, 'night_cal': 50.0, 'night_enf': 5.0},
-            'physical': {'Rv_max': 0.8, 'RC': 24 * 720, 'dt': 3600.0},
-            'simulation': {'days': 3, 'initial_temp': 25.0, 'variation_interval': 3, 'amplitude_variation': 0.4},
-            'scenarios': {'Bajo': {'mean': 15.0, 'amplitude': 2.0}, 'Medio': {'mean': 24.0, 'amplitude': 5.0}, 'Alto': {'mean': 30.0, 'amplitude': 8.0}}
-        }
+        self.config = self.config_init.copy() # Copia profunda de la configuración inicial
         self.update_gui_from_config()
         messagebox.showinfo("Configuración", "Valores restablecidos a los predeterminados.")
 
