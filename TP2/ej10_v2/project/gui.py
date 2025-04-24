@@ -326,8 +326,6 @@ class SimulationApp:
                 num_steps=num_steps,
                 dt_seconds=dt,
                 time_in_hours=time_hours,
-                hourly_amplitude_variation=cfg_sim['amplitude_variation'],
-                variation_interval_hours=cfg_sim['variation_interval'],
                 phase_shift=6.0
             )
             # Asegurar longitud correcta
