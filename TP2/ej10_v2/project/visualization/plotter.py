@@ -50,13 +50,13 @@ def plot_comparison(label: str,
 
         # --- Graficar temperaturas (ax1) ---
         ax1.plot(time_hours, T_ext_f, label='Exterior', linestyle='--', color='tab:orange', alpha=0.7)
-        ax1.plot(time_hours, T_int_f, label=f'Interior Fuzzy (Prom: {avg_T_int_f:.1f}°C)', color='tab:blue', linewidth=2)
-        ax1.plot(time_hours, T_int_oo, label=f'Interior ON-OFF (Prom: {avg_T_int_oo:.1f}°C)', color='tab:red', linestyle='-.', linewidth=1.5)
+        ax1.plot(time_hours, T_int_f, label=f'Interior Fuzzy (Prom: {avg_T_int_f:.1f}°C)', color='tab:blue', linewidth=4.5)
+        ax1.plot(time_hours, T_int_oo, label=f'Interior ON-OFF (Prom: {avg_T_int_oo:.1f}°C)', color='red', linestyle='-.', linewidth=2.5)
         ax1.axhline(y=comfort_temp, color='black', linestyle=':', linewidth=1, label=f"Confort ({comfort_temp}°C)")
 
         # --- Graficar acciones (ax2) ---
-        ax2.plot(time_hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', alpha=0.8, linewidth=1.5)
-        ax2.plot(time_hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', alpha=0.6, linewidth=1.0)
+        ax2.plot(time_hours, [a/100.0 for a in act_f], label='Apertura Fuzzy', color='tab:green', alpha=0.8, linewidth=2.5)
+        ax2.plot(time_hours, [a/100.0 for a in act_oo], label='Apertura ON-OFF', color='tab:purple', alpha=0.6, linewidth=2.5)
         ax2.set_ylim(-0.05, 1.05)
 
         # --- Colorear zonas día/noche (ax1) ---
@@ -68,15 +68,15 @@ def plot_comparison(label: str,
             # Noche AM
             start = max(min_hour, day_start_hour + 0)
             end = min(max_hour, day_start_hour + 8.5)
-            if end > start: ax1.axvspan(start, end, color='blue', alpha=0.1, lw=0)
+            if end > start: ax1.axvspan(start, end, color='blue', alpha=0.08, lw=0)
             # Día
             start = max(min_hour, day_start_hour + 8.5)
             end = min(max_hour, day_start_hour + 20.5)
-            if end > start: ax1.axvspan(start, end, color='yellow', alpha=0.15, lw=0)
+            if end > start: ax1.axvspan(start, end, color='yellow', alpha=0.08, lw=0)
             # Noche PM
             start = max(min_hour, day_start_hour + 20.5)
             end = min(max_hour, day_start_hour + 24)
-            if end > start: ax1.axvspan(start, end, color='blue', alpha=0.1, lw=0)
+            if end > start: ax1.axvspan(start, end, color='blue', alpha=0.08, lw=0)
 
         # --- Etiquetas y Título ---
         ax1.set_xlabel('Hora (h)')
@@ -132,7 +132,7 @@ def plot_comparison(label: str,
         # (Mismo código de ploteo que antes para ax1 y ax2)
         ax1.plot(time_hours, T_ext_f, label='Exterior', linestyle='--', color='tab:orange', alpha=0.7)
         ax1.plot(time_hours, T_int_f, label=f'Interior Fuzzy (Prom: {avg_T_int_f:.1f}°C)', color='tab:blue', linewidth=2)
-        ax1.plot(time_hours, T_int_oo, label=f'Interior ON-OFF (Prom: {avg_T_int_oo:.1f}°C)', color='tab:red', linestyle='-.', linewidth=1.5)
+        ax1.plot(time_hours, T_int_oo, label=f'Interior ON-OFF (Prom: {avg_T_int_oo:.1f}°C)', color='yellow', linestyle='-.', linewidth=1.5)
         ax1.axhline(y=comfort_temp, color='black', linestyle=':', linewidth=1, label=f"Confort ({comfort_temp}°C)")
         ax1.set_ylabel('Temperatura (°C)')
         ax1.set_title(f'Comparativa (con Z): {int(max(time_hours))}h – Esc. {label}')
