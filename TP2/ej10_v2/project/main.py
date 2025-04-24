@@ -17,7 +17,7 @@ from control.on_off_controller import OnOffController
 # from control.on_off_controller import simulate_on_off
 
 from environment.series_environment import SeriesEnvironment
-from simulation.data_generator import generate_sine_series_randomized_interval
+from simulation.data_generator import generate_sine_series_smooth
 from simulation.simulator import Simulator # <--- Importar Simulator
 from visualization.plotter import plot_comparison, plot_fuzzy_variable
 
@@ -98,15 +98,12 @@ scenarios = {
 # --------------------------------------------------------------------------
 ext_series = {}
 for label, params in scenarios.items():
-    ext_series[label] = generate_sine_series_randomized_interval(
+    ext_series[label] = generate_sine_series_smooth(
         mean=params['mean'],
         base_amplitude=params['amplitude'],
         num_steps=num_steps,
         dt_seconds=dt,
-        time_in_hours=time_hours, # Pasar el tiempo acumulado en horas
-        hourly_amplitude_variation=amplitude_variation_magnitude,
-        variation_interval_hours=variation_update_interval,
-        phase_shift=6.0
+        time_in_hours=time_hours
     )
     # Asegurarse que la longitud coincida
     if len(ext_series[label]) != num_steps:

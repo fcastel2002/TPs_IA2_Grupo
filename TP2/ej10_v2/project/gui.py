@@ -11,7 +11,7 @@ from environment.series_environment import SeriesEnvironment
 from control.fuzzy_controller import FuzzyController
 from control.on_off_controller import OnOffController
 from simulation.simulator import Simulator # <--- Importar Simulator
-from simulation.data_generator import generate_sine_series_randomized_interval
+from simulation.data_generator import generate_sine_series_smooth
 # Importar elementos para Fuzzy (FIS, Defuzzifier) - Asumiendo que están accesibles
 # Necesitamos la configuración de FIS y Defuzzifier como en main.py
 # Podríamos importarlos desde main o definirlos/cargarlos aquí.
@@ -320,14 +320,12 @@ class SimulationApp:
             print(f"Parámetros: dt={dt}, days={cfg_sim['days']}, num_steps={num_steps}") # Debug
 
             # Generar serie de temperatura exterior
-            ext_series = generate_sine_series_randomized_interval(
+            ext_series = generate_sine_series_smooth(
                 mean=cfg_scenario['mean'],
                 base_amplitude=cfg_scenario['amplitude'],
                 num_steps=num_steps,
                 dt_seconds=dt,
                 time_in_hours=time_hours,
-                hourly_amplitude_variation=cfg_sim['amplitude_variation'],
-                variation_interval_hours=cfg_sim['variation_interval'],
                 phase_shift=6.0
             )
             # Asegurar longitud correcta

@@ -74,3 +74,10 @@ class SeriesEnvironment(Environment):
         self.temp_int = new_temp_int
         self.hour = current_hour_in_day
         self.current_step = step_index
+
+    def set_comfort_day(self, new_value: float):
+        """
+        Permite cambiar la temperatura de confort diurna durante la simulación.
+        """
+        self.comfort_day = new_value
+        self.update_daily_prediction()
