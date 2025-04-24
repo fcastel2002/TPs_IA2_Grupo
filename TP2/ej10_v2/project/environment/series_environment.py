@@ -29,31 +29,26 @@ class SeriesEnvironment(Environment):
 
     def calculate_temperatura_predicha(self) -> str:
         """
-        Calcula la temperatura predicha como el promedio de las diferencias
-        entre la temperatura exterior y la temperatura de confort diurna.
-        Solo para las horas de 8:00 a 20:00 de toda la serie.
-        Devuelve 'ALTA', 'BAJA' o 'CERO'.
+        Calcula la temperatura predicha usando SOLO los datos del día siguiente al actual.
+        Si no hay suficientes datos para el día siguiente, devuelve 'CERO'.
         """
+        pasos_por_dia = 24  # Asumiendo 1 paso por hora
+        dia_siguiente = (self.current_step // pasos_por_dia) + 1
+        inicio = dia_siguiente * pasos_por_dia
+        fin = min(inicio + pasos_por_dia, len(self.ext_series))
+        if inicio >= len(self.ext_series):
+            return "CERO"  # No hay datos del día siguiente
         diff_sum = 0
         count = 0
-        # Itera sobre toda la serie para calcular la predicción basada en el historial completo
-        # Esto asume que ext_series representa un ciclo típico o el historial relevante.
-        # Idealmente, esto usaría un pronóstico real.
-        for idx, temp_ext_step in enumerate(self.ext_series):
-             # Asumiendo dt=3600s, idx es la hora. Si dt es diferente, se necesita un array de horas.
-             # Para simplificar, mantenemos la lógica original asumiendo que la longitud
-             # de ext_series corresponde a pasos horarios, o que el patrón es representativo.
-            hora_del_paso = idx % 24 # Estimación de la hora del día para ese paso
-            if 8 < hora_del_paso <= 20: # Solo horario diurno
-                 diff_sum += temp_ext_step - self.comfort_day
-                 count += 1
-
-        if count == 0:  # Evitar división por cero
+        for idx in range(inicio, fin):
+            hora_del_paso = idx % pasos_por_dia
+            if 8 < hora_del_paso <= 20:  # Solo horario diurno
+                diff_sum += self.ext_series[idx] - self.comfort_day
+                count += 1
+        if count == 0:
             promedio_diferencia = 0
         else:
             promedio_diferencia = diff_sum / count
-
-        # Clasificación basada en umbrales
         if promedio_diferencia > 2.5:
             return "ALTA"
         elif promedio_diferencia < -2.5:
