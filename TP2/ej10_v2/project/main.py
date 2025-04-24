@@ -105,10 +105,7 @@ for label, params in scenarios.items():
         base_amplitude=params['amplitude'],
         num_steps=num_steps,
         dt_seconds=dt,
-        time_in_hours=time_hours, # Pasar el tiempo acumulado en horas
-        hourly_amplitude_variation=amplitude_variation_magnitude,
-        variation_interval_hours=variation_update_interval,
-        phase_shift=6.0
+        time_in_hours=time_hours
     )
     # Asegurarse que la longitud coincida
     if len(ext_series[label]) != num_steps:
