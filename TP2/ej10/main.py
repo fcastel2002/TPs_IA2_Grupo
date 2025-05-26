@@ -31,7 +31,8 @@ ventana.add_set(FuzzySet('ABRIR',  TrapezoidalMF(60,  90.0, 100.0, 100.0)))
 rb = RuleBase()
 # Día
 rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'POSITIVO')], (ventana, 'CERRAR')))
-rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'CERO')],     (ventana, 'CENTRO')))
+rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'CERO')],     (ventana, 'CENTRO'))
+            )
 rb.add_rule(FuzzyRule([(hora, 'DIA'),    (z, 'NEGATIVO')], (ventana, 'ABRIR')))
 # Noche
 for nh in ('NOCHE','NOCHE2'):
