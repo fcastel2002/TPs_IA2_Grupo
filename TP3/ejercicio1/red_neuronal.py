@@ -1,5 +1,3 @@
-
-
 # Importa la función para cargar los datos
 from parser import cargar_datos
 import numpy as np
@@ -19,10 +17,10 @@ def leaky_relu_derivative(z, alpha=0.02):
     return np.where(z > 0, 1, alpha)
 
 class RedNeuronal:
-    def __init__(self, capas_entrada, capas_ocultas, capas_salida, learning_rate=0.004, activacion_oculta=leaky_relu, derivada_oculta=leaky_relu_derivative, activacion_salida=linear, derivada_salida=linear_derivative, alpha=0.02):
-        self.capas_entrada = capas_entrada
-        self.capas_ocultas = capas_ocultas
-        self.capas_salida = capas_salida
+    def __init__(self, neuronas_entrada, neuronas_ocultas, neuronas_salida, learning_rate=0.004, activacion_oculta=leaky_relu, derivada_oculta=leaky_relu_derivative, activacion_salida=linear, derivada_salida=linear_derivative, alpha=0.02):
+        self.neuronas_entrada = neuronas_entrada
+        self.neuronas_ocultas = neuronas_ocultas
+        self.neuronas_salida = neuronas_salida
         self.learning_rate = learning_rate
         self.activacion_oculta = lambda z: activacion_oculta(z, alpha)
         self.derivada_oculta = lambda z: derivada_oculta(z, alpha)
@@ -31,10 +29,10 @@ class RedNeuronal:
         self.inicializar_pesos()
 
     def inicializar_pesos(self):
-        self.W1 = np.random.randn(self.capas_entrada, self.capas_ocultas) * 0.1
-        self.b1 = np.zeros((1, self.capas_ocultas))
-        self.W2 = np.random.randn(self.capas_ocultas, self.capas_salida) * 0.1
-        self.b2 = np.zeros((1, self.capas_salida))
+        self.W1 = np.random.randn(self.neuronas_entrada, self.neuronas_ocultas) * 0.1
+        self.b1 = np.zeros((1, self.neuronas_ocultas))
+        self.W2 = np.random.randn(self.neuronas_ocultas, self.neuronas_salida) * 0.1
+        self.b2 = np.zeros((1, self.neuronas_salida))
 
     def forward(self, X):
         Z1 = X @ self.W1 + self.b1
@@ -88,9 +86,9 @@ if __name__ == "__main__":
     grado = 2
     X_poly = np.hstack([X ** i for i in range(1, grado + 1)])
     modelo = RedNeuronal(
-        capas_entrada=grado,
-        capas_ocultas=4,
-        capas_salida=1,
+        neuronas_entrada=grado,
+        neuronas_ocultas=4,
+        neuronas_salida=1,
         learning_rate=0.0081,
         activacion_oculta=leaky_relu,
         derivada_oculta=leaky_relu_derivative,
@@ -101,6 +99,12 @@ if __name__ == "__main__":
     modelo.train(X_poly, Y, epochs=1000)
     y_final = modelo.predict(X_poly)
     plt.scatter(X, Y, s=10, label='Datos Originales', color='blue')
+    plt.title('Dataset propuesto')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.show()
+
+    plt.scatter(X, Y, s=10, label='Datos y prediccion', color='blue')
     plt.scatter(X, y_final, s=10, label='Predicciones', color='red')
     plt.xlabel('X')
     plt.ylabel('Y')
