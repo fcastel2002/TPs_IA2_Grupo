@@ -193,7 +193,11 @@ def gameScreen():
                 for dino in population:
                     dino_params = dino.dino_rect
                     if dino.alive and dino_params.colliderect(obstacle_params):
-                        dino.score = points
+                        # Si colisiona contra un Bird, penalizamos: le damos score muy bajo (0)
+                        if isinstance(obstacle, Bird):
+                            dino.score = 0
+                        else:
+                            dino.score = points
                         dino.alive = False
 
                         if (count_alive(population) == 0):
