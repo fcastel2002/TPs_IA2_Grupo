@@ -50,7 +50,7 @@ def populate(population_size):
     return population
 
 # ======================== SELECT THE POPULATION NUMBER PLAYING AT THE SAME TIME ======================
-population_number = 250
+population_number = 1000
 # =====================================================================================================
 population = populate(population_number)
 player = Dinosaur(0)
@@ -193,11 +193,7 @@ def gameScreen():
                 for dino in population:
                     dino_params = dino.dino_rect
                     if dino.alive and dino_params.colliderect(obstacle_params):
-                        # Si colisiona contra un Bird, penalizamos: le damos score muy bajo (0)
-                        if isinstance(obstacle, Bird):
-                            dino.score = 0
-                        else:
-                            dino.score = points
+                        dino.score = points
                         dino.alive = False
 
                         if (count_alive(population) == 0):

@@ -21,7 +21,7 @@ def select_fittest(population, k=2):
     print("» Selected parents indices:", selected)
     return selected
 
-def evolve(parent1, parent2, mutation_rate=0.2, mutation_strength=0.3):
+def evolve(parent1, parent2, mutation_rate=0.1, mutation_strength=0.1):
     """
     Cruza de un punto + mutación gaussiana de dos redes, devolviendo
     una NUEVA instancia de NeuralNetwork.
@@ -57,12 +57,12 @@ def evolve(parent1, parent2, mutation_rate=0.2, mutation_strength=0.3):
 
     return child
 
-def updateNetwork(population, elitism=3):
+def updateNetwork(population, elitism=10):
     """
-    1) Selección por torneo (select_fittest)
-    2) Elitismo: copiar intactos 'elitism' mejores padres
+    1) Selección por torneo
+    2) Elitismo: copiamos intactos 'elitism' mejores padres (ordenados por score)
     3) Cruce/mutación para completar la población
-    4) Reemplazo in-place de los pesos/biases de cada Dinosaur
+    4) Reemplazo in-place
     """
     print("\n=== New Generation ===")
     print("Previous scores:", [d.score for d in population])
@@ -70,13 +70,21 @@ def updateNetwork(population, elitism=3):
 
     # 1) Selección
     parent_indices = select_fittest(population)
+    # ——————————————
+    # 1.1) ORDENAMOS ESOS ÍNDICES DE MAYOR A MENOR SCORE
+    parent_indices = sorted(
+        parent_indices,
+        key=lambda i: population[i].score,
+        reverse=True
+    )
     parents = [population[i] for i in parent_indices]
+    # ——————————————
 
     new_networks = []
-    # 2) Elitismo: copiamos los mejores intactos
+
+    # 2) ELITISMO MEJORADO: copiamos los 'elitism' más aptos (ya ordenados)
     for idx in parent_indices[:elitism]:
         p = population[idx]
-        # clonamos sus parámetros en una nueva red
         elite = NeuralNetwork(
             input_size=p.input_size,
             hidden_sizes=[p.hidden_size],
@@ -89,7 +97,7 @@ def updateNetwork(population, elitism=3):
     # 3) Resto de la población: cruce + mutación
     while len(new_networks) < pop_size:
         p1, p2 = random.sample(parents, 2)
-        child = evolve(p1, p2)
+        child = evolve(p1, p2)  # (con nuevos parámetros de mutación, ver punto 2)
         new_networks.append(child)
 
     # 4) Sustitución in-place
@@ -100,3 +108,4 @@ def updateNetwork(population, elitism=3):
     print("Assigned new networks to dinos:")
     for dino in population:
         print(f"  Dino {dino.id} W1[0,0]={dino.W1.flat[0]:.4f}")
+
