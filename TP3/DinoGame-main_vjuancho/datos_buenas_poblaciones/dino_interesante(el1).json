@@ -1,0 +1,3904 @@
+{
+  "metadata": {
+    "created": "2025-05-31T20:55:21.217689",
+    "total_generations": 8,
+    "best_score_ever": 533,
+    "last_updated": "2025-05-31T21:14:57.352156"
+  },
+  "elite_genomes": [
+    {
+      "rank": 1,
+      "id": 147,
+      "score": 533,
+      "generation": 8,
+      "connections": 29,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": -0.6032472450491521
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.9898885652549729
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": -0.4149147716930751
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": 0.14579682099798344
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.2591894121644561
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": 0.8297676813860668
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.34520260507430595
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": -0.757299479398178
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": -0.013594123303675109
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.7026717906382985
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": 0.2807195252442862
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.171952153188392
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.6326587832106139
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": 0.227591066187036
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": 0.12760420786017523
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.130150411385099
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.1397189965283047
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 0.3579898075302843
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": -0.9157216212420931
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.25547036056124856
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.502556982744811
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -1.54418963149057
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.15572962512470492
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": -0.5080017479062771
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.02020325317848687
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.4280134818953093
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.7404112450479853
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.013078637393992038
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.09868360630306709
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.19876587346290092
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.3237706632985063
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.28644082440002905
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.3026977356159469
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.5094050000193846
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.001050351990934379
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.5882694631201042
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 1.1080822325621427
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.1658753411084314
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "id": 185,
+      "score": 113,
+      "generation": 8,
+      "connections": 29,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": -0.5795938851989505
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.91268384682136
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": -0.4206481809828059
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": 0.10856168679592945
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.28553843355499314
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": 0.7460066824049794
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.34564747205146346
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": -0.7596041653667197
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": 0.009952352560612946
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.6336210613578505
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": 0.3026639878298767
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.13073942921168133
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.5727059467242458
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": 0.21524395673480187
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": 0.12478720401815704
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.1781950445683332
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.16382373860052732
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 0.33276638591152324
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": -1.001971051749386
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.2264815352843508
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.45394495360993675
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -1.5708946056902897
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.1140206652270184
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": -0.5732916259960708
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.001143488470853611
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.3970747368515346
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.6641502626779424
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.055690206236443024
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.0533409214950742
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.19876587346290092
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.3237706632985063
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.28644082440002905
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.3026977356159469
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.5094050000193846
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.001050351990934379
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.5882694631201042
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 1.1080822325621427
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.1658753411084314
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "id": 6,
+      "score": 111,
+      "generation": 8,
+      "connections": 37,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 0,
+          "weight": -0.12746494857866153
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": -0.31033319897787204
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": -0.4308151276861305
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.9834638858843231
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -0.11939774722371804
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": -0.4218486339589799
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": 0.10468498906842658
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.03412215364151525
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 3,
+          "weight": -0.08628336256343296
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": 0.2832864055211881
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": 0.6660096880440012
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": -0.13361888988711432
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": 0.19217924617005833
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": 0.5203883484030704
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": 0.6241863867949862
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.7026717906382985
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": -0.07656612600580472
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.3532617707998746
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": -0.06680952835951806
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": 0.07278926462312772
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": 0.19474684776457676
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.5056965793601206
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.08902853964112754
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.32938287668507965
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 0.20720461472316987
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": -0.14793071878268627
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.25547036056124856
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.43653536168347556
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -1.54418963149057
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.37705748647903575
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": -0.427816741885664
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.4308928232175558
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.3450368989569088
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": 0.6600491287220221
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": 0.4141726371063986
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": 0.38059700875278657
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.37257470842541063
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.004911463893414283
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.15333818335827856
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.17496457458609843
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.8424780802623455
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.5555761155075265
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.0807949013162075
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.5155877607829247
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.10493539431553381
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.36366568816660755
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "id": 241,
+      "score": 111,
+      "generation": 8,
+      "connections": 54,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 0,
+          "weight": 0.30469593944380063
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": -0.05571682917251534
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": 0.44897547692385836
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.18119124927609784
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 4,
+          "weight": -0.3553929237655715
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": -0.13760699225869566
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -0.0538084146705203
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 1,
+          "weight": -0.4230474195468551
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 2,
+          "weight": -0.17810281956703197
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 3,
+          "weight": -0.04261290527479006
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 4,
+          "weight": -0.11101980410897264
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": -0.5090714567054577
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.19474618060461404
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": 0.053653723755281435
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.09724747711857537
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 3,
+          "weight": 0.04760749888981117
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 4,
+          "weight": 0.18612354759979072
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": 0.5425969554564114
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.261259956812659
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": 0.1849129894365
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": -0.14537593340248042
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.14054998427840348
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 4,
+          "weight": -0.01208317457158365
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": 0.24022497550142324
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 0,
+          "weight": 0.4587148565864817
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": 0.01325949317437691
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": 0.12239372073571542
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 3,
+          "weight": -0.19650496056738626
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": -0.26117141330775234
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.4258093742840735
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": -0.15349536094855049
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.18650678218725014
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": -0.29674572074426253
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": 0.25205777293364656
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": -0.21393441207228148
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.17939316904912306
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.1160469559719862
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 0.22669869623597116
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.1350105871303743
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 0.2277789200116795
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.07912814978859595
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": 0.2063980635043942
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.02068639738484402
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": 0.020172743193093045
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.16826286763083503
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.2466820871527056
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.02508916819424091
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": -0.0743468733164655
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": 0.002076355234471944
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.1905424142291762
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.34366255813257024
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": 0.1410432640523589
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.10849452038176072
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.26580192896947963
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.4522959369762236
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.4472458648568674
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.10961653143613889
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.7743701455645389
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.11459645473754013
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.12667754617393776
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.2643111844134215
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.2897708597836009
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": 0.2787633760546769
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "id": 1,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 0,
+          "weight": -0.14319457572593283
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": -0.4308151276861305
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.6177024695206589
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": -1.964103330806376
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.03412215364151525
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 3,
+          "weight": -0.08628336256343296
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": -0.2134898737790651
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": 0.05918492377846893
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": 0.0037796260023870896
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": 0.7437644571847025
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": 0.6241863867949862
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.17678370856594536
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": 0.5097602734832918
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": 0.013725389371643217
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.17664956902051282
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.4856378398676743
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.1405683977062978
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": -0.08766925957003667
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.3450368989569088
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.010492029448415334
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.5984129630182677
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.07193509257665393
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.03416918225285031
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.38483474479080343
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.6041985155675968
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.45126631732267414
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.18907876576751678
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.12985734714703442
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.5268158757742973
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "id": 10,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": 0.06759530138253497
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": 0.3421779520144445
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -0.7707583206545254
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 2,
+          "weight": 0.09746796436899487
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.5359213156909411
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.3740407509084759
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": -0.4647735175988892
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": -0.13573001725332454
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.34865288341644013
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": -0.13037277534387723
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.1992388025004422
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": 0.3186892480106088
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": 0.41109674409530506
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.16658007151589482
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": -0.5668215852839205
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": 0.062160482885446615
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": 1.0365347982314785
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.3186006492541647
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.6268121553105952
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.7312972600415895
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.6729783898055766
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.5522695535419049
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.2601632909842366
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.7540713298722774
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.3636791390253858
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.39466517303997456
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.7600440578615336
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 1.535071259602826
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.4922894968425297
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "id": 12,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 4,
+          "weight": 0.3925156040497912
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": 0.11351616288121416
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 4,
+          "weight": -0.4364175829562022
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": -0.2994723235988831
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 4,
+          "weight": 0.12979463497000657
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": 0.518304961586006
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": -0.15953500918138974
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.754433763116649
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": -0.7619451061564422
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": 0.33271728054362093
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.5785198302965184
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.5726644929569285
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -0.45826627251149343
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.5358665533383571
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.1490106568045907
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": 0.457935069927492
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.05090860460529683
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": 0.5452941533882981
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": 0.10598668038442811
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.5453144761743315
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.5489965517408063
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.4976403176688097
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.12519372345639743
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.5717360535841342
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.8347506300848114
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.13223918535235152
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.6603373252539275
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.1793873968212508
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.8064853769954159
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "id": 13,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": -0.022124537365530317
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": -0.232119839609397
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 4,
+          "weight": -0.8236180192877588
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": -0.8842413549121388
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": 1.0213432389415789
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": -0.5030308597561081
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": 0.08511797405141049
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": 0.0561596591587249
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 4,
+          "weight": -0.5982028301628992
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 0,
+          "weight": 0.39546109918088584
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": 0.12275814569249123
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": 0.41772761741740405
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.12526977465660624
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.1325886902480598
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.7663602729106581
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 0.600711121549802
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.022733095630836943
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": -0.127585517132711
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": 0.46613120570486904
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.0004941641560153482
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.9047177145008378
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.6021454378695932
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.35190739151012734
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.7862026001008346
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.5372742427295722
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.19383260585899703
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.049798332176885944
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.10443368044552107
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.9464752111144317
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "id": 19,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": 1.1529509111657872
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 4,
+          "weight": -0.5407073075541723
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": 0.1425958824121313
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.25793310832439803
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": 0.17629767031996646
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": 0.0434285073818608
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": 0.5505246913280252
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": -0.28274168483342005
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.1745053218271649
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.2363578775051355
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": -0.41769865961290953
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -0.8260058404126951
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.652545224334887
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.6973847198737307
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": 0.15971636117929514
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.05078657576357246
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.20791284154954434
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.08873248141596163
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.13327454653183146
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.12916802203886923
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.34761521921238653
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.7476304533643829
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.21616745841846355
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.1857865493919964
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.5573508477651559
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.9657424440600743
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -1.157012380040061
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.4026965295242512
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": 0.04327823677965297
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "id": 20,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.1431753249745906
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": 0.06289843119240487
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 3,
+          "weight": 0.15137702446900114
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": -0.4073705858972581
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": -0.06449222575854147
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 3,
+          "weight": 0.22620725267380243
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": -0.061170634922592906
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": -0.9442013828177586
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.2962214109689396
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.17453333548560898
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.14745589565475997
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": -1.2224244196609908
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.5244055436049962
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": 0.3877245390152941
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.8522852656478868
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": 0.1553545885781879
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.12768145929759106
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.5301703699587788
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": 0.08650562962072224
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.09748669728109426
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.33853934423749377
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.19897287719174875
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.6949286592143947
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.10648040135244723
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.4348907480584305
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.14145232284525774
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.05166733568103101
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": -0.11741724928174671
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.6869588636814237
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "id": 23,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 0,
+          "weight": -0.10406533835755047
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 2,
+          "weight": -0.07012235507157323
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.2366796010710408
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": -0.2050686853505978
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": 0.12095422090258312
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 3,
+          "weight": 0.2623392454183427
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": 0.5095678456571117
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.9864427284548282
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.28977104013357796
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 1.1637654709823146
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.22329148669203774
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.2087764704810916
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.6724270412183524
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.11056967736127071
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": 0.02370951938827699
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.40915869803114713
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": 0.4301247615447828
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.12708996999202926
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": 0.10884754705020173
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.5414257059906068
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 1.170807226252803
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.25306176467154695
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.16732179837340552
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.10909539301506363
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.5962113001149878
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.0883006361822223
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.08274270854670791
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": -0.4214923704852874
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": 0.39089711280524314
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "id": 24,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": 0.39257530945599844
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.15434756033975622
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 3,
+          "weight": -0.13274035135856727
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 4,
+          "weight": 0.45147827284961456
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.3559053705598607
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": 0.18939333772068925
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.013150718850621248
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": 0.22168195121170942
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": 0.8206199700309988
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": -0.14214806229777238
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.42991416570781077
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.11932556799766676
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -0.2631136346492034
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -1.0418221477602208
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": -0.21519758988190735
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": -0.5496190292638016
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.6349407379784684
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.24907576872925907
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.2601532329492815
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.4404645595423845
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.896075502058776
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.27729809494610114
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.11589394856929507
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.5221307656378894
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.04272250446879822
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.07468581885292863
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.12445524848326131
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.2690923191840266
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.09705553014274623
+        }
+      ]
+    },
+    {
+      "rank": 13,
+      "id": 26,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": 0.42817792800236254
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.15121046816380834
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": -0.6764526725130076
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.8464015493958307
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": -0.8751132153599163
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.2023612041325186
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 4,
+          "weight": 0.10978896980242463
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 0,
+          "weight": -0.6454651897803959
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": 0.3817594359648879
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": -0.271541170000287
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": -0.5994084376236458
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 1.1466282789811582
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": -0.18186359349894723
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": -0.5760843280660647
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": 0.46927470177232083
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.20115183396639771
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": 0.02719727824557923
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.4046963588285368
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.9611818653062315
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.1718454787352219
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.37426793319449
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.03941727575218722
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.011917049647639837
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.6382280782003882
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.7384868554812211
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.19564803762999514
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.30067299961753774
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 1.325677241038621
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.018748900773608766
+        }
+      ]
+    },
+    {
+      "rank": 14,
+      "id": 29,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 0,
+          "weight": 0.6255195635628522
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": 0.48328525130528155
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 1,
+          "weight": -0.33583860849137165
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 3,
+          "weight": 0.24376516161522607
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": -0.0791738594726406
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": 0.13516670920651425
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 0,
+          "weight": 0.013637311373750379
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": 1.2383081326856396
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": 0.49358844077568426
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": 0.17962947520701486
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": -0.22474806635807368
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.0806005573162316
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 0.08421521497254818
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.035980388568492096
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.38969315971577767
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.11740769609657006
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -0.44148634085825555
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.16770909124671943
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": 0.39336110054039924
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": 0.230559508352021
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.16242019593639748
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.09961416460361801
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.2323314267554437
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.03481747989436675
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.31461973876925914
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.7750597619924713
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.767205761709578
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.9986193859840387
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": 0.003773253299404103
+        }
+      ]
+    },
+    {
+      "rank": 15,
+      "id": 35,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -0.2748530185348116
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 3,
+          "weight": 0.01720611811299704
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": -0.11082918229061287
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.8869507067269858
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": -0.16847803693018182
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": 0.5694818646395003
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.3555562096369748
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 0.2741126092899069
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 0.5673459670197388
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.024140380765987613
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.0912140192090378
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.45690967017040734
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -0.3229618948375463
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.17212069758698206
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.311119123275983
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.38372251008020203
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": 0.13728239290694874
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.10721786551892482
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.3426935340983844
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 1.2403903183135396
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.4104483948740442
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.09559591862747407
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.006099457356441203
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.403063163048101
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.3709482016943106
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.3255074319211407
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.045048911837343254
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.7638715312743296
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.2862908571699165
+        }
+      ]
+    },
+    {
+      "rank": 16,
+      "id": 37,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": 0.23083636225103157
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": -0.42093454840867894
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 3,
+          "weight": -0.5078102602551123
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": 0.012792583398263075
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": 0.8348026882199371
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -1.164363939351717
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 4,
+          "weight": 0.4604797319647546
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": -0.12127647295870805
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": 0.5670863318275519
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": 0.41543272882695914
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.37276952128724294
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": -0.11540461354275777
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": -0.6555139857424838
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": -0.12811772577849478
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.3188330128379788
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.03493427632934119
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": -0.3076728835335707
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.41997631746498215
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.36216538862542885
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": 0.06653880164114608
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.3691123344919908
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.0565419913896222
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.05240698765463427
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.16455958206841964
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.25373133702277445
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.5547669134707879
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.31800617233444467
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.1017890547478086
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": 0.004503729603161497
+        }
+      ]
+    },
+    {
+      "rank": 17,
+      "id": 40,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": 0.8030956557892364
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 4,
+          "weight": -0.7316433554932134
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -0.036343743107461295
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 2,
+          "weight": 0.05112861506590981
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 4,
+          "weight": 0.18039495603939185
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": 0.606547157295246
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.07263366013482367
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.47954769845067796
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": 0.18422119432237094
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 3,
+          "weight": 0.5223041622655853
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -1.1751387621331382
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.9833593156018304
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": 0.4153012037981836
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": -0.5799284448074018
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": -0.36577015070337343
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.8501710855727755
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.5376652236303443
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": 0.03224507852858675
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": 0.546756855093149
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.6056794582053189
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -0.22877871289950366
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.8202494611504693
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.015477829351763749
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": 0.6246444045356998
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.08196854626969943
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": 0.795195584704128
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.33321334484153453
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.733466902399208
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": 0.45996722630094367
+        }
+      ]
+    },
+    {
+      "rank": 18,
+      "id": 42,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": -0.6609635537292101
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": -0.0056551434174586974
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": 0.777486654986931
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": -0.8265005146451868
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": 0.010601545976716786
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": -0.7631807176768476
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": -0.10132905494969026
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": -0.24742956397868263
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 0.1484633013493554
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": -0.07625537555716465
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 1.0177808046077534
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.0903812040208293
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": -0.43535099180987685
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": -0.40331255792345516
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": 0.17058603907060518
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": 0.35163271214831815
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": -0.08911462092534689
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.7073081112691785
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.34520584761999756
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.4799950002660268
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.21119429521253058
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.08853934820216315
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.20307932398176612
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.0038028671344527074
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.32277515163623066
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.008559052327772754
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.3201729468587272
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.2897708597836009
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.24111203556091215
+        }
+      ]
+    },
+    {
+      "rank": 19,
+      "id": 46,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.815064057618335
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": -0.20900177539322826
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -1.0770528521517084
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 2,
+          "weight": 0.17698649489580864
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.6465948136821676
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": 1.0669397592521705
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.21697896821724857
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": 0.6348646352885334
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": 0.09579339684344011
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.6853289957863966
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": -0.4405150870132121
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": 0.8637436870908384
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": -0.21788379452036535
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": 0.14776576954453272
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": 0.4770622064542271
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.6821359839037249
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": 0.22593268523476856
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.4940546315537348
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": 0.17918197808489325
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": 0.25304966853572947
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.09145032508246179
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": -0.37845668948355704
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": -0.07957065043792257
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.5449073411771787
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.5876235037946687
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.7822588134723778
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.25889997910805357
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.3991544075908601
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.26053563339383035
+        }
+      ]
+    },
+    {
+      "rank": 20,
+      "id": 54,
+      "score": 110,
+      "generation": 8,
+      "connections": 20,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 4,
+          "weight": -0.12033501428959584
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 4,
+          "weight": -0.018842523934458004
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.5064202769911794
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": -0.29033101187831833
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": -0.24573217165948283
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": 0.06670182199918699
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": 0.10095261406483941
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 3,
+          "weight": -0.8640376221076226
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.05013004709609992
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": 0.028070065417322338
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": 0.22512578299103242
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": 0.3832589675287274
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.3414294674338148
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": -0.6638130617813264
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.9528545154231128
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": 0.14646356888324055
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": -0.1741419697810935
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": 0.7752774625054003
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.03721583728910856
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": 0.906095213156791
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": 0.25851548139330216
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.252146360927166
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.34115917811478647
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.48129375195841484
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": 0.283722510874797
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -1.0289919751337029
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": -0.21148929396545058
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": -0.11840947068689396
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.019995720044917033
+        }
+      ]
+    }
+  ]
+}
