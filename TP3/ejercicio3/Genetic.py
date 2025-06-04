@@ -57,7 +57,7 @@ def evolve(parent1, parent2, mutation_rate=0.1, mutation_strength=0.1):
 
     return child
 
-def updateNetwork(population, elitism=10):
+def updateNetwork(population, elitism=50):
     """
     1) Selección por torneo
     2) Elitismo: copiamos intactos 'elitism' mejores padres (ordenados por score)

@@ -170,7 +170,6 @@ def gameScreen():
                 # 3) Paso la acción al update del dino
                 dino.update(accion)
     
-
         if len(obstacles) == 0:
             if random.randint(0, 2) == 0:
                 obstacles.append(SmallCactus(SCREEN_WIDTH, game_speed, obstacles))
@@ -179,7 +178,6 @@ def gameScreen():
             elif random.randint(0, 2) == 2:
                 obstacles.append(Bird(SCREEN_WIDTH, game_speed, obstacles))
         
-
         for obstacle in obstacles:
             obstacle.draw(SCREEN)
             obstacle.update()
@@ -266,16 +264,8 @@ def menu():
         textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         SCREEN.blit(text, textRect)
         pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.KEYDOWN:
-                if generation == 1:
-                    playMode = pygame.key.name(event.key)
-
-                    if playMode == 'm' or playMode == 'c' or playMode == 'a':
-                        population = []
-                gameScreen()
+        pygame.time.delay(500)    # (Opcional) breve pausa de 500 ms para que alcance a ver el mensaje
+        gameScreen()              # Lanza automáticamente la siguiente generación
 
 def count_alive(population):
     alive = 0
