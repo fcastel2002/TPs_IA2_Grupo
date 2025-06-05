@@ -1,16 +1,16 @@
 {
   "metadata": {
     "created": "2025-05-30T22:52:51.819920",
-    "total_generations": 32,
+    "total_generations": 36,
     "best_score_ever": 5745,
-    "last_updated": "2025-05-31T21:31:53.300158"
+    "last_updated": "2025-06-04T22:50:53.309240"
   },
   "elite_genomes": [
     {
       "rank": 1,
       "id": 215,
       "score": 5745,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -388,7 +388,7 @@
       "rank": 2,
       "id": 203,
       "score": 2044,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -766,7 +766,7 @@
       "rank": 3,
       "id": 157,
       "score": 1473,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -1144,7 +1144,7 @@
       "rank": 4,
       "id": 107,
       "score": 1441,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -1520,9 +1520,387 @@
     },
     {
       "rank": 5,
+      "id": 96,
+      "score": 1303,
+      "generation": 36,
+      "connections": 54,
+      "genome": [
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 0,
+          "weight": -0.060621244834432826
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 1,
+          "weight": 0.7440611386275767
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 2,
+          "weight": 0.14344782940869255
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 3,
+          "weight": 0.44872196761563293
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 4,
+          "weight": 0.7795317394858479
+        },
+        {
+          "type": "input_hidden",
+          "from": 0,
+          "to": 5,
+          "weight": 0.37745137619460367
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 0,
+          "weight": -0.5328786404030029
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 1,
+          "weight": -0.07086350831055861
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 2,
+          "weight": -0.01737890970831095
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 3,
+          "weight": -0.11159562353928187
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 4,
+          "weight": 0.30392993002473995
+        },
+        {
+          "type": "input_hidden",
+          "from": 1,
+          "to": 5,
+          "weight": 0.2620146097215957
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 0,
+          "weight": -0.03381308958953717
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 1,
+          "weight": 0.11280769842024098
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 2,
+          "weight": -0.607565532678641
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 3,
+          "weight": -0.38661913232688844
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 4,
+          "weight": -0.1969606055036494
+        },
+        {
+          "type": "input_hidden",
+          "from": 2,
+          "to": 5,
+          "weight": -0.9552479260744908
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 0,
+          "weight": -0.35630697955448487
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 1,
+          "weight": 0.06611765561049313
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 2,
+          "weight": -0.3956939610245053
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 3,
+          "weight": -0.010372415188814668
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 4,
+          "weight": 0.14381283711480858
+        },
+        {
+          "type": "input_hidden",
+          "from": 3,
+          "to": 5,
+          "weight": -0.30085420164584026
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 0,
+          "weight": 0.7478784696482429
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 1,
+          "weight": 0.2568734570441092
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 2,
+          "weight": 0.07118397355001106
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 3,
+          "weight": 0.07762474750365919
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 4,
+          "weight": 0.42467803549402
+        },
+        {
+          "type": "input_hidden",
+          "from": 4,
+          "to": 5,
+          "weight": 0.6397901993404028
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 0,
+          "weight": -0.22213695331501856
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 1,
+          "weight": -0.329621026337073
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 2,
+          "weight": 0.3224553881332767
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 3,
+          "weight": -0.3323598466915606
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 4,
+          "weight": 0.07554737811489926
+        },
+        {
+          "type": "input_hidden",
+          "from": 5,
+          "to": 5,
+          "weight": 0.05680425480005865
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 0,
+          "weight": -0.3164018262625321
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 1,
+          "weight": -0.141773775185004
+        },
+        {
+          "type": "hidden_output",
+          "from": 0,
+          "to": 2,
+          "weight": -0.1848282073705196
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 0,
+          "weight": 0.07050013471614654
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 1,
+          "weight": 0.28551115351111495
+        },
+        {
+          "type": "hidden_output",
+          "from": 1,
+          "to": 2,
+          "weight": 0.20198195831212648
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 0,
+          "weight": 0.3258042544972896
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 1,
+          "weight": 0.04488188106438099
+        },
+        {
+          "type": "hidden_output",
+          "from": 2,
+          "to": 2,
+          "weight": -0.05673456869824948
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 0,
+          "weight": -0.18979768421036175
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 1,
+          "weight": -0.4226588796395916
+        },
+        {
+          "type": "hidden_output",
+          "from": 3,
+          "to": 2,
+          "weight": 0.1581330883856685
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 0,
+          "weight": -0.01803560632994782
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 1,
+          "weight": 0.07530204671918501
+        },
+        {
+          "type": "hidden_output",
+          "from": 4,
+          "to": 2,
+          "weight": -0.010782505581333438
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 0,
+          "weight": -0.04125803155814654
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 1,
+          "weight": -0.2878586832010969
+        },
+        {
+          "type": "hidden_output",
+          "from": 5,
+          "to": 2,
+          "weight": -0.4157087760566194
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 0,
+          "weight": -1.0676362312239882
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 1,
+          "weight": 0.3478290871062114
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 2,
+          "weight": 0.07420228417454985
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 3,
+          "weight": -0.2632036392818396
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 4,
+          "weight": -0.3651741341204596
+        },
+        {
+          "type": "bias_hidden",
+          "neuron": 5,
+          "weight": -0.4298220205132869
+        },
+        {
+          "type": "bias_output",
+          "neuron": 0,
+          "weight": 0.2913866922113262
+        },
+        {
+          "type": "bias_output",
+          "neuron": 1,
+          "weight": 0.11893080860856943
+        },
+        {
+          "type": "bias_output",
+          "neuron": 2,
+          "weight": -0.23488210440115234
+        }
+      ]
+    },
+    {
+      "rank": 6,
       "id": 205,
       "score": 1138,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -1897,10 +2275,10 @@
       ]
     },
     {
-      "rank": 6,
+      "rank": 7,
       "id": 60,
       "score": 1138,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -2275,10 +2653,10 @@
       ]
     },
     {
-      "rank": 7,
+      "rank": 8,
       "id": 144,
       "score": 1110,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -2653,10 +3031,10 @@
       ]
     },
     {
-      "rank": 8,
+      "rank": 9,
       "id": 65,
       "score": 1100,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -3031,10 +3409,10 @@
       ]
     },
     {
-      "rank": 9,
+      "rank": 10,
       "id": 167,
       "score": 1100,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -3409,10 +3787,10 @@
       ]
     },
     {
-      "rank": 10,
+      "rank": 11,
       "id": 201,
       "score": 1100,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -3787,10 +4165,10 @@
       ]
     },
     {
-      "rank": 11,
+      "rank": 12,
       "id": 218,
       "score": 1100,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -4165,10 +4543,10 @@
       ]
     },
     {
-      "rank": 12,
+      "rank": 13,
       "id": 15,
       "score": 1100,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -4543,10 +4921,10 @@
       ]
     },
     {
-      "rank": 13,
+      "rank": 14,
       "id": 53,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -4921,10 +5299,10 @@
       ]
     },
     {
-      "rank": 14,
+      "rank": 15,
       "id": 154,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -5299,10 +5677,10 @@
       ]
     },
     {
-      "rank": 15,
+      "rank": 16,
       "id": 143,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -5677,10 +6055,10 @@
       ]
     },
     {
-      "rank": 16,
+      "rank": 17,
       "id": 208,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -6055,10 +6433,10 @@
       ]
     },
     {
-      "rank": 17,
+      "rank": 18,
       "id": 199,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -6433,10 +6811,10 @@
       ]
     },
     {
-      "rank": 18,
+      "rank": 19,
       "id": 106,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -6811,10 +7189,10 @@
       ]
     },
     {
-      "rank": 19,
+      "rank": 20,
       "id": 50,
       "score": 1070,
-      "generation": 32,
+      "generation": 36,
       "connections": 54,
       "genome": [
         {
@@ -7185,384 +7563,6 @@
           "type": "bias_output",
           "neuron": 2,
           "weight": -0.23488210440115234
-        }
-      ]
-    },
-    {
-      "rank": 20,
-      "id": 197,
-      "score": 1065,
-      "generation": 32,
-      "connections": 54,
-      "genome": [
-        {
-          "type": "input_hidden",
-          "from": 0,
-          "to": 0,
-          "weight": -0.10443616094229378
-        },
-        {
-          "type": "input_hidden",
-          "from": 0,
-          "to": 1,
-          "weight": 0.6993734974894683
-        },
-        {
-          "type": "input_hidden",
-          "from": 0,
-          "to": 2,
-          "weight": 0.234165516142136
-        },
-        {
-          "type": "input_hidden",
-          "from": 0,
-          "to": 3,
-          "weight": 0.41191423898482377
-        },
-        {
-          "type": "input_hidden",
-          "from": 0,
-          "to": 4,
-          "weight": 0.6104565118073647
-        },
-        {
-          "type": "input_hidden",
-          "from": 0,
-          "to": 5,
-          "weight": 0.40509547778953553
-        },
-        {
-          "type": "input_hidden",
-          "from": 1,
-          "to": 0,
-          "weight": -0.41771793333917967
-        },
-        {
-          "type": "input_hidden",
-          "from": 1,
-          "to": 1,
-          "weight": -0.2112104628563844
-        },
-        {
-          "type": "input_hidden",
-          "from": 1,
-          "to": 2,
-          "weight": 0.12008554064842286
-        },
-        {
-          "type": "input_hidden",
-          "from": 1,
-          "to": 3,
-          "weight": -0.03308977206561339
-        },
-        {
-          "type": "input_hidden",
-          "from": 1,
-          "to": 4,
-          "weight": 0.37870785031606163
-        },
-        {
-          "type": "input_hidden",
-          "from": 1,
-          "to": 5,
-          "weight": 0.24104876765957553
-        },
-        {
-          "type": "input_hidden",
-          "from": 2,
-          "to": 0,
-          "weight": 0.02537603045732818
-        },
-        {
-          "type": "input_hidden",
-          "from": 2,
-          "to": 1,
-          "weight": 0.2522807884942309
-        },
-        {
-          "type": "input_hidden",
-          "from": 2,
-          "to": 2,
-          "weight": -0.6414370069301847
-        },
-        {
-          "type": "input_hidden",
-          "from": 2,
-          "to": 3,
-          "weight": -0.40914959525770705
-        },
-        {
-          "type": "input_hidden",
-          "from": 2,
-          "to": 4,
-          "weight": -0.09479793906072494
-        },
-        {
-          "type": "input_hidden",
-          "from": 2,
-          "to": 5,
-          "weight": -0.6763956454754146
-        },
-        {
-          "type": "input_hidden",
-          "from": 3,
-          "to": 0,
-          "weight": -0.3735723599736239
-        },
-        {
-          "type": "input_hidden",
-          "from": 3,
-          "to": 1,
-          "weight": -0.12379793848095592
-        },
-        {
-          "type": "input_hidden",
-          "from": 3,
-          "to": 2,
-          "weight": -0.17049542119504502
-        },
-        {
-          "type": "input_hidden",
-          "from": 3,
-          "to": 3,
-          "weight": -0.10451829413855117
-        },
-        {
-          "type": "input_hidden",
-          "from": 3,
-          "to": 4,
-          "weight": 0.05500865820551484
-        },
-        {
-          "type": "input_hidden",
-          "from": 3,
-          "to": 5,
-          "weight": -0.14667908807972746
-        },
-        {
-          "type": "input_hidden",
-          "from": 4,
-          "to": 0,
-          "weight": 0.6096326445730066
-        },
-        {
-          "type": "input_hidden",
-          "from": 4,
-          "to": 1,
-          "weight": 0.2662662458718647
-        },
-        {
-          "type": "input_hidden",
-          "from": 4,
-          "to": 2,
-          "weight": 0.05164186961207805
-        },
-        {
-          "type": "input_hidden",
-          "from": 4,
-          "to": 3,
-          "weight": 0.07975123204026728
-        },
-        {
-          "type": "input_hidden",
-          "from": 4,
-          "to": 4,
-          "weight": 0.4226327554755895
-        },
-        {
-          "type": "input_hidden",
-          "from": 4,
-          "to": 5,
-          "weight": 0.5123890669568048
-        },
-        {
-          "type": "input_hidden",
-          "from": 5,
-          "to": 0,
-          "weight": -0.21230830999177672
-        },
-        {
-          "type": "input_hidden",
-          "from": 5,
-          "to": 1,
-          "weight": -0.5082860148848728
-        },
-        {
-          "type": "input_hidden",
-          "from": 5,
-          "to": 2,
-          "weight": 0.4317845145552386
-        },
-        {
-          "type": "input_hidden",
-          "from": 5,
-          "to": 3,
-          "weight": -0.16185798264947648
-        },
-        {
-          "type": "input_hidden",
-          "from": 5,
-          "to": 4,
-          "weight": 0.04384176092924777
-        },
-        {
-          "type": "input_hidden",
-          "from": 5,
-          "to": 5,
-          "weight": 0.16885378006313306
-        },
-        {
-          "type": "hidden_output",
-          "from": 0,
-          "to": 0,
-          "weight": -0.7379449356322569
-        },
-        {
-          "type": "hidden_output",
-          "from": 0,
-          "to": 1,
-          "weight": -0.23733589463897603
-        },
-        {
-          "type": "hidden_output",
-          "from": 0,
-          "to": 2,
-          "weight": -0.14530513386208027
-        },
-        {
-          "type": "hidden_output",
-          "from": 1,
-          "to": 0,
-          "weight": -0.018617728753660343
-        },
-        {
-          "type": "hidden_output",
-          "from": 1,
-          "to": 1,
-          "weight": 0.39933511147056217
-        },
-        {
-          "type": "hidden_output",
-          "from": 1,
-          "to": 2,
-          "weight": 0.12649031179847708
-        },
-        {
-          "type": "hidden_output",
-          "from": 2,
-          "to": 0,
-          "weight": 0.2579379578478481
-        },
-        {
-          "type": "hidden_output",
-          "from": 2,
-          "to": 1,
-          "weight": 0.12679571870127346
-        },
-        {
-          "type": "hidden_output",
-          "from": 2,
-          "to": 2,
-          "weight": -0.022821620745700877
-        },
-        {
-          "type": "hidden_output",
-          "from": 3,
-          "to": 0,
-          "weight": -0.302624901052031
-        },
-        {
-          "type": "hidden_output",
-          "from": 3,
-          "to": 1,
-          "weight": -0.3071435153929387
-        },
-        {
-          "type": "hidden_output",
-          "from": 3,
-          "to": 2,
-          "weight": 0.057323168836864384
-        },
-        {
-          "type": "hidden_output",
-          "from": 4,
-          "to": 0,
-          "weight": -0.18344936416194724
-        },
-        {
-          "type": "hidden_output",
-          "from": 4,
-          "to": 1,
-          "weight": 0.03659150579755726
-        },
-        {
-          "type": "hidden_output",
-          "from": 4,
-          "to": 2,
-          "weight": -0.06911325748943856
-        },
-        {
-          "type": "hidden_output",
-          "from": 5,
-          "to": 0,
-          "weight": -0.13008237163417552
-        },
-        {
-          "type": "hidden_output",
-          "from": 5,
-          "to": 1,
-          "weight": -0.5329424831854066
-        },
-        {
-          "type": "hidden_output",
-          "from": 5,
-          "to": 2,
-          "weight": -0.2042184854663604
-        },
-        {
-          "type": "bias_hidden",
-          "neuron": 0,
-          "weight": 0.05722257576918409
-        },
-        {
-          "type": "bias_hidden",
-          "neuron": 1,
-          "weight": 0.1831283779515997
-        },
-        {
-          "type": "bias_hidden",
-          "neuron": 2,
-          "weight": 0.07420228417454985
-        },
-        {
-          "type": "bias_hidden",
-          "neuron": 3,
-          "weight": -0.2632036392818396
-        },
-        {
-          "type": "bias_hidden",
-          "neuron": 4,
-          "weight": -0.4367564174003674
-        },
-        {
-          "type": "bias_hidden",
-          "neuron": 5,
-          "weight": -0.5275021020248815
-        },
-        {
-          "type": "bias_output",
-          "neuron": 0,
-          "weight": 0.5060331268170948
-        },
-        {
-          "type": "bias_output",
-          "neuron": 1,
-          "weight": 0.11893080860856943
-        },
-        {
-          "type": "bias_output",
-          "neuron": 2,
-          "weight": 0.16519033364173177
         }
       ]
     }
