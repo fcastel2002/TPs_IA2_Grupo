@@ -14,6 +14,8 @@ from SmallCactus import SmallCactus
 from LargeCactus import LargeCactus
 from Genetic import updateNetwork
 from ImageCapture import ImageCapture
+from WeightVisualizer import plot_weight_histograms
+
 
 screen_spawn_position = (100, 100)
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % screen_spawn_position
@@ -53,6 +55,7 @@ def populate(population_size):
 population_number = 1000
 # =====================================================================================================
 population = populate(population_number)
+plot_weight_histograms(population[0], save_path="imagenes/weights_init_gen0.png")
 player = Dinosaur(0)
 callUpdateNetwork = False
 
@@ -226,6 +229,7 @@ def menu():
         player.resetStatus()
     elif playMode != 'm' and playMode != 'c' and playMode != 'a' and callUpdateNetwork:
         updateNetwork(population)
+        plot_weight_histograms(population[0], save_path=f"imagenes/weights_gen{generation}.png")
         callUpdateNetwork = False
         for dino in population:
             dino.resetStatus()

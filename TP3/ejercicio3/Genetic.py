@@ -155,7 +155,7 @@ def updateNetwork(population):
     best_parent = sorted_pop[0]
     for _ in range(mutate_best_count):
         child = type(best_parent)(best_parent.id, best_parent.color, best_parent.autoPlay)
-        W1_new, b1_new, W2_new, b2_new = evolve(best_parent, mutation_type='mild')
+        W1_new, b1_new, W2_new, b2_new = evolve(best_parent, mutation_type='mild')  # 10% de posibilidades a cada elemento de añadirle ruido gaussiano con poca desviación estándar
         child.W1, child.b1, child.W2, child.b2 = W1_new, b1_new, W2_new, b2_new
         new_population.append(child)
 
@@ -164,7 +164,7 @@ def updateNetwork(population):
     for _ in range(mutate_rand_count):
         parent = random.choice(top_parents)
         child = type(parent)(parent.id, parent.color, parent.autoPlay)
-        W1_new, b1_new, W2_new, b2_new = evolve(parent, mutation_type='mild')
+        W1_new, b1_new, W2_new, b2_new = evolve(parent, mutation_type='mild') # Mismo que arriba pero ahora con el top 5%
         child.W1, child.b1, child.W2, child.b2 = W1_new, b1_new, W2_new, b2_new
         new_population.append(child)
 
@@ -173,7 +173,7 @@ def updateNetwork(population):
         p1, p2 = random.sample(top_parents, 2)
         child = type(p1)(p1.id, p1.color, p1.autoPlay)
         W1_new, b1_new, W2_new, b2_new = evolve(p1, p2, mutation_type='mild')
-        child.W1, child.b1, child.W2, child.b2 = W1_new, b1_new, W2_new, b2_new
+        child.W1, child.b1, child.W2, child.b2 = W1_new, b1_new, W2_new, b2_new # si bool 1 toma peso de padre 1 sino de padre 2. Luego se añade probabilidad de mutación
         new_population.append(child)
 
     # 8) Asegurar que tenemos exactamente N individuos
