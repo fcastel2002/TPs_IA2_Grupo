@@ -32,7 +32,7 @@ class Videojuego:
         self.imageCapture = ImageCapture(SCREEN_SPAWN_POSITION)
         self.BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
         
-        self.population_number = 250
+        self.population_number = 1000
         
         self.population = self.generar_poblacion(self.population_number)
         
